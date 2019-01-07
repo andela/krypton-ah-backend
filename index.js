@@ -3,6 +3,15 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   cors = require('cors'),
+const fs = require('fs'),
+  http = require('http'),
+  path = require('path'),
+  methods = require('methods'),
+  express = require('express'),
+  bodyParser = require('body-parser'),
+  session = require('express-session'),
+  cors = require('cors'),
+  passport = require('passport'),
   errorhandler = require('errorhandler'),
   mongoose = require('mongoose');
 
@@ -15,7 +24,6 @@ app.use(cors());
 
 // Normal express config defaults
 app.use(require('morgan')('dev'));
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -36,12 +44,6 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-if (isProduction) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect('mongodb://localhost/conduit');
-  mongoose.set('debug', true);
-}
 
 require('./models/User');
 
