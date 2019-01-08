@@ -13,7 +13,7 @@ const fs = require('fs'),
   cors = require('cors'),
   passport = require('passport'),
   errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 
