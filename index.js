@@ -49,6 +49,8 @@ require("./models/User");
 
 app.use(require("./routes"));
 
+app.get("/", (req, res) => res.status(200).send('Test Successful'));
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     const err = new Error("Not Found");
@@ -91,3 +93,5 @@ app.use(function(err, req, res, next) {
 const server = app.listen(process.env.PORT || 3000, function() {
     console.log("Listening on port " + server.address().port);
 });
+
+module.exports = app;
