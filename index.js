@@ -8,7 +8,7 @@ const fs = require('fs'),
   cors = require('cors'),
   passport = require('passport'),
   errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -38,14 +38,7 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-if (isProduction) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect(
-    'mongodb://authorshaven:root12345@ds247121.mlab.com:47121/authorshaven'
-  );
-  mongoose.set('debug', true);
-}
+
 
 require('./models/User');
 
