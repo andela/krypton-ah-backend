@@ -1,5 +1,2 @@
 node_modules
-<<<<<<< HEAD
-=======
 .nyc_output
->>>>>>> [ch-#162414155] install and setup coveralls

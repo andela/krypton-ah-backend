@@ -5,16 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js --exit",
-<<<<<<< HEAD
-    "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'"
+    "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
     }
-=======
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
->>>>>>> [ch-#162414155] install and setup coveralls
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
