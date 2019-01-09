@@ -3,19 +3,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   cors = require('cors'),
-const fs = require('fs'),
-  http = require('http'),
-  path = require('path'),
-  methods = require('methods'),
-  express = require('express'),
-  bodyParser = require('body-parser'),
-  session = require('express-session'),
-  cors = require('cors'),
-  passport = require('passport'),
   errorhandler = require('errorhandler'),
-
-
-const isProduction = process.env.NODE_ENV === 'production';
+  isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
@@ -24,6 +13,7 @@ app.use(cors());
 
 // Normal express config defaults
 app.use(require('morgan')('dev'));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -43,9 +33,6 @@ app.use(
 if (!isProduction) {
   app.use(errorhandler());
 }
-
-
-require('./models/User');
 
 app.use(require('./routes').default);
 

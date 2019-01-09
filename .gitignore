@@ -1,6 +1,3 @@
 node_modules
-<<<<<<< HEAD
 .env
-=======
-.env
->>>>>>> chore(postgres): Use PostgreSQL as DB Engine
+.DS_Store
