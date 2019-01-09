@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js --exit",
+<<<<<<< HEAD
     "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
     }
+=======
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+>>>>>>> [ch-#162414155] install and setup coveralls
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -38,6 +42,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
+    "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
     "eslint": "^5.12.0",
@@ -47,6 +52,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.12.3",
     "husky": "^1.3.1",
-    "lint-staged": "^8.1.0"
+    "lint-staged": "^8.1.0",
+    "nyc": "^13.1.0"
   }
 }
