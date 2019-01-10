@@ -7,6 +7,7 @@
     "test": "mocha test/*.js --exit",
     "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "prod-start": "node index.js",
     "start": "nodemon index.js"
   },
   "husky": {
