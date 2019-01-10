@@ -4,9 +4,7 @@ const express = require('express'),
   session = require('express-session'),
   cors = require('cors'),
   errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
-
-const isProduction = process.env.NODE_ENV === 'production';
+  isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
@@ -35,15 +33,6 @@ app.use(
 if (!isProduction) {
   app.use(errorhandler());
 }
-
-if (isProduction) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect('mongodb://localhost/conduit');
-  mongoose.set('debug', true);
-}
-
-require('./models/User');
 
 app.use(require('./routes').default);
 
