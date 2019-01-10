@@ -34,7 +34,7 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-app.use(require('./routes').default);
+app.use(require('./routes'));
 
 app.get('/', (req, res) => res.status(200).send('Test Successful'));
 
