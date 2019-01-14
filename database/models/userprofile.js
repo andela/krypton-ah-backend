@@ -1,28 +1,17 @@
 
 module.exports = (sequelize, DataTypes) => {
   const userprofile = sequelize.define('userprofile', {
-    firstname: {
-      type: DataTypes.STRING,
-      validate: {
-        is: ['^[a-z]+$', 'i'],
-      },
-    },
-    lastname: {
-      type: DataTypes.STRING,
-      validate: {
-      },
-    },
     avatar: DataTypes.STRING,
     bio: {
       type: DataTypes.STRING,
-      validate: {
-        is: ['^[a-z]+$', 'i'],
-      },
+    },
+    userId: {
+      type: DataTypes.uuid,
     },
     username: {
       type: DataTypes.STRING,
       validate: {
-        is: ['^[a-z]+$', 'i'],
+        is: ['^[A-Za-z]+[0-9]+', 'i'],
       },
       unique: {
         msg: 'That username is already taken'
@@ -37,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     phonenumber: {
       type: DataTypes.INTEGER,
       validate: {
-        not: ['[a-z]', 'i'],
+        is: ['^[+]*[0-9]{0,}', 'i'],
       },
     },
     gender: {
@@ -55,9 +44,6 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'email notification can only be "true" or "false"'
         }
       },
-      unique: {
-        msg: 'This email address is taken'
-      }
     },
   }, {});
   userprofile.associate = () => {

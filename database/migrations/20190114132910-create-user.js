@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
 
+
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('userprofiles', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
     id: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
     },
-    uuid: {
-      type: Sequelize.UUID
+    email: {
+      type: Sequelize.STRING
+    },
+    password: {
+      type: Sequelize.STRING
     },
     firstname: {
       type: Sequelize.STRING
@@ -17,17 +21,8 @@ module.exports = {
     lastname: {
       type: Sequelize.STRING
     },
-    avatar: {
-      type: Sequelize.STRING
-    },
-    username: {
-      type: Sequelize.STRING
-    },
-    country: {
-      type: Sequelize.STRING
-    },
-    phonenumber: {
-      type: Sequelize.INTEGER
+    isverified: {
+      type: Sequelize.BOOLEAN
     },
     createdAt: {
       allowNull: false,
@@ -38,5 +33,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('userprofiles')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Users')
 };
