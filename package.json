@@ -37,6 +37,8 @@
     "request": "^2.87.0",
     "sequelize": "^4.42.0",
     "slug": "^0.9.3",
+    "swagger-jsdoc": "^3.2.6",
+    "swagger-ui-express": "^4.0.2",
     "underscore": "^1.9.1"
   },
   "devDependencies": {

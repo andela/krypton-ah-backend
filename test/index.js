@@ -15,3 +15,14 @@ describe('Server Running Check', () => {
       });
   });
 });
+
+describe('Api documentation is accessible', () => {
+  it('should ensure that api documentation is accessible', () => {
+    chai
+      .request(app)
+      .get('/api-docs')
+      .end((err, res) => {
+        res.should.have.status(200);
+      });
+  });
+});

@@ -6,6 +6,9 @@ const express = require('express'),
   errorhandler = require('errorhandler'),
   isProduction = process.env.NODE_ENV === 'production';
 
+// Load environment variables
+require('dotenv').config();
+
 // Create global app object
 const app = express();
 
@@ -36,6 +39,19 @@ if (!isProduction) {
 
 app.use(require('./routes'));
 
+/**
+ * @swagger
+ * /:
+ *  get:
+ *    summary: Author's Haven root endpoint
+ *    description: Returns a welcome message
+ *    responses:
+ *      200:
+ *        description: A welcome message
+ *        schema:
+ *          type: string
+ *          default: "Test Successful"
+ */
 app.get('/', (req, res) => res.status(200).send('Test Successful'));
 
 // / catch 404 and forward to error handler
