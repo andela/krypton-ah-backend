@@ -4,7 +4,7 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.js --exit",
+    "test": "export NODE_ENV=test && mocha ./test/* --exit",
     "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "prod-start": "node index.js",
@@ -20,7 +20,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "dotenv": "^6.0.0",
+    "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
@@ -43,8 +43,6 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "coveralls": "^3.0.2",
-    "mocha": "^5.2.0",
-    "nodemon": "^1.18.9",
     "eslint": "^5.12.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -53,6 +51,10 @@
     "eslint-plugin-react": "^7.12.3",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.0",
-    "nyc": "^13.1.0"
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.9",
+    "nyc": "^13.1.0",
+    "sequelize-test-helpers": "^1.0.7",
+    "sinon": "^7.2.2"
   }
 }
