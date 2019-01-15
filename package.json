@@ -4,7 +4,9 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "export NODE_ENV=test && mocha ./test/* --exit",
+    "test": "export NODE_ENV=test && npm run db:reset && npm run db:migrate && mocha ./test/* --exit",
+    "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "prod-start": "node index.js",
@@ -18,6 +20,7 @@
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.2.0",
@@ -26,7 +29,7 @@
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.4.0",
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
     "morgan": "^1.9.1",
@@ -36,6 +39,7 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.87.0",
     "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
     "slug": "^0.9.3",
     "swagger-jsdoc": "^3.2.6",
     "swagger-ui-express": "^4.0.2",
@@ -56,6 +60,7 @@
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
     "nyc": "^13.1.0",
+    "responselike": "^1.0.2",
     "sequelize-test-helpers": "^1.0.7",
     "sinon": "^7.2.2"
   }
