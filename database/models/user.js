@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        notNull: true,
         isEmail: true,
       },
       unique: {
@@ -18,9 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         min: 8,
-        notNull: true,
       },
     },
     firstname: {
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       validate: {
-        isBOOLEAN: {
+        isBoolean: {
           args: [true, false],
         }
       }

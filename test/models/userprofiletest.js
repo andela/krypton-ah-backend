@@ -25,7 +25,7 @@ describe('User Model', () => {
     });
 
     it('The User profile model should have the property "userId"', () => {
-      expect(user).to.have.property('userId');
+      expect(user).to.have.property('UserId');
     });
 
     it('The User profile model should have the property "country"', () => {

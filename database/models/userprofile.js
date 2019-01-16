@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     bio: {
       type: DataTypes.STRING,
     },
-    userId: {
-      type: DataTypes.uuid,
+    UserId: {
+      type: DataTypes.UUID,
     },
     username: {
       type: DataTypes.STRING,
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       validate: {
-        isBOOLEAN: {
+        isBoolean: {
           args: [true, false],
           msg: 'email notification can only be "true" or "false"'
         }
