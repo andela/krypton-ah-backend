@@ -94,12 +94,12 @@ class SocialMediaController {
    * @param {object} res - HTTP response object
    * @returns {object} - object containing a generated token
    */
-  static getUserToken(req, res) {
+  static async getUserToken(req, res) {
     const { id, email, created } = req.user;
     const time = {
       expiresIn: '24h'
     };
-    const token = generateUserToken({ id, email }, time);
+    const token = await generateUserToken({ id, email }, time);
     const userDetails = Object.assign({}, req.user, {
       msg: created ? 'Welcome!' : 'Welcome back',
       token
