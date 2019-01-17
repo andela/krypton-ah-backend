@@ -22,13 +22,13 @@ class SocialMediaController {
    *
    * @memberof SocialMediaController
    */
-  static socailLoginsCallback(accessToken, refreshToken, profile, done) {
+  static async socailLoginsCallback(accessToken, refreshToken, profile, done) {
     const {
       displayName,
       emails,
     } = profile;
     const name = displayName.split(' ');
-    User.findOrCreate({
+    await User.findOrCreate({
       where: {
         $or: [{ email: emails[0].value }]
       },
@@ -63,9 +63,9 @@ class SocialMediaController {
    *
    * @memberof SocialMediaController
    */
-  static linkedInCallback(accessToken, refreshToken, profile, done) {
+  static async linkedInCallback(accessToken, refreshToken, profile, done) {
     const { name, emails } = profile;
-    User.findOrCreate({
+    await User.findOrCreate({
       where: {
         $or: [{ email: emails[0].value }]
       },
