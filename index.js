@@ -3,10 +3,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   cors = require('cors'),
-  passport = require('passport'),
   errorhandler = require('errorhandler'),
   isProduction = process.env.NODE_ENV === 'production';
-const socialRouter = require('./routes/api/socialMediaRoute');
 
 // Load environment variables
 require('dotenv').config();
@@ -54,10 +52,6 @@ app.use(require('./routes'));
  *          type: string
  *          default: "Test Successful"
  */
-app.use(passport.initialize());
-
-// Social Route
-app.use('/api/v1/', socialRouter);
 
 app.get('/', (req, res) => res.status(200).send('Test Successful'));
 

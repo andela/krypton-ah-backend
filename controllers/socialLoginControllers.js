@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 const generator = require('generate-password'),
-  generateUserToken = require('../lib/utils/UserVerification'),
+  generateUserToken = require('../lib/utils/generateToken'),
   model = require('../database/models');
 
 const { User } = model;
@@ -22,13 +22,12 @@ class SocialMediaController {
    *
    * @memberof SocialMediaController
    */
-  static facebookCallback(accessToken, refreshToken, profile, done) {
+  static socailLoginsCallback(accessToken, refreshToken, profile, done) {
     const {
       displayName,
       emails,
     } = profile;
     const name = displayName.split(' ');
-
     User.findOrCreate({
       where: {
         $or: [{ email: emails[0].value }]
@@ -47,11 +46,9 @@ class SocialMediaController {
         lastname: name[1],
         isverified: true
       }
-    }).spread((user, created) => {
-      const userDetails = user.get({ plain: true });
-      userDetails.newUserCreated = created;
-      return done(null, profile);
-    });
+    }).spread((user, created) => (
+      done(null, { ...user.dataValues, created })
+    ));
   }
 
   /**
@@ -59,58 +56,14 @@ class SocialMediaController {
    *
    * @param {object} accessToken
    * @param {object} refreshToken
-   * @param {object} profile - contains profile details gotten from facebook
+   * @param {object} profile - contains profile details gotten from linkedin
    * @param {*} done - callback which return the user object
    *
    * @returns {*} - passes execution to next middleware on route path
    *
    * @memberof SocialMediaController
    */
-  static googleCallback(accessToken, refreshToken, profile, done) {
-    const {
-      displayName,
-      emails,
-    } = profile;
-    const name = displayName.split(' ');
-
-    User.findOrCreate({
-      where: {
-        $or: [{ email: emails[0].value }]
-      },
-      defaults: {
-        email: emails[0].value,
-        password: generator.generate({
-          length: 15,
-          uppercase: true,
-          numbers: true,
-          symbols: true,
-          exclude: [''],
-          excludeSimilarCharacters: true
-        }),
-        firstname: name[0],
-        lastname: name[1],
-        isverified: true
-      }
-    }).spread((user, created) => {
-      const userDetails = user.get({ plain: true });
-      userDetails.newUserCreated = created;
-      return done(null, profile);
-    });
-  }
-
-  /**
-   * @static
-   *
-   * @param {object} accessToken
-   * @param {object} refreshToken
-   * @param {object} profile - contains profile details gotten from facebook
-   * @param {*} done - callback which return the user object
-   *
-   * @returns {*} - passes execution to next middleware on route path
-   *
-   * @memberof SocialMediaController
-   */
-  static linkedCallback(accessToken, refreshToken, profile, done) {
+  static linkedInCallback(accessToken, refreshToken, profile, done) {
     const { name, emails } = profile;
     User.findOrCreate({
       where: {
@@ -130,11 +83,9 @@ class SocialMediaController {
         lastname: name.familyName,
         isverified: true
       }
-    }).spread((user, created) => {
-      const userDetails = user.get({ plain: true });
-      userDetails.newUserCreated = created;
-      return done(null, profile);
-    });
+    }).spread((user, created) => (
+      done(null, { ...user.dataValues, created })
+    ));
   }
 
   /**
@@ -144,41 +95,17 @@ class SocialMediaController {
    * @returns {object} - object containing a generated token
    */
   static getUserToken(req, res) {
-    const {
-      id, emails, displayName, photos, provider, name, newUserCreated
-    } = req.user;
-    // Declaraction
-    let avatar, username;
-    switch (provider) {
-      case 'facebook':
-      case 'google':
-        username = displayName.split(' ')[0];
-        avatar = photos[0].value;
-        break;
-      case 'linkedin':
-        username = name.givenName;
-        avatar = (photos === []) ? '' : photos;
-        break;
-      default:
-        break;
-    }
-    const email = emails[0].value;
-    const payload = { id, email };
-    const time = {};
-    time.expiresIn = '360h';
-    const token = generateUserToken(payload, time);
-
-    if (newUserCreated) {
-      return res.status(201).json({
-        message: 'Signed up successfully',
-        token
-      });
-    }
-    return res.status(200).json({
-      message: `Welcome back ${username}`,
-      avatar,
+    const { id, email, created } = req.user;
+    const time = {
+      expiresIn: '24h'
+    };
+    const token = generateUserToken({ id, email }, time);
+    const userDetails = Object.assign({}, req.user, {
+      msg: created ? 'Welcome!' : 'Welcome back',
       token
     });
+    const status = created ? 201 : 200;
+    res.status(status).send(userDetails);
   }
 }
 
