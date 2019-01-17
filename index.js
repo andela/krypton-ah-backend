@@ -3,6 +3,7 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   cors = require('cors'),
+  validator = require('express-validator'),
   errorhandler = require('errorhandler'),
   isProduction = process.env.NODE_ENV === 'production';
 
@@ -19,6 +20,7 @@ app.use(require('morgan')('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(validator());
 
 app.use(require('method-override')());
 

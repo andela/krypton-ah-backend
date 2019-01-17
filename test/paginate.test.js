@@ -5,7 +5,7 @@ const paginate = require('../lib/utils/pagination/paginationHelper');
 
 describe('Unit test paginate', () => {
   it('should return default paginate value', async () => {
-    const res = paginate(query.defaultquery);
+    const res = paginate(query);
     expect(res.limit).to.be.equal(LIMIT);
     expect(res.offset).to.be.equal(OFFSET - 1);
   });
@@ -15,7 +15,6 @@ describe('Unit test paginate', () => {
     expect(res.limit).to.be.equal(query.validquery.limit);
     expect(res.offset).to.be.equal(query.validquery.limit * (query.validquery.offset - 1));
   });
-
 
   it('should return current page as limit and number of entries to be skipped as offset', async () => {
     const res = paginate(query.defaultquery);
