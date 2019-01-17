@@ -1,6 +1,6 @@
-const FROM = 'no-reply@authorshaven.com',
-  SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
-  BAD_REQUEST_CODE = 400,
+const mocks = require('./mocks');
+
+const BAD_REQUEST_CODE = 400,
   UNAUTHORIZED_CODE = 401,
   OK_CODE = 200,
   RESOURCE_CREATED_CODE = 201,
@@ -11,6 +11,8 @@ const FROM = 'no-reply@authorshaven.com',
   SUCCESSFUL = true,
   LIMIT = 15,
   OFFSET = 1,
+  SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
+  FROM = 'no-reply@authorshaven.com',
   NO_TOKEN_PROVIDED = 'No token provided',
   JWT_EXPIRED = 'The token provided has expired',
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
@@ -25,7 +27,10 @@ const FROM = 'no-reply@authorshaven.com',
   INVALID_EMAIL = 'email must be valid',
   EMAIL_ALREADY_EXIST = 'email already exist',
   USER_RETRIEVAL_SUCCESS_MESSAGE = 'users retrieved succesfully',
-  SERVER_RETRIEVAL_MESSAGE = 'There as been an error somewhere,please try again!';
+  SERVER_RETRIEVAL_MESSAGE = 'There as been an error somewhere,please try again!',
+  SERVER_ERROR = 'Ooops! Something went wrong, kindly try again',
+  ID_REQUIRED = 'userId is required';
+
 
 module.exports = {
   FROM,
@@ -55,5 +60,8 @@ module.exports = {
   INVALID_EMAIL,
   EMAIL_ALREADY_EXIST,
   USER_RETRIEVAL_SUCCESS_MESSAGE,
-  SERVER_RETRIEVAL_MESSAGE
+  SERVER_RETRIEVAL_MESSAGE,
+  SERVER_ERROR,
+  ID_REQUIRED,
+  ...mocks
 };

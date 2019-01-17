@@ -9,6 +9,11 @@ const mockData = require('../mockData');
 let id;
 let res;
 describe('Unit test usermodel allusers', () => {
+  after('Delete User', async () => {
+    user.destroy({
+      where: {}
+    });
+  });
   before(async () => {
     res = await user.create(mockData.userdata).then(async (newUser) => {
       await userprofile.create(mockData.userprofile);
@@ -21,7 +26,6 @@ describe('Unit test usermodel allusers', () => {
     const res = await User.listAllUsers();
     expect(res).to.be.a('array');
     expect(res[0]).to.be.a('object');
-    expect(res.length).to.be.equals(8);
     expect(res[0].dataValues).contains.a.property('userprofile');
     expect(res[0].dataValues.userprofile.length).is.not.equals('0');
     expect(res[0].dataValues.userprofile).contains.a.property('UserId');
@@ -35,7 +39,7 @@ describe('Unit test usermodel allusers', () => {
   describe('Unit test usermodel create function', () => {
     it('should create a new user', async () => {
       res = await User.create(
-        mockData.userdata.email,
+        'ttt@w.com',
         mockData.userdata.password,
         mockData.userdata.firstname,
         mockData.userdata.lastname

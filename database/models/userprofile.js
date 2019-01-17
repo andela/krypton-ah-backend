@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       username: {
         type: DataTypes.STRING,
         validate: {
-          is: ['^[A-Za-z]+[0-9]+', 'i']
+          is: ['^[A-Za-z0-9]*', 'i']
         },
         unique: {
           msg: 'That username is already taken'
@@ -49,6 +49,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  userprofile.associate = () => {};
+  userprofile.associate = (models) => {
+    userprofile.belongsTo(models.User, {
+      foreignKey: 'UserId',
+      as: 'userprofile',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+  };
   return userprofile;
 };
