@@ -52,7 +52,6 @@ app.use(require('./routes'));
  *          type: string
  *          default: "Test Successful"
  */
-
 app.get('/', (req, res) => res.status(200).send('Test Successful'));
 
 // / catch 404 and forward to error handler

@@ -16,7 +16,10 @@ const FROM = 'no-reply@authorshaven.com',
   SERVER_ERROR = 'Ooops! Something went wrong, kindly try again',
   ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account',
   ALREADY_ACTIVATED_ERROR = 'Account is already activated',
-  ACCOUNT_ACTIVATED = 'Your Account is Now Activated!';
+  ACCOUNT_ACTIVATED = 'Your Account is Now Activated!',
+  INVALID_USER = 'Invalid user',
+  WELCOME_NEW_USER = 'Welcome!',
+  WELCOME_EXISTING_USER = 'Welcome back';
 
 module.exports = {
   FROM,
@@ -38,4 +41,7 @@ module.exports = {
   ACCOUNT_CREATED,
   ACCOUNT_ACTIVATED,
   ALREADY_ACTIVATED_ERROR,
+  INVALID_USER,
+  WELCOME_NEW_USER,
+  WELCOME_EXISTING_USER
 };

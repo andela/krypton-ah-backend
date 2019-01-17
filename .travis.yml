@@ -5,6 +5,6 @@ install: npm install
 services:
   - postgresql
 env:
-  - NODE_ENV=test DATABASE_DIALECT=postgres
+  - NODE_ENV=test DATABASE_DIALECT='postgres' JWT_SECRET_KEY='p@$$W0rd' FACEBOOK_APP_ID=441096529762388 FACEBOOK_APP_SECRET=a71271aab7cdf2152da30e5225941af2 FACEBOOK_CALLBACK_URL='http://localhost:3000/api/v1/auth/facebook/callback' GOOGLE_CLIENT_ID=616688532144-l0q33pc0pqk4i2e2s8be0f8cneolmo48.apps.googleusercontent.com GOOGLE_CLIENT_SECRET=2aHJ-7BzjojBh-DEe6Nti4m8 GOOGLE_CALLBACK_URL='http://localhost:3000/api/v1/auth/google/callback' LINKEDIN_KEY=86tkgus9r37c7x LINKEDIN_SECRET=wxeMoiDz5B4emVmf LINKEDIN_CALLBACK_URL='http://localhost:3000/api/v1/auth/linkedin/callback' TWITTER_KEY=JqIc0lGdLNzza7ahF8JtbFbFP TWITTER_SECRET=tDyPBtz65tNtu5e8I79iJ8PyD2otx4YS863MPRqHcP5vm8YCOM TWITTER_CALLBACK_URL='http://localhost:3000/api/v1/auth/twitter/callback'
 script: npm test
 after_success: npm run coverage

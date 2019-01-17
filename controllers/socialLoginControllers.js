@@ -1,9 +1,13 @@
-/* eslint-disable prefer-destructuring */
-const generator = require('generate-password'),
-  generateUserToken = require('../lib/utils/generateToken'),
-  model = require('../database/models');
-
-const { User } = model;
+const generateUserToken = require('../lib/utils/generateToken'),
+  User = require('../lib/modelManagers/usermodel'),
+  {
+    OK_CODE,
+    CREATED_CODE,
+    BAD_REQUEST_CODE,
+    INVALID_USER,
+    WELCOME_EXISTING_USER,
+    WELCOME_NEW_USER
+  } = require('../constants/index');
 
 /**
  * @description Social Media Authentication
@@ -28,64 +32,9 @@ class SocialMediaController {
       emails,
     } = profile;
     const name = displayName.split(' ');
-    await User.findOrCreate({
-      where: {
-        $or: [{ email: emails[0].value }]
-      },
-      defaults: {
-        email: emails[0].value,
-        password: generator.generate({
-          length: 15,
-          uppercase: true,
-          numbers: true,
-          symbols: true,
-          exclude: [''],
-          excludeSimilarCharacters: true
-        }),
-        firstname: name[0],
-        lastname: name[1],
-        isverified: true
-      }
-    }).spread((user, created) => (
-      done(null, { ...user.dataValues, created })
-    ));
-  }
 
-  /**
-   * @static
-   *
-   * @param {object} accessToken
-   * @param {object} refreshToken
-   * @param {object} profile - contains profile details gotten from linkedin
-   * @param {*} done - callback which return the user object
-   *
-   * @returns {*} - passes execution to next middleware on route path
-   *
-   * @memberof SocialMediaController
-   */
-  static async linkedInCallback(accessToken, refreshToken, profile, done) {
-    const { name, emails } = profile;
-    await User.findOrCreate({
-      where: {
-        $or: [{ email: emails[0].value }]
-      },
-      defaults: {
-        email: emails[0].value,
-        password: generator.generate({
-          length: 15,
-          uppercase: true,
-          numbers: true,
-          symbols: true,
-          exclude: [''],
-          excludeSimilarCharacters: true
-        }),
-        firstname: name.givenName,
-        lastname: name.familyName,
-        isverified: true
-      }
-    }).spread((user, created) => (
-      done(null, { ...user.dataValues, created })
-    ));
+    const query = await User.findOrCreateUser(emails, name);
+    done(null, { user: query[0].dataValues, created: query[1] });
   }
 
   /**
@@ -95,16 +44,19 @@ class SocialMediaController {
    * @returns {object} - object containing a generated token
    */
   static async getUserToken(req, res) {
+    if (!req.user) {
+      return res.status(BAD_REQUEST_CODE).send(INVALID_USER);
+    }
     const { id, email, created } = req.user;
     const time = {
       expiresIn: '24h'
     };
     const token = await generateUserToken({ id, email }, time);
     const userDetails = Object.assign({}, req.user, {
-      msg: created ? 'Welcome!' : 'Welcome back',
+      msg: created ? WELCOME_NEW_USER : WELCOME_EXISTING_USER,
       token
     });
-    const status = created ? 201 : 200;
+    const status = created ? CREATED_CODE : OK_CODE;
     res.status(status).send(userDetails);
   }
 }
