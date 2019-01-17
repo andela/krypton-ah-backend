@@ -4,7 +4,9 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "export NODE_ENV=test && mocha ./test/* --exit",
+    "test": "export NODE_ENV=test && npm run db:reset && npm run db:migrate && mocha ./test/* --exit",
+    "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "prod-start": "node index.js",
@@ -36,6 +38,7 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.87.0",
     "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
     "slug": "^0.9.3",
     "swagger-jsdoc": "^3.2.6",
     "swagger-ui-express": "^4.0.2",
