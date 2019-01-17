@@ -10,7 +10,11 @@ const BAD_REQUEST_CODE = 400,
   NO_TOKEN_PROVIDED = 'No token provided',
   JWT_EXPIRED = 'The token provided has expired',
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
-  TOKEN_TIMESPAN = '1d';
+  TOKEN_TIMESPAN = '1d',
+  LIMIT = 15,
+  OFFSET = 1,
+  userRetrievalSuccessMessage = 'users retrieved succesfully',
+  serverFailureMessage = 'There as been an error somewhere,please try again!';
 
 module.exports = {
   BAD_REQUEST_CODE,
@@ -25,5 +29,9 @@ module.exports = {
   TOKEN_TIMESPAN,
   NO_TOKEN_PROVIDED,
   JWT_MALFORMED,
-  JWT_EXPIRED
+  JWT_EXPIRED,
+  LIMIT,
+  OFFSET,
+  userRetrievalSuccessMessage,
+  serverFailureMessage,
 };
