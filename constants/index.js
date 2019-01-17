@@ -41,7 +41,16 @@ const BAD_REQUEST_CODE = 400,
   UUID = 'ad94832a-19cf-11e9-ab14-d663bd873d45',
   RESET_LINK_SUBJECT = 'Reset Password - Authors Haven',
   BAD_TOKEN = '84ruyhf9q38uyg9',
-  ID_REQUIRED = 'userId is required';
+  ID_REQUIRED = 'userId is required',
+  CREATE_USER_PROFILE_SUCCESS_MESSAGE = 'User profile created successfully',
+  UPDATE_USER_PROFILE_SUCCESS_MESSAGE = 'User profile updated successfully',
+  CREATE_USER_PROFILE_ERROR_MESSAGE = 'Error creating user profile',
+  UPDATE_USER_PROFILE_ERROR_MESSAGE = 'Error updating user profile',
+  VALIDATE_GENDER_ERROR = 'must either be a male or female',
+  VALIDATE_EMAIL_NOTIFICATION_ERROR = 'must be true or false',
+  VALIDATE_USERNAME_ERROR = 'must be letters with min of 2 characters',
+  VALIDATE_URL_ERROR = 'must be valid',
+  VALIDATE_PHONENUMBER_ERROR = 'must be a valid phone number that starts with \'+\'';
 
 module.exports = {
   FROM,
@@ -86,5 +95,14 @@ module.exports = {
   RESET_LINK_SUBJECT,
   BAD_TOKEN,
   ID_REQUIRED,
-  ...mocks
+  ...mocks,
+  CREATE_USER_PROFILE_SUCCESS_MESSAGE,
+  UPDATE_USER_PROFILE_SUCCESS_MESSAGE,
+  CREATE_USER_PROFILE_ERROR_MESSAGE,
+  UPDATE_USER_PROFILE_ERROR_MESSAGE,
+  VALIDATE_EMAIL_NOTIFICATION_ERROR,
+  VALIDATE_GENDER_ERROR,
+  VALIDATE_PHONENUMBER_ERROR,
+  VALIDATE_URL_ERROR,
+  VALIDATE_USERNAME_ERROR
 };
