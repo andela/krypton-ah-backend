@@ -12,10 +12,15 @@ socialRouter.use(passport.initialize());
  * Facebook will redirect the user back to the application at
  * /facebook/callback
  */
-socialRouter.get('/facebook', passport.authenticate('facebook',
-  {
-    scope: ['email']
-  }));
+socialRouter.get(
+  '/facebook',
+  passport.authenticate(
+    'facebook',
+    {
+      scope: ['email']
+    }
+  )
+);
 
 /**
  * Facebook will redirect the user to this URL after approval.  Finish the
@@ -23,9 +28,11 @@ socialRouter.get('/facebook', passport.authenticate('facebook',
  * access was granted, the user will be logged in.  Otherwise,
  * authentication has failed.
  */
-socialRouter.get('/facebook/callback',
-  passport.authenticate('facebook'),
-  SocialMediaController.getUserToken);
+socialRouter.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', { session: false }),
+  SocialMediaController.getUserToken
+);
 
 /**
  * GET /google
@@ -34,27 +41,49 @@ socialRouter.get('/facebook/callback',
  * redirecting the user to google.com.  After authorization, Google
  * will redirect the user back to this application at /google/callback
  */
-socialRouter.get('/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
+socialRouter.get(
+  '/google',
+  passport.authenticate(
+    'google',
+    {
+      scope: ['profile', 'email']
+    }
+  )
+);
 
-socialRouter.get('/google/callback',
-  passport.authenticate('google'),
-  SocialMediaController.getUserToken);
+socialRouter.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  SocialMediaController.getUserToken
+);
 
-socialRouter.get('/twitter',
-  passport.authenticate('twitter', { scope: ['include_email: true'] }));
+socialRouter.get(
+  '/twitter',
+  passport.authenticate(
+    'twitter',
+    {
+      scope: ['include_email: true']
+    }
+  )
+);
 
-socialRouter.get('/twitter/callback',
-  passport.authenticate('twitter'),
-  SocialMediaController.getUserToken);
+socialRouter.get(
+  '/twitter/callback',
+  passport.authenticate('twitter', { session: false }),
+  SocialMediaController.getUserToken
+);
 
 // GET user information using linkedin
-socialRouter.get('/linkedin',
-  passport.authenticate('linkedin', { scope: ['r_basicprofile', 'r_emailaddress'] }));
+socialRouter.get(
+  '/linkedin',
+  passport.authenticate('linkedin')
+);
 
-socialRouter.get('/linkedin/callback',
-  passport.authenticate('linkedin'),
-  SocialMediaController.getUserToken);
+socialRouter.get(
+  '/linkedin/callback',
+  passport.authenticate('linkedin', { session: false }),
+  SocialMediaController.getUserToken
+);
 
 
 module.exports = socialRouter;

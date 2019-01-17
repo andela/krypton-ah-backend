@@ -7,7 +7,6 @@ const SocialController = require('../controllers/socialLoginControllers');
 
 require('dotenv/config');
 
-// Facebook Login
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -15,26 +14,25 @@ passport.use(new FacebookStrategy({
   profileFields: ['displayName', 'photos', 'emails']
 }, SocialController.socailLoginsCallback));
 
-// Google Login
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL
+  callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  proxy: true
 }, SocialController.socailLoginsCallback));
 
-// LinkedIn
 passport.use(new LinkedInStrategy({
   clientID: process.env.LINKEDIN_KEY,
   clientSecret: process.env.LINKEDIN_SECRET,
   callbackURL: process.env.LINKEDIN_CALLBACK_URL,
-}, SocialController.linkedInCallback));
+  scope: ['r_basicprofile', 'r_emailaddress'],
+}, SocialController.socailLoginsCallback));
 
-// Twitter
 passport.use(new TwitterStrategy({
   consumerKey: process.env.TWITTER_KEY,
   consumerSecret: process.env.TWITTER_SECRET,
   callbackURL: process.env.TWITTER_CALLBACK_URL,
-  includeEmail: true,
+  includeEmail: true
 }, SocialController.socailLoginsCallback));
 
 passport.serializeUser((user, done) => {
