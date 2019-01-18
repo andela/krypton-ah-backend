@@ -1,4 +1,11 @@
-const jwtUtil = require('../lib/utils/jwtUtil');
+const jwtUtil = require('../lib/utils/jwtUtil'),
+  {
+    BAD_REQUEST_CODE,
+    UNSUCCESSFUL,
+    NO_TOKEN_PROVIDED,
+    JWT_EXPIRED,
+    JWT_MALFORMED
+  } = require('../constants/index');
 /**
  * Token validator middleware.
  * @param {object} req - The request sent by user.
@@ -8,20 +15,30 @@ const jwtUtil = require('../lib/utils/jwtUtil');
  */
 const jwtValidator = (req, res, next) => {
   const token = req.body.token || req.query.token || req.headers.token || req.params;
+
   if (token) {
     try {
       req.decodedToken = jwtUtil.verifyToken(token);
       return next();
     } catch (err) {
-      return res.status(400).json({
-        success: false,
-        message: err.message
-      });
+      switch (err.name) {
+        case 'TokenExpiredError':
+          return res.status(BAD_REQUEST_CODE).json({
+            success: UNSUCCESSFUL,
+            message: JWT_EXPIRED
+          });
+
+        default:
+          return res.status(BAD_REQUEST_CODE).json({
+            success: UNSUCCESSFUL,
+            message: JWT_MALFORMED
+          });
+      }
     }
   }
-  return res.status(400).json({
-    success: false,
-    message: 'No token provided'
+  return res.status(BAD_REQUEST_CODE).json({
+    success: UNSUCCESSFUL,
+    message: NO_TOKEN_PROVIDED
   });
 };
 module.exports = jwtValidator;

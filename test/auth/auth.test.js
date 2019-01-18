@@ -1,98 +1,117 @@
 const chai = require('chai'),
-  { expect } = chai;
-const chaiHttp = require('chai-http');
-const userModelManager = require('../../lib/modelManagers/usermodel');
-const authController = require('../../controllers/AuthController');
-const server = require('../../index');
+  { expect } = chai,
+  chaiHttp = require('chai-http'),
+  userModelManager = require('../../lib/modelManagers/usermodel'),
+  authController = require('../../controllers/AuthController'),
+  server = require('../../index'),
+  req = {
+    body: {
+      email: 'testmail@gmail.com',
+      password: '111111',
+      firstname: 'testfirstname',
+      lastname: 'testlastname'
+    }
+  },
+  correctDetails = {
+    email: 'testmail@gmail.com',
+    password: '111111'
+  },
+  incorrectDetails = {
+    email: 'testmail@gmail.com',
+    password: '11111'
+  },
+  incorrectMail = {
+    email: 'tesmail@gmail.com',
+    password: '11111'
+  },
+  next = () => {},
+  res = () => {};
 
 chai.use(chaiHttp);
 chai.should();
-
-const req = {
-  body: {
-    email: 'testmail@gmail.com',
-    password: '111111',
-    firstname: 'testfirstname',
-    lastname: 'testlastname'
-  }
-};
-const correctDetails = {
-  email: 'testmail@gmail.com',
-  password: '111111'
-};
-const incorrectDetails = {
-  email: 'testmail@gmail.com',
-  password: '11111'
-};
-const incorrectMail = {
-  email: 'tesmail@gmail.com',
-  password: '11111'
-};
-
-const next = () => {};
-const res = () => {};
-
 /*
  Test to make sure User is created and token is generated
 */
 
 describe('Test for adding a new user and generate token', () => {
-  describe('Test with correct information', () => {
-    before('Should add a new user to the database', async () => {
-      await authController.signUp(req, res, next);
-    });
-    it('Should check if added user exist', async () => {
-      const newUser = await userModelManager.findUser(req.body.email);
-      expect(newUser).to.be.an('object');
-      expect(newUser).to.have.property('id');
-      expect(newUser).to.have.property('isverified');
-    });
-
-    it('Should check if a token has been generated', () => {
-      expect(req.jwtToken).to.be.a('string');
-    });
+  before(async () => {
+    await authController.signUp(req, res, next);
+  });
+  it('should check if user has been successfully added', async () => {
+    const newUser = await userModelManager.findUser('email', req.body.email);
+    expect(newUser).to.be.an('object');
+    expect(newUser).to.have.property('id');
+    expect(newUser).to.have.property('isverified');
   });
 
-  describe('Granting access and token generation', () => {
-    before(async () => {
-      await authController.signUp(req, res, next);
-    });
+  it('should check if a token has been generated', () => {
+    expect(req.jwtToken).to.be.a('string');
+  });
+});
 
-    it('Should tell a user to verify mail', async () => {
-      const res = await chai
-        .request(server)
-        .post('/api/v1/users/signin/')
-        .send(correctDetails);
-      expect(res).to.have.status(400);
-      res.body.success.should.equal(false);
-      res.body.message.should.equal('Please verify account before login');
-    });
-    it('Should send incorrect cridentials message', async () => {
-      const res = await chai
-        .request(server)
-        .post('/api/v1/users/signin/')
-        .send(incorrectDetails);
-      expect(res).to.have.status(400);
-      res.body.success.should.equal(false);
-      res.body.message.should.equal('Incorrect Credentials');
-    });
-    it('Should send user not found message', async () => {
-      const res = await chai
-        .request(server)
-        .post('/api/v1/users/signin/')
-        .send(incorrectMail);
-      expect(res).to.have.status(404);
-      res.body.success.should.equal(false);
-      res.body.message.should.equal('Email does not match our record');
-    });
-    // it('Should login a verified user', async () => {
-    //   const res = await chai
-    //     .request(server)
-    //     .post('/api/v1/auth/signin/')
-    //     .send(verifiedUser);
-    //   expect(res).to.have.status(404);
-    //   res.body.success.should.equal(false);
-    //   res.body.message.should.equal('User not found');
-    // });
+describe('Test for errors during the login process', () => {
+  before(async () => {
+    await authController.signUp(req, res, next);
+  });
+
+  it('Should tell a user to verify mail', async () => {
+    const res = await chai
+      .request(server)
+      .post('/api/v1/users/signin/')
+      .send(correctDetails);
+    expect(res).to.have.status(400);
+    res.body.success.should.equal(false);
+    res.body.message.should.equal('Please verify account before login');
+  });
+  it('Should send incorrect cridentials message', async () => {
+    const res = await chai
+      .request(server)
+      .post('/api/v1/users/signin/')
+      .send(incorrectDetails);
+    expect(res).to.have.status(400);
+    res.body.success.should.equal(false);
+    res.body.message.should.equal('Incorrect Credentials');
+  });
+  it('Should send user not found message', async () => {
+    const res = await chai
+      .request(server)
+      .post('/api/v1/users/signin/')
+      .send(incorrectMail);
+    expect(res).to.have.status(404);
+    res.body.success.should.equal(false);
+    res.body.message.should.equal('Email does not match our record');
+  });
+});
+
+describe('Test for a successful login and token generation', () => {
+  const req = {
+    body: {
+      email: 'ver@gmail.com',
+      password: '111111',
+      firstname: 'verfirstname',
+      lastname: 'verlastname'
+    }
+  };
+  const verifiedUser = {
+    email: 'ver@gmail.com',
+    password: '111111'
+  };
+  before(async () => {
+    await authController.signUp(req, res, next);
+    const newUser = await userModelManager.findUser('email', req.body.email);
+    const userId = newUser.dataValues.id;
+    await userModelManager.update(userId, { isverified: true });
+  });
+  it('Should succesfully login the user and generate a token', async () => {
+    const res = await chai
+      .request(server)
+      .post('/api/v1/users/signin/')
+      .send(verifiedUser);
+    expect(res).to.have.status(200);
+    res.body.success.should.equal(true);
+    res.body.message.should.equal('Login Successful');
+    res.body.should.have.property('loginToken');
+    res.body.loginToken.should.be.a('string');
+    res.body.loginToken.should.not.equal('null');
   });
 });
