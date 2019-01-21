@@ -25,11 +25,6 @@ describe('Send Verification Email', () => {
     status() {},
     json() {}
   };
-  it('Should send verification mail to newly registered user', async () => {
-    sinon.stub(res, 'status').returnsThis();
-    await sendVerificationMail(req, res);
-    expect(res.status).to.have.been.calledWith(RESOURCE_CREATED_CODE);
-  });
 
   it('should not send a verification mail when email is not provided', async () => {
     sinon.stub(res, 'status').returnsThis();

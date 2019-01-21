@@ -30,7 +30,7 @@ module.exports = {
       type: Sequelize.STRING
     },
     phonenumber: {
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     gender: {
       type: Sequelize.STRING

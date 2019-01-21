@@ -13,13 +13,10 @@ const FROM = 'no-reply@authorshaven.com',
   JWT_EXPIRED = 'The token provided has expired',
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
   TOKEN_TIMESPAN = '1d',
-  SERVER_ERROR = 'Ooops! Something went wrong, kindly try again',
-  ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account',
-  ALREADY_ACTIVATED_ERROR = 'Account is already activated',
-  ACCOUNT_ACTIVATED = 'Your Account is Now Activated!',
-  INVALID_USER = 'Invalid user',
-  WELCOME_NEW_USER = 'Welcome!',
-  WELCOME_EXISTING_USER = 'Welcome back';
+  LIMIT = 15,
+  OFFSET = 1,
+  USER_RETRIEVAL_SUCCESS_MESSAGE = 'users retrieved succesfully',
+  SERVER_RETRIEVAL_MESSAGE = 'There as been an error somewhere,please try again!';
 
 module.exports = {
   FROM,
@@ -37,11 +34,8 @@ module.exports = {
   NO_TOKEN_PROVIDED,
   JWT_MALFORMED,
   JWT_EXPIRED,
-  SERVER_ERROR,
-  ACCOUNT_CREATED,
-  ACCOUNT_ACTIVATED,
-  ALREADY_ACTIVATED_ERROR,
-  INVALID_USER,
-  WELCOME_NEW_USER,
-  WELCOME_EXISTING_USER
+  LIMIT,
+  OFFSET,
+  USER_RETRIEVAL_SUCCESS_MESSAGE,
+  SERVER_RETRIEVAL_MESSAGE,
 };
