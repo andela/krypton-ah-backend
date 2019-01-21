@@ -1,4 +1,6 @@
-const BAD_REQUEST_CODE = 400,
+const FROM = 'no-reply@authorshaven.com',
+  SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
+  BAD_REQUEST_CODE = 400,
   UNAUTHORIZED_CODE = 401,
   OK_CODE = 200,
   RESOURCE_CREATED_CODE = 201,
@@ -10,9 +12,15 @@ const BAD_REQUEST_CODE = 400,
   NO_TOKEN_PROVIDED = 'No token provided',
   JWT_EXPIRED = 'The token provided has expired',
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
-  TOKEN_TIMESPAN = '1d';
+  TOKEN_TIMESPAN = '1d',
+  SERVER_ERROR = 'Ooops! Something went wrong, kindly try again',
+  ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account',
+  ALREADY_ACTIVATED_ERROR = 'Account is already activated',
+  ACCOUNT_ACTIVATED = 'Your Account is Now Activated!';
 
 module.exports = {
+  FROM,
+  SUBJECT,
   BAD_REQUEST_CODE,
   UNAUTHORIZED_CODE,
   OK_CODE,
@@ -25,5 +33,9 @@ module.exports = {
   TOKEN_TIMESPAN,
   NO_TOKEN_PROVIDED,
   JWT_MALFORMED,
-  JWT_EXPIRED
+  JWT_EXPIRED,
+  SERVER_ERROR,
+  ACCOUNT_CREATED,
+  ACCOUNT_ACTIVATED,
+  ALREADY_ACTIVATED_ERROR,
 };
