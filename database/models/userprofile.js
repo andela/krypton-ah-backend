@@ -18,16 +18,16 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'That username is already taken'
         }
       },
+      phonenumber: {
+        type: DataTypes.STRING,
+        validate: {
+          is: ['^[+]*[0-9]{0,}', 'i'],
+        }
+      },
       country: {
         type: DataTypes.STRING,
         validate: {
           is: ['^[a-z]+$', 'i']
-        }
-      },
-      phonenumber: {
-        type: DataTypes.INTEGER,
-        validate: {
-          is: ['^[+]*[0-9]{0,}', 'i']
         }
       },
       gender: {
