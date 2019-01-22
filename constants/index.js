@@ -40,7 +40,7 @@ const BAD_REQUEST_CODE = 400,
   RESET_LINK_URL = `${process.env.APP_BASE_URL}/api/v1/users/resetpassword/`,
   UUID = 'ad94832a-19cf-11e9-ab14-d663bd873d45',
   RESET_LINK_SUBJECT = 'Reset Password - Authors Haven',
-  BAD_TOKEN = '84ruyhf9q38uyg9';
+  BAD_TOKEN = '84ruyhf9q38uyg9',
   ID_REQUIRED = 'userId is required';
 
 module.exports = {
