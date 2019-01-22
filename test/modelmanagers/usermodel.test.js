@@ -5,6 +5,7 @@ const user = require('../../database/models').User;
 const { userprofile } = require('../../database/models');
 const UserController = require('../../controllers/Users/userController');
 const mockData = require('../mockData');
+const { USER_EMAIL } = require('../../constants');
 
 let id;
 let res;
@@ -53,6 +54,28 @@ describe('Unit test usermodel allusers', () => {
       expect(res.dataValues.isverified).to.equal(false);
     });
   });
+
+  describe('Get user details using parameters', () => {
+    it('should return null if value in parameter does not exist in the databse column', async () => {
+      const fakeEmail = mockData.fakeUserData.email;
+      const userDetails = await User.getUserDetails(USER_EMAIL, fakeEmail);
+
+      expect(userDetails).to.equal(null);
+    });
+
+    it('should return user details if value in parameter exist in the databse column', async () => {
+      const userEmail = mockData.userdata.email;
+      const userDetails = await User.getUserDetails(USER_EMAIL, userEmail);
+
+      expect(userDetails).to.be.an('object');
+      expect(userDetails).to.have.property('id');
+      expect(userDetails).to.have.property('email').equal(mockData.userdata.email);
+      expect(userDetails).to.have.property('firstname').equal(mockData.userdata.firstname);
+      expect(userDetails).to.have.property('lastname').equal(mockData.userdata.lastname);
+      expect(userDetails).to.have.property('password').equal(mockData.userdata.password);
+    });
+  });
+
   describe('Unit test usermodel update', () => {
     it('should update a specific users information', async () => {
       const res = await User.update(id, mockData.userdata);

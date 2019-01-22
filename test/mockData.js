@@ -49,6 +49,15 @@ const userdata3 = {
   isverified: faker.random.boolean(),
 };
 
+const fakeUserData = {
+  id: faker.random.uuid(),
+  email: 'jjk@hjh.com',
+  password: 'refre',
+  firstname: 'Gej',
+  lastname: 'yut',
+  isverified: faker.random.boolean(),
+};
+
 const userprofile = {
   UserId: userdata.id,
   avatar: faker.image.imageUrl(),
@@ -99,5 +108,6 @@ module.exports = {
   userprofile,
   userprofile2,
   userprofile3,
-  negativequery
+  negativequery,
+  fakeUserData
 };
