@@ -17,15 +17,15 @@ describe('Test Article Model', () => {
 
   context('Check the properties of the Articles Model', () => {
     it('The Articles model should have the property "Title"', () => {
-      expect(article).to.have.property('Title');
+      expect(article).to.have.property('title');
     });
 
     it('The Articles model should have the property "Description"', () => {
-      expect(article).to.have.property('Description');
+      expect(article).to.have.property('description');
     });
 
     it('The Articles model should have the property "Content"', () => {
-      expect(article).to.have.property('Content');
+      expect(article).to.have.property('content');
     });
 
     it('The Articles model should have the property "featured_ImageUrl"', () => {
@@ -37,7 +37,7 @@ describe('Test Article Model', () => {
     });
 
     it('The Articles model should have the property "Slug"', () => {
-      expect(article).to.have.property('Slug');
+      expect(article).to.have.property('slug');
     });
 
     it('The Articles model should have the property "readTime"', () => {
