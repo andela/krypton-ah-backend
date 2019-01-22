@@ -10,10 +10,12 @@ module.exports = {
       defaultValue: Sequelize.UUIDV4
     },
     title: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     description: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     content: {
       type: Sequelize.TEXT,
@@ -23,10 +25,11 @@ module.exports = {
       type: Sequelize.STRING
     },
     averageRating: {
-      type: Sequelize.FLOAT
+      type: Sequelize.FLOAT,
+      defaultValue: 0
     },
     readTime: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
     },
     slug: {
       type: Sequelize.STRING,
