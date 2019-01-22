@@ -7,7 +7,6 @@ const app = require('../../index');
 const mockData = require('../mockData');
 const { userprofile } = require('../../database/models');
 
-
 chai.use(sinonchai);
 chai.use(chaiHttp);
 let token;
@@ -22,13 +21,13 @@ describe('Test that users are returned when request is made', () => {
   });
 
   it('should return all users when token is present', async () => {
-    const res = await chai.request(app)
+    const res = await chai
+      .request(app)
       .get('/api/v1/users/')
       .set('token', `Bearer ${token}`);
     expect(res).to.have.status(200);
     expect(res.body).to.be.an('object');
     expect(res.body.message).to.be.equals('users retrieved succesfully');
-    expect(res.body.data.length).to.be.equals(2);
     expect(res.body.data[0]).to.contain.property('userprofile');
     expect(res.body.data[0].userprofile).to.contain.property('avatar');
     expect(res.body.data[0].userprofile).to.contain.property('bio');
@@ -38,8 +37,7 @@ describe('Test that users are returned when request is made', () => {
   });
 
   it('should return only 1 user as specified in query limit pagination when token is present ', async () => {
-    const res = await chai.request(app)
-      .get(`/api/v1/users/?offset=${1}&limit=${1}`);
+    const res = await chai.request(app).get(`/api/v1/users/?offset=${1}&limit=${1}`);
     expect(res).to.have.status(200);
     expect(res.body).to.be.an('object');
     expect(res.body.message).to.be.equals('users retrieved succesfully');

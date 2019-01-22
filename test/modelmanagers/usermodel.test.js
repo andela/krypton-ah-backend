@@ -21,7 +21,7 @@ describe('Unit test usermodel allusers', () => {
     const res = await User.listAllUsers();
     expect(res).to.be.a('array');
     expect(res[0]).to.be.a('object');
-    expect(res.length).to.be.equals(7);
+    expect(res.length).to.be.equals(8);
     expect(res[0].dataValues).contains.a.property('userprofile');
     expect(res[0].dataValues.userprofile.length).is.not.equals('0');
     expect(res[0].dataValues.userprofile).contains.a.property('UserId');
@@ -36,7 +36,9 @@ describe('Unit test usermodel allusers', () => {
     it('should create a new user', async () => {
       res = await User.create(
         mockData.userdata.email,
-        mockData.userdata.password, mockData.userdata.firstname, mockData.userdata.lastname
+        mockData.userdata.password,
+        mockData.userdata.firstname,
+        mockData.userdata.lastname
       );
       expect(res).to.be.an('object');
       expect(res.dataValues).to.have.property('id');
@@ -77,7 +79,7 @@ describe('Unit test usermodel allusers', () => {
 
   it('should display a custom error message incase of server error', async () => {
     const req = {
-      query: { }
+      query: {}
     };
     const res = {
       status() {},

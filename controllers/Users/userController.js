@@ -24,12 +24,12 @@ class UsersController {
       }
     } catch (error) {
       response.failureResponse(
-        res, constants.SERVER_RETRIEVAL_MESSAGE,
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
         constants.SERVER_ERROR_CODE
       );
     }
   }
 }
-
 
 module.exports = UsersController;
