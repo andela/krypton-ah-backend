@@ -45,13 +45,13 @@ describe('Test Article Model', () => {
     });
 
     it('The Articles model should have the property "ispublished"', () => {
-      expect(article).to.have.property('ispublished');
+      expect(article).to.have.property('isPublished');
     });
 
     context('Check the article Model associations', () => {
       before(() => {
         articles.associate({
-          User,
+          User
         });
       });
 

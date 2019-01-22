@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
-          min: 250,
+          min: 250
         }
       },
       featuredImageUrl: {
@@ -50,9 +50,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       readTime: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: 0
       },
-      ispublished: {
+      isPublished: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         validate: {
@@ -67,7 +67,10 @@ module.exports = (sequelize, DataTypes) => {
   Articles.associate = (models) => {
     Articles.belongsTo(models.User, {
       foreignKey: 'id',
-      as: 'authorId',
+      as: 'authorId'
+    });
+    Articles.hasMany(models.articlesComment, {
+      foreignKey: 'articleId'
     });
   };
   return Articles;
