@@ -5,7 +5,6 @@ const sinonChai = require('sinon-chai');
 const sgMail = require('@sendgrid/mail');
 const sendVerificationMail = require('../../lib/utils/emailService/emailVerification');
 const {
-  RESOURCE_CREATED_CODE,
   SERVER_ERROR_CODE,
 } = require('../../constants');
 
