@@ -84,7 +84,7 @@ module.exports = {
   RESET_LINK_URL,
   UUID,
   RESET_LINK_SUBJECT,
-  BAD_TOKEN
+  BAD_TOKEN,
   ID_REQUIRED,
   ...mocks
 };
