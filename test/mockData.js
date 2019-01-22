@@ -65,7 +65,7 @@ const userprofile = {
 const userprofile2 = {
   UserId: userdata2.id,
   avatar: faker.image.imageUrl(),
-  username: 'name1',
+  username: 'name2',
   country: 'nigeria',
   bio: faker.name.jobType(),
   phonenumber: faker.phone.phoneNumber(),
@@ -78,7 +78,7 @@ const userprofile2 = {
 const userprofile3 = {
   UserId: userdata3.id,
   avatar: faker.image.imageUrl(),
-  username: 'name1',
+  username: 'name3',
   country: 'nigeria',
   bio: faker.name.jobType(),
   phonenumber: faker.phone.phoneNumber(),
