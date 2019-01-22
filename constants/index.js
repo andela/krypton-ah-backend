@@ -1,6 +1,6 @@
-const FROM = 'no-reply@authorshaven.com',
-  SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
-  BAD_REQUEST_CODE = 400,
+const mocks = require('./mocks');
+
+const BAD_REQUEST_CODE = 400,
   UNAUTHORIZED_CODE = 401,
   OK_CODE = 200,
   RESOURCE_CREATED_CODE = 201,
@@ -11,6 +11,8 @@ const FROM = 'no-reply@authorshaven.com',
   SUCCESSFUL = true,
   LIMIT = 15,
   OFFSET = 1,
+  SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
+  FROM = 'no-reply@authorshaven.com',
   NO_TOKEN_PROVIDED = 'No token provided',
   JWT_EXPIRED = 'The token provided has expired',
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
@@ -39,6 +41,7 @@ const FROM = 'no-reply@authorshaven.com',
   UUID = 'ad94832a-19cf-11e9-ab14-d663bd873d45',
   RESET_LINK_SUBJECT = 'Reset Password - Authors Haven',
   BAD_TOKEN = '84ruyhf9q38uyg9';
+  ID_REQUIRED = 'userId is required';
 
 module.exports = {
   FROM,
@@ -82,4 +85,6 @@ module.exports = {
   UUID,
   RESET_LINK_SUBJECT,
   BAD_TOKEN
+  ID_REQUIRED,
+  ...mocks
 };

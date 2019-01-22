@@ -14,14 +14,16 @@ module.exports = {
       foreignKey: true,
       references: {
         model: 'Users',
-        key: 'id'
+        key: 'id',
+        as: 'UserId'
       }
     },
     avatar: {
       type: Sequelize.STRING
     },
     username: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      unique: true
     },
     country: {
       type: Sequelize.STRING

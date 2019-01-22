@@ -3,6 +3,7 @@ const chai = require('chai'),
   chaiHttp = require('chai-http'),
   userModelManager = require('../../lib/modelManagers/usermodel'),
   authController = require('../../controllers/AuthController'),
+  { User } = require('../../database/models'),
   server = require('../../index'),
   req = {
     body: {
@@ -34,6 +35,11 @@ chai.should();
 */
 
 describe('Test for adding a new user and generate token', () => {
+  after(async () => {
+    User.destroy({
+      where: {}
+    });
+  });
   before(async () => {
     await authController.signUp(req, res, next);
   });
@@ -50,6 +56,11 @@ describe('Test for adding a new user and generate token', () => {
 });
 
 describe('Test for errors during the login process', () => {
+  after(async () => {
+    User.destroy({
+      where: {}
+    });
+  });
   before(async () => {
     await authController.signUp(req, res, next);
   });
