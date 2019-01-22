@@ -44,7 +44,7 @@ module.exports = {
         key: 'id'
       }
     },
-    isPublished: {
+    ispublished: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
