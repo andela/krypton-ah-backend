@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
       },
-      Title: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      Description: {
+      description: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      Content: {
+      content: {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         validate: {}
       },
-      Slug: {
+      slug: {
         type: DataTypes.STRING,
         validate: {}
       },

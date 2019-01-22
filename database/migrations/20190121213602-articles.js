@@ -9,13 +9,13 @@ module.exports = {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4
     },
-    Title: {
+    title: {
       type: Sequelize.STRING
     },
-    Description: {
+    description: {
       type: Sequelize.STRING
     },
-    Content: {
+    content: {
       type: Sequelize.TEXT,
       allowNull: false,
     },
@@ -28,7 +28,7 @@ module.exports = {
     readTime: {
       type: Sequelize.INTEGER
     },
-    Slug: {
+    slug: {
       type: Sequelize.STRING,
       allowNull: false
     },
