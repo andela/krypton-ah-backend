@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-vars */
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('commentsReactions', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('CommentsReactions', {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
     UserId: {
       type: Sequelize.UUID,
       onDelete: 'CASCADE',
@@ -16,12 +22,12 @@ module.exports = {
       onDelete: 'CASCADE',
       foreignKey: true,
       references: {
-        model: 'articlesComments',
+        model: 'ArticlesComments',
         key: 'id'
       }
     },
     reaction: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.STRING
     },
     createdAt: {
       allowNull: false,
@@ -32,5 +38,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('commentsReactions')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('CommentsReactions')
 };

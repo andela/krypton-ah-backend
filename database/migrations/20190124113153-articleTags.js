@@ -9,6 +9,8 @@ module.exports = {
     articleId: {
       type: Sequelize.UUID,
       allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
       foreignKey: true,
       references: {
         model: 'Articles',
@@ -19,6 +21,8 @@ module.exports = {
     tagId: {
       type: Sequelize.UUID,
       allowNull: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
       foreignKey: true,
       references: {
         model: 'Tags',

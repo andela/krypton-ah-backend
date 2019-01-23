@@ -10,7 +10,7 @@ describe('Comments Reaction Test', () => {
 
   describe('Check if Articles Comment model exist', () => {
     it('should check if commentsReaction has a valid model name', () => {
-      expect(CommentsReactions.modelName).to.equal('commentsReactions');
+      expect(CommentsReactions.modelName).to.equal('CommentsReactions');
     });
     it('should check if commentsReaction Model has property "UserId" ', () => {
       expect(reaction).to.have.property('UserId');

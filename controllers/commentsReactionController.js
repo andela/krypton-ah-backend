@@ -1,18 +1,13 @@
 const {
-  confirmCommentId,
-  checkIfReactionExist,
+  getReaction,
   createReaction,
-  updateOrRemoveReaction
+  updateReaction,
+  removeReaction
 } = require('../lib/modelManagers/commentsReactionModel');
-const {
-  SERVER_ERROR_MESSAGE,
-  COMMENT_NOT_FOUND,
-  REACTION_STATUS,
-  RESET_REACTION
-} = require('../constants');
-const { successResponse, failureResponse, serverFailure } = require('../lib/utils/messageHandler');
+const { SERVER_ERROR_MESSAGE, RESET_REACTION, RESOURCE_CREATED_CODE } = require('../constants');
+const { successResponse, serverFailure, formatReaction } = require('../lib/utils/messageHandler');
 
-const reaction = ['like', 'dislike'];
+let newReaction;
 /**
  *
  *
@@ -25,18 +20,23 @@ class commentsReactionController {
    * @static
    * @param {object} req
    * @param {object} res
-   * @param {object} next
-   * @returns {object| next} response | next function
    * @memberof commentsReactionController
+   * @returns {object} response of the request
    */
-  static async verifyCommentId(req, res, next) {
+  static async likeOrDislike(req, res) {
+    const message = formatReaction(req.params.reaction);
     try {
-      const commentId = await confirmCommentId(req.params.commentId);
-
-      if (commentId) {
-        return next();
+      const reactionId = await getReaction(req.params.commentId, req.decodedToken.payLoad);
+      if (reactionId) {
+        await updateReaction(req.params.reaction, req.params.commentId, req.decodedToken.payLoad);
+        return successResponse(res, message);
       }
-      return failureResponse(res, COMMENT_NOT_FOUND);
+      newReaction = await createReaction(
+        req.params.commentId,
+        req.decodedToken.payLoad,
+        req.params.reaction
+      );
+      return successResponse(res, message, RESOURCE_CREATED_CODE, newReaction);
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
@@ -48,48 +48,15 @@ class commentsReactionController {
    * @static
    * @param {object} req
    * @param {object} res
-   * @param {function} next
-   * @returns {object | function} response or next function
-   * @memberof commentsReactionController
-   */
-  static async validateReaction(req, res, next) {
-    return reaction.includes(req.params.reaction)
-      ? next()
-      : serverFailure(res, SERVER_ERROR_MESSAGE);
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {object} req
-   * @param {object} res
    * @memberof commentsReactionController
    * @returns {object} response of the request
    */
-  static async likeDislikeReset(req, res) {
+  static async cancelReaction(req, res) {
     try {
-      const reactionStatus = await checkIfReactionExist(
-        req.params.commentId,
-        req.decodedToken.payLoad
-      );
-      if (reactionStatus) {
-        const removedReaction = await updateOrRemoveReaction(
-          req.params.commentId,
-          req.decodedToken.payLoad,
-          req.params.reaction,
-          reactionStatus.reaction
-        );
-        if (removedReaction) {
-          return successResponse(res, RESET_REACTION);
-        }
-      } else {
-        await createReaction(req.params.commentId, req.decodedToken.payLoad, req.params.reaction);
+      const removedReaction = await removeReaction(req.params.reactionId);
+      if (removedReaction) {
+        return successResponse(res, RESET_REACTION);
       }
-      return successResponse(
-        res,
-        [REACTION_STATUS.slice(0, 22), req.params.reaction, REACTION_STATUS.slice(22)].join('')
-      );
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }

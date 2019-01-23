@@ -2,35 +2,26 @@ const chai = require('chai'),
   sinon = require('sinon'),
   sinonChai = require('sinon-chai'),
   { expect, should } = chai,
-  {
-    verifyCommentId,
-    validateReaction,
-    likeDislikeReset
-  } = require('../../controllers/commentsReactionController');
-const { User, Articles, articlesComments } = require('../../database/models');
+  { likeOrDislike, cancelReaction } = require('../../controllers/commentsReactionController');
+const { Articles, ArticlesComments, CommentsReactions } = require('../../database/models');
 const { create } = require('../../lib/modelManagers/usermodel');
-const { article, comment } = require('../mockData');
+const {
+  article, comment, reaction, destroyData
+} = require('../mockData');
 const {
   email, password, firstname, lastname
 } = require('../mockData').userdata3;
 
-let newUser, newArticle, newComment, req;
+let newUser, newArticle, newComment, req, newReaction;
 chai.use(sinonChai);
 chai.use(should);
 describe('Test for comment reaction controller', () => {
   before(async () => {
-    User.destroy({
-      where: {}
-    });
-    Articles.destroy({
-      where: {}
-    });
-    articlesComments.destroy({
-      where: {}
-    });
+    destroyData();
     newUser = await create(email, password, firstname, lastname);
     newArticle = await Articles.create(article(newUser.id));
-    newComment = await articlesComments.create(comment(newArticle.id, newUser.id));
+    newComment = await ArticlesComments.create(comment(newArticle.id, newUser.id));
+    newReaction = await CommentsReactions.create(reaction(newComment.id, newUser.id));
     req = {
       params: {
         commentId: newComment.id,
@@ -41,113 +32,80 @@ describe('Test for comment reaction controller', () => {
       }
     };
   });
-  afterEach(async () => {
-    User.destroy({
-      where: {}
-    });
-    Articles.destroy({
-      where: {}
-    });
-    articlesComments.destroy({
-      where: {}
-    });
+  after(() => {
+    destroyData();
   });
-  it('Should return next function when commenId exist', async () => {
+
+  it('Should update an existing reaction', async () => {
     const res = {
       status() {},
       json() {}
     };
-    const next = sinon.stub();
     sinon.stub(res, 'status').returnsThis();
-    await verifyCommentId(req, res, next);
-    expect(next.calledOnce).to.be.eq(true);
-  });
-  it('Should not return next function when commenId does not exist', async () => {
-    const req = {
-      params: {
-        commentId: '65719288-0395-445e-b587-2b98b70bdec9'
-      }
-    };
-    const res = {
-      status() {},
-      json() {}
-    };
-    const next = sinon.stub();
-    sinon.stub(res, 'status').returnsThis();
-    await verifyCommentId(req, res, next);
-    expect(next.calledOnce).to.be.eq(false);
-    expect(res.status).to.have.been.calledWith(404);
+    await likeOrDislike(req, res);
+    expect(res.status).to.have.been.calledWith(200);
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });
-  it('Should not return next function when id is not a uuid', async () => {
-    const req = {
+  it('Should throw an error with invalid commentId', async () => {
+    req = {
       params: {
-        commentId: '65719288-0395'
+        commentId: '65719288-0395',
+        reaction: 'like'
+      },
+      decodedToken: {
+        payLoad: newUser.id
       }
     };
     const res = {
       status() {},
       json() {}
     };
-    const next = sinon.stub();
     sinon.stub(res, 'status').returnsThis();
-    await verifyCommentId(req, res, next);
-    expect(next.calledOnce).to.be.eq(false);
+    await likeOrDislike(req, res);
     expect(res.status).to.have.been.calledWith(500);
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });
-  describe('Test make sure reactions are only like or dislike', () => {
-    it('Should return next when reaction is  like or dislike', () => {
-      const req = {
-        params: {
-          reaction: 'like' || 'dislike'
-        }
-      };
-      const res = {
-        status() {},
-        json() {}
-      };
-      const next = sinon.stub();
-      sinon.stub(res, 'status').returnsThis();
-      validateReaction(req, res, next);
-      expect(next.calledOnce).to.be.eq(true);
-    });
-    it('Should not return next when reaction is not like or dislike', () => {
-      const req = {
-        params: {
-          reaction: 'liked' || 'disliked'
-        }
-      };
-      const res = {
-        status() {},
-        json() {}
-      };
-      const next = sinon.stub();
-      sinon.stub(res, 'status').returnsThis();
-      validateReaction(req, res, next);
-      expect(next.calledOnce).to.be.eq(false);
-      expect(res.status).to.have.been.calledWith(500);
-      res.status.called.should.equal(true);
-      res.status.callCount.should.equal(1);
-    });
-  });
 
-  describe('Test like,unlike or reset reaction', () => {
+  it('Should throw an error with invalid commentId', async () => {
+    req = {
+      params: {
+        reactionId: newReaction.id
+      }
+    };
+    const res = {
+      status() {},
+      json() {}
+    };
+    sinon.stub(res, 'status').returnsThis();
+    await cancelReaction(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    res.status.called.should.equal(true);
+    res.status.callCount.should.equal(1);
+  });
+  it('Should throw an error with invalid reactionId', async () => {
+    req = {
+      params: {
+        reactionId: '65719288-0395'
+      }
+    };
+    const res = {
+      status() {},
+      json() {}
+    };
+    sinon.stub(res, 'status').returnsThis();
+    await cancelReaction(req, res);
+    expect(res.status).to.have.been.calledWith(500);
+    res.status.called.should.equal(true);
+    res.status.callCount.should.equal(1);
+  });
+  describe('Test for creation of a new reaction', () => {
     before(async () => {
-      User.destroy({
-        where: {}
-      });
-      Articles.destroy({
-        where: {}
-      });
-      articlesComments.destroy({
-        where: {}
-      });
+      destroyData();
       newUser = await create(email, password, firstname, lastname);
       newArticle = await Articles.create(article(newUser.id));
-      newComment = await articlesComments.create(comment(newArticle.id, newUser.id));
+      newComment = await ArticlesComments.create(comment(newArticle.id, newUser.id));
       req = {
         params: {
           commentId: newComment.id,
@@ -158,36 +116,17 @@ describe('Test for comment reaction controller', () => {
         }
       };
     });
-    it('Should return success when a user changes reaction', async () => {
-      const res = {
-        status() {},
-        json() {}
-      };
-
-      sinon.stub(res, 'status').returnsThis();
-      await likeDislikeReset(req, res);
-      expect(res.status).to.have.been.calledWith(200);
-      res.status.called.should.equal(true);
-      res.status.callCount.should.equal(1);
+    after(() => {
+      destroyData();
     });
-    it('Should return error when invalid data is sent', async () => {
-      req = {
-        params: {
-          commentId: '65719288-0395',
-          reaction: 'like'
-        },
-        decodedToken: {
-          payLoad: newUser.id
-        }
-      };
+    it('Should create a new reaction', async () => {
       const res = {
         status() {},
         json() {}
       };
-
       sinon.stub(res, 'status').returnsThis();
-      await likeDislikeReset(req, res);
-      expect(res.status).to.have.been.calledWith(500);
+      await likeOrDislike(req, res);
+      expect(res.status).to.have.been.calledWith(201);
       res.status.called.should.equal(true);
       res.status.callCount.should.equal(1);
     });
