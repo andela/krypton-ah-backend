@@ -22,11 +22,11 @@ describe('Unit test usermodel allusers', () => {
     });
     ({ id } = res.dataValues);
   });
-
   it('should list all users in the database', async () => {
     const res = await User.listAllUsers();
     expect(res).to.be.a('array');
     expect(res[0]).to.be.a('object');
+    expect(res.length).to.be.equals(1);
     expect(res[0].dataValues).contains.a.property('userprofile');
     expect(res[0].dataValues.userprofile.length).is.not.equals('0');
     expect(res[0].dataValues.userprofile).contains.a.property('UserId');

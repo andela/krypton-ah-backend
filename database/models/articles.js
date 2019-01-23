@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
       },
+      authorId: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -23,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [5, 200],
-            msg: 'Title must be between 5 and 200 characters'
+            msg: 'Description must be between 5 and 200 characters'
           }
         }
       },
@@ -52,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: 0
       },
+      numberOfReviews: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
       isPublished: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
@@ -66,12 +74,11 @@ module.exports = (sequelize, DataTypes) => {
   );
   Articles.associate = (models) => {
     Articles.belongsTo(models.User, {
-      foreignKey: 'id',
-      as: 'authorsId'
+      foreignKey: 'authorId',
+      as: 'articleAuthor'
     });
     Articles.hasMany(models.articlesComment, {
       foreignKey: 'articleId',
-      as: 'authorId',
     });
   };
   return Articles;

@@ -31,12 +31,16 @@ module.exports = {
     readTime: {
       type: Sequelize.INTEGER,
     },
+    numberOfReviews: {
+      type: Sequelize.INTEGER,
+    },
     slug: {
       type: Sequelize.STRING,
       allowNull: false
     },
     authorId: {
       type: Sequelize.UUID,
+      allowNull: false,
       onDelete: 'CASCADE',
       foreignKey: true,
       references: {
@@ -44,7 +48,7 @@ module.exports = {
         key: 'id'
       }
     },
-    ispublished: {
+    isPublished: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },

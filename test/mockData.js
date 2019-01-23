@@ -97,8 +97,32 @@ const userprofile3 = {
   updatedAt: faker.date.recent()
 };
 
+const article = authorid => ({
+  title: 'This is a test title',
+  description: faker.lorem.sentence(10, 20),
+  content: faker.lorem.paragraph(30),
+  featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
+  averageRating: faker.random.number(5),
+  slug: faker.helpers.slugify('title'),
+  readTime: faker.random.number(),
+  authorId: authorid
+});
+
+const updatearticle = authorid => ({
+  title: faker.lorem.sentence(10, 20),
+  description: faker.lorem.sentence(10, 20),
+  content: faker.lorem.paragraph(30),
+  featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
+  averageRating: faker.random.number(5),
+  Slug: faker.helpers.slugify('title'),
+  readTime: faker.random.number(),
+  authorId: authorid
+});
+
 module.exports = {
   token,
+  article,
+  updatearticle,
   defaultquery,
   validquery,
   NaNquery,
