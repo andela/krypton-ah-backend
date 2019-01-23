@@ -12,7 +12,7 @@ describe('Articles Comment Test', () => {
 
   describe('Check if Articles Comment model exist', () => {
     it('should check if articlesComment have a valid model name', () => {
-      expect(articlesComments.modelName).to.equal('articlesComment');
+      expect(articlesComments.modelName).to.equal('articlesComments');
     });
     it('should check if articleComment Model has property "Comment" ', () => {
       expect(comment).to.have.property('comment');

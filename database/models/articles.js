@@ -77,8 +77,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'authorId',
       as: 'articleAuthor'
     });
-    Articles.hasMany(models.articlesComment, {
-      foreignKey: 'articleId',
+    Articles.hasMany(models.articlesComments, {
+      foreignKey: 'articleId'
     });
     Articles.belongsToMany(models.Tags, {
       through: 'ArticleTags',

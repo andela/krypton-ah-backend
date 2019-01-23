@@ -1,22 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
-  const commentsReaction = sequelize.define(
-    'commentsReaction',
+  const commentsReactions = sequelize.define(
+    'commentsReactions',
     {
+      UserId: {
+        type: DataTypes.UUID,
+        primaryKey: true
+      },
+      commentId: {
+        type: DataTypes.UUID,
+        primaryKey: true
+      },
       reaction: {
         type: DataTypes.BOOLEAN,
         validate: {
           isBoolean: {
-            args: [true, false],
-            msg: 'comment reaction can only be "true" or "false"'
+            args: [true, false]
           }
         }
       }
     },
     {}
   );
-  commentsReaction.associate = (models) => {
-    commentsReaction.belongsTo(models.User);
-    commentsReaction.belongsTo(models.articlesComment);
-  };
-  return commentsReaction;
+  return commentsReactions;
 };

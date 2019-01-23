@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('articlesComment', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('articlesComments', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -41,5 +41,5 @@ module.exports = {
     }
   }),
 
-  down: queryInterface => queryInterface.dropTable('articlesComment')
+  down: queryInterface => queryInterface.dropTable('articlesComments')
 };
