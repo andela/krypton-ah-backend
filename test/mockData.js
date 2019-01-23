@@ -119,6 +119,12 @@ const updatearticle = authorid => ({
   authorId: authorid
 });
 
+const tag = ({
+  tag1: 'Andela',
+  tag2: 'JavaScript',
+  tag3: 'Sequelize',
+});
+
 module.exports = {
   token,
   article,
@@ -133,5 +139,6 @@ module.exports = {
   userprofile2,
   userprofile3,
   negativequery,
-  fakeUserData
+  fakeUserData,
+  tag
 };
