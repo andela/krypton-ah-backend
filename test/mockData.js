@@ -1,4 +1,7 @@
 const faker = require('faker');
+const {
+  User, Articles, ArticlesComments, Tags, CommentsReactions
+} = require('../database/models');
 
 const negativequery = {
   offset: -2,
@@ -154,9 +157,36 @@ const comment = (articleId, userId) => ({
   userId
 });
 
+const reaction = (commentId, UserId) => ({
+  id: faker.random.uuid(),
+  commentId,
+  UserId,
+  reaction: 'dislike',
+  createdAt: faker.date.recent(),
+  updatedAt: faker.date.recent()
+});
+
+const destroyData = () => {
+  User.destroy({
+    where: {}
+  });
+  Tags.destroy({
+    where: {}
+  });
+  Articles.destroy({
+    where: {}
+  });
+  ArticlesComments.destroy({
+    where: {}
+  });
+  CommentsReactions.destroy({
+    where: {}
+  });
+};
 module.exports = {
   token,
   article,
+  reaction,
   updatearticle,
   defaultquery,
   validquery,
@@ -172,5 +202,6 @@ module.exports = {
   tag,
   badArticle,
   goodArticle,
-  comment
+  comment,
+  destroyData
 };

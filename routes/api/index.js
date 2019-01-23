@@ -5,8 +5,7 @@ router.use('/', require('./verifyEmailRoute'));
 router.use('/auth', require('./AuthRoute'));
 router.use('/articles/rating/', require('./articleRating'));
 router.use('/users', require('./users'));
-router.use('/comments', require('./commentsReaction'));
-
+router.use('/reaction', require('./commentsReaction'));
 router.use(require('./authRoutes'));
 router.use('/profile', require('./userProfile'));
 

@@ -1,25 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const commentsReactions = sequelize.define(
-    'commentsReactions',
+  const CommentsReactions = sequelize.define(
+    'CommentsReactions',
     {
-      UserId: {
+      id: {
         type: DataTypes.UUID,
-        primaryKey: true
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
+      },
+      UserId: {
+        type: DataTypes.UUID
       },
       commentId: {
-        type: DataTypes.UUID,
-        primaryKey: true
+        type: DataTypes.UUID
       },
       reaction: {
-        type: DataTypes.BOOLEAN,
-        validate: {
-          isBoolean: {
-            args: [true, false]
-          }
-        }
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {}
   );
-  return commentsReactions;
+  return CommentsReactions;
 };

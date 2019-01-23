@@ -56,11 +56,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'articles'
     });
 
-    User.hasMany(models.articlesComments, {
+    User.hasMany(models.ArticlesComments, {
       foreignKey: 'userId'
     });
     User.hasOne(models.userprofile);
-    User.hasMany(models.commentsReactions, {
+    User.hasMany(models.CommentsReactions, {
       foreignKey: 'id',
       as: 'userId'
     });

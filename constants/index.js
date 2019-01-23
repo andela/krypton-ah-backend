@@ -59,12 +59,18 @@ const BAD_REQUEST_CODE = 400,
   GET_USER_RATING_ERROR = 'One or both of articleId and userId not found',
   RATING_CREATED = 'Your rating have been saved succesfully',
   COMMENT_NOT_FOUND = 'Comment does not exist',
+  INVALID_REACTION_ID = 'Invalid reaction Id',
   REACTION_STATUS = 'You have successfully d this comment',
-  COMMENT_REACTION = 'comment reaction can only be "true" or "false"';
+  COMMENT_REACTION = 'comment reaction can only be "true" or "false"',
+  LIKE = 'like',
+  SEQUELIZE_ERROR = 'SequelizeDatabaseError',
+  SEQUELIZE_FK_ERROR = 'SequelizeForeignKeyConstraintError',
+  REACTIONS = ['like', 'dislike'];
 
 module.exports = {
   FROM,
   SUBJECT,
+  REACTIONS,
   LIMIT,
   REACTION_STATUS,
   UNAUTHORIZED_REQUEST,
@@ -91,6 +97,7 @@ module.exports = {
   WELCOME_NEW_USER,
   WELCOME_EXISTING_USER,
   INVALID_EMAIL,
+  SEQUELIZE_ERROR,
   COMMENT_NOT_FOUND,
   EMAIL_ALREADY_EXIST,
   USER_RETRIEVAL_SUCCESS_MESSAGE,
@@ -109,6 +116,8 @@ module.exports = {
   RESET_LINK_SUBJECT,
   BAD_TOKEN,
   ID_REQUIRED,
+  SEQUELIZE_FK_ERROR,
+  INVALID_REACTION_ID,
   ...mocks,
   CREATE_USER_PROFILE_SUCCESS_MESSAGE,
   UPDATE_USER_PROFILE_SUCCESS_MESSAGE,
@@ -124,5 +133,6 @@ module.exports = {
   booleanError,
   GET_USER_RATING,
   GET_USER_RATING_ERROR,
-  RATING_CREATED
+  RATING_CREATED,
+  LIKE
 };
