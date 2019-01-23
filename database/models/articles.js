@@ -85,6 +85,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'tags',
       foreignKey: 'articleId'
     });
+    Articles.hasMany(models.Rating, {
+      foreignKey: 'id',
+      as: 'articleId'
+    });
   };
   return Articles;
 };
