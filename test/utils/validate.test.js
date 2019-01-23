@@ -53,7 +53,7 @@ describe('Profile validators', async () => {
       });
     });
     it('should validate valid phone number', async () => {
-      validatePhoneNumber(req, 'phonenumber');
+      validatePhoneNumber(req);
       const errors = req.validationErrors();
       expect(errors).to.equal(false);
     });
@@ -66,9 +66,9 @@ describe('Profile validators', async () => {
       });
     });
     it('should not validate invalid phone number', async () => {
-      validatePhoneNumber(req, 'phonenumber');
+      validatePhoneNumber(req);
       const errors = req.validationErrors();
-      expect(errors[0].msg).to.equal(`phonenumber ${VALIDATE_PHONENUMBER_ERROR}`);
+      expect(errors[0].msg).to.equal(VALIDATE_PHONENUMBER_ERROR);
     });
   });
 
@@ -80,7 +80,7 @@ describe('Profile validators', async () => {
       });
     });
     it('should validate valid gender', async () => {
-      validateGender(req, 'gender');
+      validateGender(req);
       const errors = req.validationErrors();
       expect(errors).to.equal(false);
     });
@@ -106,9 +106,9 @@ describe('Profile validators', async () => {
       });
     });
     it('should not validate invalid gender', async () => {
-      validateGender(req, 'gender');
+      validateGender(req);
       const errors = req.validationErrors();
-      expect(errors[0].msg).to.equal(`gender ${VALIDATE_GENDER_ERROR}`);
+      expect(errors[0].msg).to.equal(VALIDATE_GENDER_ERROR);
     });
   });
 
@@ -120,7 +120,7 @@ describe('Profile validators', async () => {
       });
     });
     it('should validate valid email notification', async () => {
-      validateEmailNotification(req, 'emailnotification');
+      validateEmailNotification(req);
       const errors = req.validationErrors();
       expect(errors).to.equal(false);
     });
@@ -133,9 +133,9 @@ describe('Profile validators', async () => {
       });
     });
     it('should not validate invalid email notification', async () => {
-      validateEmailNotification(req, 'emailnotification');
+      validateEmailNotification(req);
       const errors = req.validationErrors();
-      expect(errors[0].msg).to.equal(`emailnotification ${VALIDATE_EMAIL_NOTIFICATION_ERROR}`);
+      expect(errors[0].msg).to.equal(VALIDATE_EMAIL_NOTIFICATION_ERROR);
     });
   });
 
@@ -147,7 +147,7 @@ describe('Profile validators', async () => {
       });
     });
     it('should validate valid username', async () => {
-      validateUsername(req, 'username');
+      validateUsername(req);
       const errors = req.validationErrors();
       expect(errors).to.equal(false);
     });
@@ -160,9 +160,9 @@ describe('Profile validators', async () => {
       });
     });
     it('should not validate invalid email notification', async () => {
-      validateUsername(req, 'username');
+      validateUsername(req);
       const errors = req.validationErrors();
-      expect(errors[0].msg).to.equal(`username ${VALIDATE_USERNAME_ERROR}`);
+      expect(errors[0].msg).to.equal(VALIDATE_USERNAME_ERROR);
     });
   });
 });

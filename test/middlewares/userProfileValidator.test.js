@@ -55,13 +55,13 @@ describe('User profile validator', async () => {
       expect(jsonStub.firstCall.args[0].message.avatar[0])
         .to.equal(`avatar ${VALIDATE_URL_ERROR}`);
       expect(jsonStub.firstCall.args[0].message.gender[0])
-        .to.equal(`gender ${VALIDATE_GENDER_ERROR}`);
+        .to.equal(VALIDATE_GENDER_ERROR);
       expect(jsonStub.firstCall.args[0].message.phonenumber[0])
-        .to.equal(`phonenumber ${VALIDATE_PHONENUMBER_ERROR}`);
+        .to.equal(VALIDATE_PHONENUMBER_ERROR);
       expect(jsonStub.firstCall.args[0].message.username[0])
-        .to.equal(`username ${VALIDATE_USERNAME_ERROR}`);
+        .to.equal(VALIDATE_USERNAME_ERROR);
       expect(jsonStub.firstCall.args[0].message.emailnotification[0])
-        .to.equal(`emailnotification ${VALIDATE_EMAIL_NOTIFICATION_ERROR}`);
+        .to.equal(VALIDATE_EMAIL_NOTIFICATION_ERROR);
     });
   });
 });

@@ -11,10 +11,10 @@ const {
 
 const userProfileValidator = (req, res, next) => {
   validateUrl(req, 'avatar');
-  validateGender(req, 'gender');
-  validatePhoneNumber(req, 'phonenumber');
-  validateUsername(req, 'username');
-  validateEmailNotification(req, 'emailnotification');
+  validateGender(req);
+  validatePhoneNumber(req);
+  validateUsername(req);
+  validateEmailNotification(req);
 
   const errors = req.validationErrors();
 

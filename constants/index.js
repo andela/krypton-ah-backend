@@ -46,11 +46,11 @@ const BAD_REQUEST_CODE = 400,
   UPDATE_USER_PROFILE_SUCCESS_MESSAGE = 'User profile updated successfully',
   CREATE_USER_PROFILE_ERROR_MESSAGE = 'Error creating user profile',
   UPDATE_USER_PROFILE_ERROR_MESSAGE = 'Error updating user profile',
-  VALIDATE_GENDER_ERROR = 'must either be a male or female',
-  VALIDATE_EMAIL_NOTIFICATION_ERROR = 'must be true or false',
-  VALIDATE_USERNAME_ERROR = 'must be letters with min of 2 characters',
+  VALIDATE_GENDER_ERROR = 'gender must either be a male or female',
+  VALIDATE_EMAIL_NOTIFICATION_ERROR = 'emailnotification must be true or false',
+  VALIDATE_USERNAME_ERROR = 'username must be letters with min of 2 characters',
   VALIDATE_URL_ERROR = 'must be valid',
-  VALIDATE_PHONENUMBER_ERROR = 'must be a valid phone number that starts with \'+\'';
+  VALIDATE_PHONENUMBER_ERROR = 'phonenumber must be a valid phone number that starts with \'+\'';
 
 module.exports = {
   FROM,
