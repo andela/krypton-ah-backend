@@ -50,7 +50,10 @@ const BAD_REQUEST_CODE = 400,
   VALIDATE_EMAIL_NOTIFICATION_ERROR = 'emailnotification must be true or false',
   VALIDATE_USERNAME_ERROR = 'username must be letters with min of 2 characters',
   VALIDATE_URL_ERROR = 'must be valid',
-  VALIDATE_PHONENUMBER_ERROR = 'phonenumber must be a valid phone number that starts with \'+\'';
+  VALIDATE_PHONENUMBER_ERROR = 'phonenumber must be a valid phone number that starts with \'+\'',
+  VALIDATE_ARTICLE_CONTENT_ERROR = 'content is required',
+  isRequiredError = fieldName => `${fieldName} is required`,
+  booleanError = fieldName => `${fieldName} must either be true or false`;
 
 module.exports = {
   FROM,
@@ -104,5 +107,8 @@ module.exports = {
   VALIDATE_GENDER_ERROR,
   VALIDATE_PHONENUMBER_ERROR,
   VALIDATE_URL_ERROR,
-  VALIDATE_USERNAME_ERROR
+  VALIDATE_USERNAME_ERROR,
+  VALIDATE_ARTICLE_CONTENT_ERROR,
+  isRequiredError,
+  booleanError
 };

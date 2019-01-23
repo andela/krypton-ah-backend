@@ -108,6 +108,28 @@ const article = authorid => ({
   authorId: authorid
 });
 
+const goodArticle = authorid => ({
+  title: 'New title',
+  description: faker.lorem.sentence(10, 20),
+  content: faker.lorem.paragraph(30),
+  featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
+  averageRating: faker.random.number(5),
+  slug: faker.helpers.slugify('title'),
+  readTime: faker.random.number(),
+  authorId: authorid,
+  ispublished: true,
+});
+
+const badArticle = authorId => ({
+  title: 'Th',
+  description: 'aa',
+  content: '',
+  featuredImageUrl: 'hh',
+  readTime: faker.random.number(),
+  ispublished: 'no',
+  authorId
+});
+
 const updatearticle = authorid => ({
   title: faker.lorem.sentence(10, 20),
   description: faker.lorem.sentence(10, 20),
@@ -140,5 +162,7 @@ module.exports = {
   userprofile3,
   negativequery,
   fakeUserData,
-  tag
+  tag,
+  badArticle,
+  goodArticle
 };
