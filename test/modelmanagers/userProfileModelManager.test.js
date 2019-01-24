@@ -7,11 +7,9 @@ const { userProfileMock, userMock, updatedUserProfileMock } = require('../../con
 describe('User Profile Model Manager', async () => {
   const dataStore = {};
   afterEach('Delete User', async () => {
-    if (dataStore.newUser) {
-      User.destroy({
-        where: {}
-      });
-    }
+    User.destroy({
+      where: {}
+    });
   });
   describe('Create user profile', () => {
     before(async () => {

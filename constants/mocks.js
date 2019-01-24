@@ -24,8 +24,48 @@ const updatedUserProfileMock = {
   emailnotification: true
 };
 
+const requestMock = {
+  body: {}
+};
+
+const validProfileRequestMock = {
+  body: {
+    avatar: 'https://valid.com',
+    bio: 'A little about me.',
+    username: 'user',
+    country: 'Nigeria',
+    phonenumber: '+234587239458',
+    gender: 'male',
+    emailnotification: false
+  }
+};
+
+const invalidProfileRequestMock = {
+  body: {
+    avatar: 'https://valid',
+    username: 'user nn',
+    phonenumber: '22222',
+    gender: 'fgg',
+    emailnotification: 'not'
+  }
+};
+
+const responseMock = {
+  status: () => {},
+  json: () => {}
+};
+
+const nextMock = {
+  next: () => {}
+};
+
 module.exports = {
   userMock,
   userProfileMock,
-  updatedUserProfileMock
+  updatedUserProfileMock,
+  requestMock,
+  validProfileRequestMock,
+  invalidProfileRequestMock,
+  responseMock,
+  nextMock
 };

@@ -14,7 +14,7 @@ const jwtUtil = require('../lib/utils/jwtUtil'),
  * @returns {object} The status of response and body of the response.
  */
 const jwtValidator = (req, res, next) => {
-  const token = req.body.token || req.query.token || req.headers.token || req.params;
+  const token = req.body.token || req.query.token || req.headers.authorization || req.params;
 
   if (token) {
     try {
