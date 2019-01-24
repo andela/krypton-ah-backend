@@ -10,6 +10,8 @@ const { userprofile } = require('../../database/models');
 const constants = require('../mockData');
 const ArticlesController = require('../../controllers/Articles/articlesController');
 const articleModelManager = require('../../lib/modelManagers/articlemodel');
+const tagGenerator = require('../../lib/utils/tagGenarator');
+const responses = require('../../constants/index');
 
 chai.use(chaiHttp);
 
@@ -51,7 +53,7 @@ describe('Articles controller', () => {
     const statusStub = sinon.stub(res, 'status').returnsThis();
     const jsonStub = sinon.stub(res, 'json').returnsThis();
     await ArticlesController.createArticles(req, res);
-    expect(statusStub.calledOnceWithExactly(200)).to.equal(true);
+    expect(statusStub.calledOnceWithExactly(responses.OK_CODE)).to.equal(true);
     expect(jsonStub.firstCall.args[0].success).to.equal(true);
   });
 
@@ -76,8 +78,9 @@ describe('Articles controller', () => {
     };
     const statusStub = sinon.stub(res, 'status').returnsThis();
     const jsonStub = sinon.stub(res, 'json').returnsThis();
+    await tagGenerator(constants.tags.tag, articleid);
     await ArticlesController.updateArticle(req, res);
-    expect(statusStub.calledOnceWithExactly(200)).to.equal(true);
+    expect(statusStub.calledOnceWithExactly(responses.OK_CODE)).to.equal(true);
     expect(jsonStub.firstCall.args[0].success).to.equal(true);
   });
 
@@ -101,9 +104,10 @@ describe('Articles controller', () => {
     const statusStub = sinon.stub(res, 'status').returnsThis();
     const jsonStub = sinon.stub(res, 'json').returnsThis();
     await ArticlesController.updateArticle(req, res);
-    expect(statusStub.calledOnceWithExactly(404)).to.equal(true);
+    expect(statusStub.calledOnceWithExactly(responses.NOT_FOUND_CODE)).to.equal(true);
     expect(jsonStub.firstCall.args[0].success).to.equal(false);
   });
+
 
   it('should throw error when updating article details', async () => {
     const { invalidarticle } = constants;
@@ -122,7 +126,7 @@ describe('Articles controller', () => {
     const statusStub = sinon.stub(res, 'status').returnsThis();
     const jsonStub = sinon.stub(res, 'json').returnsThis();
     await ArticlesController.updateArticle(req, res);
-    expect(statusStub.calledOnceWithExactly(500)).to.equal(true);
+    expect(statusStub.calledOnceWithExactly(responses.SERVER_ERROR_CODE)).to.equal(true);
     expect(jsonStub.firstCall.args[0].success).to.equal(false);
   });
 
@@ -130,7 +134,7 @@ describe('Articles controller', () => {
     chai.request(app)
       .delete(`/api/v1/articles/${articleid}`)
       .end((err, res) => {
-        expect(res.status).to.equals(200);
+        expect(res.status).to.equals(responses.OK_CODE);
       });
   });
 
@@ -139,7 +143,7 @@ describe('Articles controller', () => {
     chai.request(app)
       .delete(`/api/v1/articles/${articleid}`)
       .end((err, res) => {
-        expect(res.status).to.equals(404);
+        expect(res.status).to.equals(responses.NOT_FOUND_CODE);
       });
   });
 
@@ -147,7 +151,7 @@ describe('Articles controller', () => {
     chai.request(app)
       .delete('/api/v1/articles/')
       .end((err, res) => {
-        expect(res.status).to.equals(500);
+        expect(res.status).to.equals(responses.SERVER_ERROR_CODE);
       });
   });
 
@@ -156,7 +160,7 @@ describe('Articles controller', () => {
       .get('/api/v1/articles')
       .send(testArticle)
       .end((err, res) => {
-        expect(res.status).equals(200);
+        expect(res.status).equals(responses.OK_CODE);
       });
   });
 
@@ -181,7 +185,7 @@ describe('Articles controller', () => {
     const statusStub = sinon.stub(res, 'status').returnsThis();
     sinon.stub(articleModelManager, 'getArticlesby').throws();
     const jsonStub = sinon.stub(res, 'json').returnsThis();
-    expect(statusStub.calledOnceWithExactly(500)).to.equal(false);
+    expect(statusStub.calledOnceWithExactly(responses.SERVER_ERROR_CODE)).to.equal(false);
     await ArticlesController.getArticle(req, res);
     expect(jsonStub.firstCall.args[0].success).to.equal(false);
   });
@@ -211,6 +215,6 @@ describe('Articles controller', () => {
     const statusStub = sinon.stub(res, 'status').returnsThis();
     sinon.stub(articleModelManager, 'createArticle').throws();
     await ArticlesController.createArticles(req, res);
-    expect(statusStub.calledOnceWithExactly(500)).to.equal(true);
+    expect(statusStub.calledOnceWithExactly(responses.SERVER_ERROR_CODE)).to.equal(true);
   });
 });

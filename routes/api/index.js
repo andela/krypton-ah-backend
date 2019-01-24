@@ -8,6 +8,8 @@ router.use('/', require('./users'));
 router.use('/articles', require('./articles'));
 
 router.use('/users', require('./users'));
+
+router.use('/users', require('./users'));
 router.use('/reaction', require('./commentsReaction'));
 router.use(require('./authRoutes'));
 router.use('/profile', require('./userProfile'));

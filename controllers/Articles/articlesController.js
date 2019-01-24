@@ -17,16 +17,14 @@ class ArticlesController {
    * @param {*} res
    */
   static async createArticles(req, res) {
-    let authorId = req.decodedToken.payLoad;
-    authorId = authorId.toString();
-    const slug = generateSlug(req.body.title, authorId);
-    const { body } = req;
-    const userDetails = { ...slug.slugs, authorId, ...body };
+    const authorId = req.decodedToken.payLoad;
+    const slug = generateSlug(req.body.title, authorId.toString());
+    const articleDetails = { ...slug.slugs, authorId, ...req.body };
     try {
-      const createdArticles = await articleModelManager.createArticle(userDetails);
+      const createdArticles = await articleModelManager.createArticle(articleDetails);
       generateTags(req.body.tags, createdArticles.dataValues.id);
       if (createdArticles) {
-        response.successResponse(res, 'articles added successfully', createdArticles);
+        response.successResponse(res, constants.ARTICLES_CREATED, createdArticles);
       }
     } catch (error) {
       response.failureResponse(
@@ -48,14 +46,13 @@ class ArticlesController {
    */
   static async updateArticle(req, res) {
     const id = req.decodedToken.payload;
-    const { body } = req;
-    const userDetails = { ...id, ...body };
+    const articleDetails = { ...id, ...req.body };
     try {
-      const updatedArticle = await articleModelManager.updateArticle(userDetails, req.params.id);
+      const updatedArticle = await articleModelManager.updateArticle(articleDetails, req.params.id);
       if (updatedArticle[0] === 0) {
-        response.failureResponse(res, 'update failed');
+        response.failureResponse(res, constants.ARTICLES_UPDATE_FAILED);
       } else {
-        response.successResponse(res, constants.USER_RETRIEVAL_SUCCESS_MESSAGE, updatedArticle);
+        response.successResponse(res, constants.ARTICLES_UPDATE_SUCCESS, updatedArticle);
       }
     } catch (error) {
       response.failureResponse(
@@ -81,7 +78,7 @@ class ArticlesController {
     try {
       const returnedArticle = await articleModelManager.getArticlesby(field, value);
       if (returnedArticle) {
-        response.successResponse(res, 'articles retrieved succesfully', returnedArticle);
+        response.successResponse(res, constants.ARTICLES_RETRIEVAL_SUCCESS, returnedArticle);
       }
     } catch (error) {
       response.failureResponse(
@@ -106,9 +103,9 @@ class ArticlesController {
     try {
       const deletedArticle = await articleModelManager.deleteArticle(id);
       if (deletedArticle === 0) {
-        response.failureResponse(res, 'delete failed');
+        response.failureResponse(res, constants.ARTICLES_DELETION_FAILURE);
       } else {
-        response.successResponse(res, constants.USER_RETRIEVAL_SUCCESS_MESSAGE, deletedArticle);
+        response.successResponse(res, constants.ARTICLES_DELETION_SUCCESS, deletedArticle);
       }
     } catch (error) {
       response.failureResponse(

@@ -181,6 +181,8 @@ const reaction = (commentId, UserId) => ({
   updatedAt: faker.date.recent()
 });
 
+const tags = { tag: 'Andela, JavaScript,Sequelize' };
+
 const destroyData = () => {
   User.destroy({
     where: {}
@@ -225,6 +227,7 @@ module.exports = {
   negativequery,
   fakeUserData,
   tag,
+  tags,
   badArticle,
   goodArticle,
   comment,
