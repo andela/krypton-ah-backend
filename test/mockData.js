@@ -106,9 +106,20 @@ const article = authorid => ({
   description: faker.lorem.sentence(10, 20),
   content: faker.lorem.paragraph(30),
   featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
-  averageRating: faker.random.number(5),
+  averageRating: 0,
   slug: faker.helpers.slugify('title'),
-  readTime: faker.random.number(),
+  readTime: 0,
+  authorId: authorid
+});
+
+const invalidarticle = authorid => ({
+  title: 'this is an invlaid article',
+  description: faker.lorem.sentence(10, 20),
+  content: faker.lorem.paragraph(30),
+  featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
+  averageRating: 0,
+  Slug: faker.helpers.slugify('title'),
+  readTime: 0,
   authorId: authorid
 });
 
@@ -139,9 +150,9 @@ const updatearticle = authorid => ({
   description: faker.lorem.sentence(10, 20),
   content: faker.lorem.paragraph(30),
   featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
-  averageRating: faker.random.number(5),
+  averageRating: 0,
   Slug: faker.helpers.slugify('title'),
-  readTime: faker.random.number(),
+  readTime: 0,
   authorId: authorid
 });
 
@@ -219,5 +230,6 @@ module.exports = {
   comment,
   destroyData,
   tagArray,
-  returnedTag
+  returnedTag,
+  invalidarticle
 };

@@ -16,7 +16,8 @@ module.exports = {
         model: 'Articles',
         key: 'id',
         as: 'articleId'
-      }
+      },
+      onDelete: 'cascade'
     },
     tagId: {
       type: Sequelize.UUID,
@@ -28,7 +29,8 @@ module.exports = {
         model: 'Tags',
         key: 'id',
         as: 'tagId'
-      }
+      },
+      onDelete: 'cascade'
     },
     createdAt: {
       allowNull: false,

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const signupValidator = require('../../lib/utils/signupValidator');
 const checkEmail = require('../../middlewares/checkEmail');
 const authController = require('../../controllers/AuthController');
-
+const sendVerficationMail = require('../../lib/utils/emailService/emailVerification');
 /**
  * @swagger
  *
@@ -73,6 +73,6 @@ router.route('/signin').post(authController.signIn);
  *         required: true
  *         type: string
  */
-router.route('/signup').post(signupValidator, checkEmail, authController.signUp);
+router.route('/signup').post(signupValidator, checkEmail, authController.signUp, sendVerficationMail);
 
 module.exports = router;
