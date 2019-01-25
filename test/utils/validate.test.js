@@ -9,7 +9,8 @@ const { expect } = require('chai'),
     validateArticleContent,
     validateIsPublished,
     validateArticleDescription,
-    validateArticleTitle
+    validateArticleTitle,
+    validateTag
   } = require('../../lib/utils/validate'),
   {
     requestMock,
@@ -26,7 +27,8 @@ const { expect } = require('chai'),
   articleModelManager = require('../../lib/modelManagers/articlemodel'),
   mockArticle = require('../mockData').article,
   { userdata3 } = require('../mockData'),
-  { User } = require('../../database/models');
+  { User } = require('../../database/models'),
+  { tag } = require('../mockData');
 
 describe('Profile validators', async () => {
   let req;
@@ -181,14 +183,11 @@ describe('Profile validators', async () => {
   describe('Article content validator with valid article content', () => {
     before(async () => {
       requestMock.body.content = 'This is a valid article content!';
-      await expressValidator(requestMock, {}, () => {
-        req = requestMock;
+      it('should validate valid article content', async () => {
+        validateArticleContent(req);
+        const errors = req.validationErrors();
+        expect(errors).to.equal(false);
       });
-    });
-    it('should validate valid article content', async () => {
-      validateArticleContent(req);
-      const errors = req.validationErrors();
-      expect(errors).to.equal(false);
     });
   });
   describe('Article content validator with invalid article content', () => {
@@ -215,15 +214,15 @@ describe('Profile validators', async () => {
       const errors = req.validationErrors();
       expect(errors).to.equal(false);
     });
-  });
-  it('should validate valid ispublished value', async () => {
-    requestMock.body.ispublished = false;
-    await expressValidator(requestMock, {}, () => {
-      req = requestMock;
+    it('should validate valid ispublished value', async () => {
+      requestMock.body.ispublished = false;
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateIsPublished(req);
+      const errors = req.validationErrors();
+      expect(errors).to.equal(false);
     });
-    await validateIsPublished(req);
-    const errors = req.validationErrors();
-    expect(errors).to.equal(false);
   });
   describe('validateIsPublished with invalid option', () => {
     it('should not validate invalid ispublished value', async () => {
@@ -347,6 +346,19 @@ describe('Profile validators', async () => {
         }
         expect(errors[0].msg).to.equal('title must be unique for a particular user');
       });
+    });
+  });
+  describe('validate article tags', () => {
+    before(async () => {
+      requestMock.body.tag = tag.invalidTag;
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+    });
+    it('should not validate an invalid tagName', async () => {
+      validateTag(req);
+      const tagError = req.validationErrors();
+      expect(tagError).to.equal(false);
     });
   });
 });

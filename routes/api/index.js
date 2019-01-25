@@ -10,5 +10,6 @@ router.use('/users', require('./users'));
 router.use('/reaction', require('./commentsReaction'));
 router.use(require('./authRoutes'));
 router.use('/profile', require('./userProfile'));
+router.use('/', require('./tagsRoute'));
 
 module.exports = router;

@@ -76,7 +76,11 @@ const BAD_REQUEST_CODE = 400,
   NO_FOLLOWER = 'You currently don\'t have a follower',
   MY_FOLLOWEES = 'My Followers',
   MY_FOLLOWERS = 'Following',
-  UNAUTHORIZED_CODE_MESSAGE = 'You are not authorised to view this. Please sign up';
+  UNAUTHORIZED_CODE_MESSAGE = 'You are not authorised to view this. Please sign up',
+  INVALID_TAG_NAME = 'Tags can only start with a number, an alphabet or the # symbol',
+  FOUND_TAGS_MESSAGE = 'Below are the matching tags',
+  TAGS_NOT_FOUND = 'No tags with the matching string',
+  VALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNDE1ZTJlZmEtMTllNy0xMWU5LWFiMTQtZDY2M2JkODczZDkzIiwiaWF0IjoxNTQ3ODIxMjk2LCJleHAiOjE1NDc5MDc2OTZ9.DVwT7E9aU92ByHEw7GNn8URI-iZAR2VCLIY47dilOec';
 
 module.exports = {
   FROM,
@@ -156,5 +160,9 @@ module.exports = {
   NO_FOLLOWER,
   MY_FOLLOWEES,
   MY_FOLLOWERS,
-  UNAUTHORIZED_CODE_MESSAGE
+  UNAUTHORIZED_CODE_MESSAGE,
+  INVALID_TAG_NAME,
+  FOUND_TAGS_MESSAGE,
+  TAGS_NOT_FOUND,
+  VALID_TOKEN
 };
