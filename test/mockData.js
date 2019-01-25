@@ -209,6 +209,11 @@ returnedTag.push({
 });
 
 const tagArray = ['JavaScript', 'Java'];
+const contents = {
+  words200: faker.lorem.sentence(200),
+  words400: faker.lorem.sentence(400),
+  words1000: faker.lorem.sentence(1000)
+};
 
 module.exports = {
   token,
@@ -234,5 +239,6 @@ module.exports = {
   destroyData,
   tagArray,
   returnedTag,
-  invalidarticle
+  invalidarticle,
+  contents
 };
