@@ -53,7 +53,10 @@ const BAD_REQUEST_CODE = 400,
   VALIDATE_PHONENUMBER_ERROR = 'phonenumber must be a valid phone number that starts with \'+\'',
   VALIDATE_ARTICLE_CONTENT_ERROR = 'content is required',
   isRequiredError = fieldName => `${fieldName} is required`,
-  booleanError = fieldName => `${fieldName} must either be true or false`;
+  booleanError = fieldName => `${fieldName} must either be true or false`,
+  GET_USER_RATING = 'Get user rating successfully',
+  GET_USER_RATING_ERROR = 'One or both of articleId and userId not found',
+  RATING_CREATED = 'Your rating have been saved succesfully';
 
 module.exports = {
   FROM,
@@ -110,5 +113,8 @@ module.exports = {
   VALIDATE_USERNAME_ERROR,
   VALIDATE_ARTICLE_CONTENT_ERROR,
   isRequiredError,
-  booleanError
+  booleanError,
+  GET_USER_RATING,
+  GET_USER_RATING_ERROR,
+  RATING_CREATED
 };
