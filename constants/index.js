@@ -19,7 +19,7 @@ const BAD_REQUEST_CODE = 400,
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
   TOKEN_TIMESPAN = '1d',
   SERVER_ERROR_MESSAGE = 'Ooops! Something went wrong, kindly try again',
-  ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account',
+  ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account. In case you did not receive the activation link in your mail, kindly visit this link localhost:3000/api/v1/users/resend/activation/mail to resend the mail.',
   ALREADY_ACTIVATED_ERROR = 'Account is already activated',
   ACCOUNT_ACTIVATED = 'Your Account is Now Activated!',
   INVALID_USER = 'Invalid user',
@@ -85,7 +85,9 @@ const BAD_REQUEST_CODE = 400,
   COMMENT_OFFSET = 1,
   COMMENT_ERROR_MESSAGE = 'comment is required',
   PARAMS_ERROR_MESSAGE = 'must be UUID',
-  COMMENT_LIMIT = 5;
+  COMMENT_LIMIT = 5,
+  USER_NOT_FOUND_MESSAGE = 'User not found',
+  RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.';
 
 module.exports = {
   FROM,
@@ -174,5 +176,7 @@ module.exports = {
   COMMENT_OFFSET,
   COMMENT_ERROR_MESSAGE,
   PARAMS_ERROR_MESSAGE,
-  COMMENT_LIMIT
+  COMMENT_LIMIT,
+  USER_NOT_FOUND_MESSAGE,
+  RESEND_ACTIVATION_MAIL,
 };

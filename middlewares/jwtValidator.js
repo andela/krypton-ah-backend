@@ -15,7 +15,7 @@ const { failureResponse } = require('../lib/utils/messageHandler');
  * @returns {object} The status of response and body of the response.
  */
 const jwtValidator = (req, res, next) => {
-  const token = req.body.token || req.query.token || req.headers.authorization || req.params;
+  const token = req.body.token || req.query.token || req.headers.authorization || req.params.token;
 
   if (token) {
     try {

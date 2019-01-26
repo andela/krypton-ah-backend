@@ -3,6 +3,7 @@ const signupValidator = require('../../lib/utils/signupValidator');
 const checkEmail = require('../../middlewares/checkEmail');
 const authController = require('../../controllers/AuthController');
 const sendVerficationMail = require('../../lib/utils/emailService/emailVerification');
+
 /**
  * @swagger
  *

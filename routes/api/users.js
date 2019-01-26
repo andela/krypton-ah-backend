@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const Users = require('../../controllers/Users/userController'),
   FollowUsersController = require('../../controllers/FollowController'),
-  jwtValidator = require('../../middlewares/jwtValidator');
+  jwtValidator = require('../../middlewares/jwtValidator'),
+  resendMail = require('../../controllers/resendVerificationMailController'),
+  verifyNewUser = require('../../controllers/verificationEmailController'),
+  sendVerificationMail = require('../../lib/utils/emailService/emailVerification');
 
 /**
  * @swagger
@@ -225,5 +228,67 @@ router.get(
   '/following',
   FollowUsersController.following
 );
+
+/**
+ * @swagger
+ *
+ * /Resend account activation mail:
+ *   post:
+ *     description: resend new account activation link
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: email
+ *         description: user email to resend the activation link to
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: email
+ *     responses:
+ *       - 200:
+ *         description: resend new account activation link
+ *         message: Activation link has been sent to your mail, kindly activate your account 24hrs
+ *         activation token: token
+ *       - 400:
+ *         description: Already verified account
+ *         message: Account is already activated
+ *       - 404:
+ *         description: Unregistered user
+ *         message: User not found
+ *       - 500:
+ *         description: Server error
+ *         message: Ooops! Something went wrong, kindly try again
+ */
+router.post('/resend/activation/mail', resendMail, sendVerificationMail);
+
+
+/**
+ * @swagger
+ *
+ * /Verify new user account:
+ *   get:
+ *     description: Verify new user account
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: token
+ *         description: verification token sent to users email
+ *         in:  params
+ *         required: true
+ *         type: string
+ *         format: json web token
+ *     responses:
+ *       - 200:
+ *         description: resend new account activation link
+ *         message: Your Account is Now Activated!
+ *         login: token
+ *       - 400:
+ *         description: Already verified account
+ *         message: Account is already activated
+ *       - 500:
+ *         description: Server error
+ *         message: Ooops! Something went wrong, kindly try again
+ */
+router.get('/verifyemail/:token', jwtValidator, verifyNewUser);
 
 module.exports = router;

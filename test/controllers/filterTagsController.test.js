@@ -7,7 +7,7 @@ const {
   OK_CODE,
   NOT_FOUND_CODE,
 } = require('../../constants');
-const { options } = require('../testHelpers');
+const { options } = require('../testHelper');
 
 chai.use(sinonChai);
 
