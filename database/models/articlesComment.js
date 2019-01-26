@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const articlesComment = sequelize.define('articlesComment', {
+  const ArticlesComments = sequelize.define('ArticlesComments', {
     comment: {
       type: DataTypes.TEXT,
       allowNull: false
@@ -14,14 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     }
   });
-  articlesComment.associate = (models) => {
-    articlesComment.belongsTo(models.User, {
+  ArticlesComments.associate = (models) => {
+    ArticlesComments.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'user'
     });
-    articlesComment.belongsTo(models.Articles, {
+    ArticlesComments.belongsTo(models.Articles, {
       foreignKey: 'articleId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    ArticlesComments.hasMany(models.CommentsReactions, {
+      foreignKey: 'commentId'
     });
   };
-  return articlesComment;
+  return ArticlesComments;
 };

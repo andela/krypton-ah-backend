@@ -84,7 +84,7 @@ describe('Test make sure token fails when nothing is provided', () => {
       headers: {
         token: undefined
       },
-      params: undefined
+      params: { token: undefined }
     };
     const res = {
       status() {},

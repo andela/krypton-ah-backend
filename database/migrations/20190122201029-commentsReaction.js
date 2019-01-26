@@ -1,25 +1,14 @@
+/* eslint-disable no-unused-vars */
+
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('ArticlesComments', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('CommentsReactions', {
     id: {
       allowNull: false,
       primaryKey: true,
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4
     },
-    comment: {
-      type: Sequelize.TEXT,
-      allowNull: false
-    },
-    articleId: {
-      type: Sequelize.UUID,
-      onDelete: 'CASCADE',
-      foreignKey: true,
-      references: {
-        model: 'Articles',
-        key: 'id'
-      }
-    },
-    userId: {
+    UserId: {
       type: Sequelize.UUID,
       onDelete: 'CASCADE',
       foreignKey: true,
@@ -28,8 +17,17 @@ module.exports = {
         key: 'id'
       }
     },
-    mainCommentId: {
-      type: Sequelize.UUID
+    commentId: {
+      type: Sequelize.UUID,
+      onDelete: 'CASCADE',
+      foreignKey: true,
+      references: {
+        model: 'ArticlesComments',
+        key: 'id'
+      }
+    },
+    reaction: {
+      type: Sequelize.STRING
     },
     createdAt: {
       allowNull: false,
@@ -40,6 +38,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-
-  down: queryInterface => queryInterface.dropTable('ArticlesComments')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('CommentsReactions')
 };
