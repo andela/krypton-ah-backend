@@ -116,7 +116,7 @@ describe('Test for comment reaction controller', () => {
         }
       };
     });
-    after(() => {
+    afterEach(() => {
       destroyData();
     });
     it('Should create a new reaction', async () => {

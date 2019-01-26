@@ -25,7 +25,7 @@ const { expect } = require('chai'),
   UserModelManager = require('../../lib/modelManagers/usermodel'),
   articleModelManager = require('../../lib/modelManagers/articlemodel'),
   mockArticle = require('../mockData').article,
-  { userdata } = require('../mockData'),
+  { userdata3 } = require('../mockData'),
   { User } = require('../../database/models');
 
 describe('Profile validators', async () => {
@@ -291,10 +291,10 @@ describe('Profile validators', async () => {
     let req, newUserArticle;
     beforeEach('Create mockUser and mockArtile', async () => {
       const newUser = await UserModelManager.create(
-        userdata.email,
-        userdata.password,
-        userdata.firstname,
-        userdata.lastname
+        userdata3.email,
+        userdata3.password,
+        userdata3.firstname,
+        userdata3.lastname
       );
       const articleMock = mockArticle(newUser.id);
       articleMock.authorId = newUser.id;
