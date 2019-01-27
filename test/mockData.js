@@ -145,11 +145,15 @@ const updatearticle = authorid => ({
   authorId: authorid
 });
 
-const tag = {
+const tag = ({
   tag1: 'Andela',
   tag2: 'JavaScript',
-  tag3: 'Sequelize'
-};
+  tag3: 'Sequelize',
+  invalidTag: '*&come',
+  validTag: '#TIA',
+  tag4: 'Java'
+});
+
 const comment = (articleId, userId) => ({
   id: faker.random.uuid(),
   comment: 'This is a test title',
@@ -183,6 +187,16 @@ const destroyData = () => {
     where: {}
   });
 };
+const returnedTag = [];
+returnedTag.push({
+  dataValues:
+   {
+     tagName: 'JavaScript'
+   },
+});
+
+const tagArray = ['JavaScript', 'Java'];
+
 module.exports = {
   token,
   article,
@@ -203,5 +217,7 @@ module.exports = {
   badArticle,
   goodArticle,
   comment,
-  destroyData
+  destroyData,
+  tagArray,
+  returnedTag
 };

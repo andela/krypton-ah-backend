@@ -5,19 +5,24 @@ const sinonChai = require('sinon-chai');
 const sgMail = require('@sendgrid/mail');
 const emailTemplate = require('../../lib/utils/emailService/emailTemplate');
 const sendVerificationMail = require('../../lib/utils/emailService/emailVerification');
-const { FROM, SUBJECT, SERVER_ERROR_CODE } = require('../../constants');
+const {
+  FROM,
+  SUBJECT,
+  SERVER_ERROR_CODE,
+  RESOURCE_CREATED_CODE,
+  VALID_TOKEN
+} = require('../../constants');
 
 chai.use(sinonChai);
-const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNDE1ZTJlZmEtMTllNy0xMWU5LWFiMTQtZDY2M2JkODczZDkzIiwiaWF0IjoxNTQ3ODIxMjk2LCJleHAiOjE1NDc5MDc2OTZ9.DVwT7E9aU92ByHEw7GNn8URI-iZAR2VCLIY47dilOec';
 
 describe('Send Verification Email', () => {
   afterEach(sinon.restore);
   const req = {
-    jwtToken: validToken,
+    jwtToken: VALID_TOKEN,
     email: 'michael.i.owolabi@gmail.com'
   };
   const reqs = {
-    token: validToken
+    token: VALID_TOKEN
   };
   const res = {
     status() {},
@@ -25,7 +30,7 @@ describe('Send Verification Email', () => {
   };
   it('Should send verification mail to newly registered user', async () => {
     const baseUrl = process.env.APP_BASE_URL;
-    const hostUrl = `${baseUrl}/verifyemail/${validToken}`;
+    const hostUrl = `${baseUrl}/verifyemail/${VALID_TOKEN}`;
 
     const msg = {
       to: 'michael.i.owolabi@gmail.com',
@@ -37,6 +42,13 @@ describe('Send Verification Email', () => {
     sinon.stub(res, 'status').returnsThis();
     await sendVerificationMail(req, res);
     expect(sgMail.send).to.have.been.calledWith(msg);
+  });
+
+  it('Should send verification mail to newly registered user', async () => {
+    sinon.stub(sgMail, 'send').returns(true);
+    sinon.stub(res, 'status').returnsThis();
+    await sendVerificationMail(req, res);
+    expect(res.status).to.have.been.calledWith(RESOURCE_CREATED_CODE);
   });
 
   it('should not send a verification mail when email is not provided', async () => {
