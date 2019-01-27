@@ -1,0 +1,120 @@
+const articleModelManager = require('../../lib/modelManagers/articlemodel');
+const response = require('../../lib/utils/helper_function');
+const constants = require('../../constants');
+const generateSlug = require('../../lib/utils/slugGenerator');
+const generateTags = require('../../lib/utils/tagGenarator');
+
+/**
+ *
+ *
+ * @class ArticlesController
+ */
+class ArticlesController {
+  /**
+   * @static
+   * @returns { undefined } undefined
+   * @param {*} req
+   * @param {*} res
+   */
+  static async createArticles(req, res) {
+    const authorId = req.decodedToken.payLoad;
+    const slug = generateSlug(req.body.title, authorId.toString());
+    const articleDetails = { ...slug.slugs, authorId, ...req.body };
+    try {
+      const createdArticles = await articleModelManager.createArticle(articleDetails);
+      generateTags(req.body.tags, createdArticles.dataValues.id);
+      if (createdArticles) {
+        response.successResponse(res, constants.ARTICLES_CREATED, createdArticles);
+      }
+    } catch (error) {
+      response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE,
+      );
+    }
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @return {*} object
+   * @memberof ArticlesController
+   */
+  static async updateArticle(req, res) {
+    const id = req.decodedToken.payload;
+    const articleDetails = { ...id, ...req.body };
+    try {
+      const updatedArticle = await articleModelManager.updateArticle(articleDetails, req.params.id);
+      if (updatedArticle[0] === 0) {
+        response.failureResponse(res, constants.ARTICLES_UPDATE_FAILED);
+      } else {
+        response.successResponse(res, constants.ARTICLES_UPDATE_SUCCESS, updatedArticle);
+      }
+    } catch (error) {
+      response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE,
+      );
+    }
+  }
+
+
+  /**
+   *
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @return {*} object
+   * @memberof ArticlesController
+   */
+  static async getArticle(req, res) {
+    const { field, value } = req.params;
+    try {
+      const returnedArticle = await articleModelManager.getArticlesby(field, value);
+      if (returnedArticle) {
+        response.successResponse(res, constants.ARTICLES_RETRIEVAL_SUCCESS, returnedArticle);
+      }
+    } catch (error) {
+      response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE,
+      );
+    }
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} object
+   * @memberof ArticlesController
+   */
+  static async deleteArticle(req, res) {
+    const { id } = req.params;
+    try {
+      const deletedArticle = await articleModelManager.deleteArticle(id);
+      if (deletedArticle === 0) {
+        response.failureResponse(res, constants.ARTICLES_DELETION_FAILURE);
+      } else {
+        response.successResponse(res, constants.ARTICLES_DELETION_SUCCESS, deletedArticle);
+      }
+    } catch (error) {
+      response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE,
+      );
+    }
+  }
+}
+
+module.exports = ArticlesController;
