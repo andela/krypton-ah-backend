@@ -1,7 +1,7 @@
 const readTimeCalculator = require('../lib/utils/readTimeCalculator');
 
 const calculateReadTime = (req, res, next) => {
-  req.body.readtime = readTimeCalculator(req.body.content);
+  req.body.readTime = readTimeCalculator(req.body.content);
   next();
 };
 

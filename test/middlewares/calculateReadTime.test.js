@@ -11,6 +11,6 @@ describe('calculateReadTime middleware', () => {
     requestMock.body.content = contents.words200;
     calculateReadTime(requestMock, responseMock, nextMock.next);
     expect(nextStub.called).to.equal(true);
-    expect(requestMock.body.readtime).to.equal(1);
+    expect(requestMock.body.readTime).to.equal(1);
   });
 });

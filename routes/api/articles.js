@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const ArticlesController = require('../../controllers/Articles/articlesController');
 const verify = require('../../middlewares/jwtValidator');
+const articleValidator = require('../../middlewares/articleValidator');
+const calculateReadTime = require('../../middlewares/calculateReadTime');
 
 /**
  * @swagger
@@ -58,7 +60,7 @@ const verify = require('../../middlewares/jwtValidator');
  *
  *
  */
-router.post('/', verify, ArticlesController.createArticles);
+router.post('/', verify, articleValidator, calculateReadTime, ArticlesController.createArticles);
 
 /**
  * @swagger
@@ -119,7 +121,7 @@ router.post('/', verify, ArticlesController.createArticles);
  *
  *
  */
-router.put('/:id', verify, ArticlesController.updateArticle);
+router.put('/:id', verify, articleValidator, calculateReadTime, ArticlesController.updateArticle);
 
 /**
  * @swagger
