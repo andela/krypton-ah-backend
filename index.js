@@ -56,13 +56,6 @@ app.use(require('./routes'));
  */
 app.get('/', (req, res) => res.status(200).send('Test Successful'));
 
-// / catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${server.address().port}`);

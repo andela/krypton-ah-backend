@@ -1,5 +1,7 @@
 const router = require('express').Router();
-const Users = require('../../controllers/Users/userController');
+const Users = require('../../controllers/Users/userController'),
+  FollowUsersController = require('../../controllers/FollowController'),
+  jwtValidator = require('../../middlewares/jwtValidator');
 
 /**
  * @swagger
@@ -46,5 +48,182 @@ const Users = require('../../controllers/Users/userController');
  *                 type: array
  */
 router.get('/', Users.listUsers);
+
+/**
+ * @swagger
+ * /:id/follow:
+ *   post:
+ *     summary: Follow a user
+ *     description: It allows an authorized user to follow another author
+ *     tags:
+ *       - Get an author page
+ *     parameters:
+ *       - in: query
+ *         name: offset
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *       - name: limit
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *     responses:
+ *       200:
+ *         description: Successfully followed an author
+ *         schema:
+ *           type: strig
+ *           properties:
+ *             users:
+ *               type: string
+ *               description: flag a success message
+ *               items:
+ *                 type: string
+ *       400:
+ *         description: Invalid user
+ *         schema:
+ *           type: object
+ *           properties:
+ *             users:
+ *               type: string
+ *               description: no author returned
+ *               items:
+ *                 type: string
+ */
+router.post(
+  '/:id/follow',
+  jwtValidator,
+  FollowUsersController.follow
+);
+
+/**
+ * @swagger
+ * /:id/unfollow:
+ *   delete:
+ *     summary: Unfollow a user
+ *     description: It enables author to unfollow each other
+ *     tags:
+ *       - Delete following
+ *     parameters:
+ *       - in: query
+ *         name: offset
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *       - name: no limit
+ *         type: integer
+ *         required: follower and followee Id
+ *         enum:
+ *           - yes
+ *           - no
+ *     responses:
+ *       200:
+ *         description: Successfully followed an author
+ *         schema:
+ *           type: strig
+ *           properties:
+ *             users:
+ *               type: string
+ *               description: flag a success message
+ *               items:
+ *                 type: string
+ *       404:
+ *         description: Invalid user
+ *         schema:
+ *           type: object
+ *           properties:
+ *             users:
+ *               type: string
+ *               description: no author returned
+ *               items:
+ *                 type: string
+ */
+router.delete(
+  '/:id/unfollow',
+  jwtValidator,
+  FollowUsersController.unfollow
+);
+
+/**
+ * @swagger
+ * /followees/?id=:
+ *   get:
+ *     summary: Get all followers
+ *     description: Get the user followers
+ *     tags:
+ *       - my followers
+ *     parameters:
+ *       - in: query
+ *         name: offset
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *       - name: limit
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *     responses:
+ *       200:
+ *         description: Successfully fetch user followees
+ *         schema:
+ *           type: object
+ *           properties:
+ *             users:
+ *               type: string
+ *               description:
+ *               items:
+ *                 type: string
+ */
+router.get(
+  '/followers',
+  FollowUsersController.followers
+);
+/**
+ * @swagger
+ * following:
+ *   get:
+ *     summary: Get all user followees
+ *     description: Display all the users that the current user is following
+ *     tags:
+ *       - my followees
+ *     parameters:
+ *       - in: query
+ *         name: offset
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *       - name: limit
+ *         type: integer
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *     responses:
+ *       200:
+ *         description: Successfully fetch user followees
+ *         schema:
+ *           type: object
+ *           properties:
+ *             users:
+ *               type: string
+ *               description:
+ *               items:
+ *                 type: string
+ */
+router.get(
+  '/following',
+  FollowUsersController.following
+);
 
 module.exports = router;

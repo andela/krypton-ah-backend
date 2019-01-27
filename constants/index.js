@@ -65,7 +65,18 @@ const BAD_REQUEST_CODE = 400,
   LIKE = 'like',
   SEQUELIZE_ERROR = 'SequelizeDatabaseError',
   SEQUELIZE_FK_ERROR = 'SequelizeForeignKeyConstraintError',
-  REACTIONS = ['like', 'dislike'];
+  REACTIONS = ['like', 'dislike'],
+  ALREADY_FOLLOWING_AUTHOR = 'You are already following this author',
+  FOLLOW_SELF = 'You cannot follow yourself',
+  NOW_FOLLOWING_USER = 'You are now following this author',
+  UNFOLLOW_USER_MESSAGE = 'You have successfully unfollowed this Author',
+  UNFOLLOW_SELF = 'You cannot unfollow yourself',
+  NOT_FOUND_CODE_MESSAGE = 'User not found',
+  NO_FOLLOWING = 'You are currently not following any user',
+  NO_FOLLOWER = 'You currently don\'t have a follower',
+  MY_FOLLOWEES = 'My Followers',
+  MY_FOLLOWERS = 'Following',
+  UNAUTHORIZED_CODE_MESSAGE = 'You are not authorised to view this. Please sign up';
 
 module.exports = {
   FROM,
@@ -134,5 +145,16 @@ module.exports = {
   GET_USER_RATING,
   GET_USER_RATING_ERROR,
   RATING_CREATED,
-  LIKE
+  LIKE,
+  ALREADY_FOLLOWING_AUTHOR,
+  FOLLOW_SELF,
+  NOW_FOLLOWING_USER,
+  UNFOLLOW_USER_MESSAGE,
+  UNFOLLOW_SELF,
+  NOT_FOUND_CODE_MESSAGE,
+  NO_FOLLOWING,
+  NO_FOLLOWER,
+  MY_FOLLOWEES,
+  MY_FOLLOWERS,
+  UNAUTHORIZED_CODE_MESSAGE
 };

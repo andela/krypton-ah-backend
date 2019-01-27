@@ -1,10 +1,11 @@
-const generateUserToken = require('../lib/utils/generateToken'),
-  User = require('../lib/modelManagers/usermodel'),
+const User = require('../lib/modelManagers/usermodel'),
+  { generateToken } = require('../lib/utils/jwtUtil'),
   {
     OK_CODE,
-    CREATED_CODE,
+    RESOURCE_CREATED_CODE,
     BAD_REQUEST_CODE,
     INVALID_USER,
+    TOKEN_TIMESPAN,
     WELCOME_EXISTING_USER,
     WELCOME_NEW_USER
   } = require('../constants/index');
@@ -47,16 +48,13 @@ class SocialMediaController {
     if (!req.user) {
       return res.status(BAD_REQUEST_CODE).send(INVALID_USER);
     }
-    const { id, email, created } = req.user;
-    const time = {
-      expiresIn: '24h'
-    };
-    const token = await generateUserToken({ id, email }, time);
+    const { id, created } = req.user.user;
+    const token = await generateToken(TOKEN_TIMESPAN, id);
     const userDetails = Object.assign({}, req.user, {
       msg: created ? WELCOME_NEW_USER : WELCOME_EXISTING_USER,
       token
     });
-    const status = created ? CREATED_CODE : OK_CODE;
+    const status = created ? RESOURCE_CREATED_CODE : OK_CODE;
     res.status(status).send(userDetails);
   }
 }
