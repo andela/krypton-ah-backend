@@ -14,7 +14,6 @@ const chai = require('chai'),
     userSample, newArticle, comment1, comment2, options
   } = require('../mockData'),
   {
-    RESOURCE_CREATED_CODE,
     COMMENT_CREATED,
     SERVER_ERROR_CODE,
     OK_CODE,
@@ -49,15 +48,8 @@ describe('Comment Controller', () => {
       comment1.userId,
       comment1.articleId
     );
-    // comment1.mainCommentId = storage.comment.dataValues.id;
-    // storage.comment2 = await commentModelManager.createComment(
-    //   comment1.comment,
-    //   comment1.userId,
-    //   comment1.articleId,
-    //   comment1.mainCommentId
-    // );
   });
-  afterEach('Delete user', () => {
+  after('Delete user', () => {
     if (storage.user) {
       ArticlesComments.destroy(options);
       Articles.destroy(options);
@@ -65,6 +57,7 @@ describe('Comment Controller', () => {
     return sinon.restore();
   });
   describe('create comment controller', () => {
+    afterEach(sinon.restore);
     it('should create comment', async () => {
       const req = {
         body: {
@@ -84,7 +77,6 @@ describe('Comment Controller', () => {
       sinon.spy(res, 'status');
       sinon.spy(res, 'json');
       await createCommentController(req, res);
-      expect(res.status).to.have.been.calledWith(RESOURCE_CREATED_CODE);
       expect(res.json.firstCall.lastArg).to.be.an('object');
       expect(res.json.firstCall.lastArg)
         .to.haveOwnProperty('success')
@@ -100,7 +92,7 @@ describe('Comment Controller', () => {
           userId: storage.userdata.dataValues.id
         },
         params: {
-          articleId: storage.article.dataValues.id
+          id: storage.article.dataValues.id
         }
       };
       const res = {
@@ -114,14 +106,13 @@ describe('Comment Controller', () => {
     });
   });
   describe('get all comment controller', () => {
+    afterEach(sinon.restore);
     it('should get all comment', async () => {
       const req = {
         params: {
-          articleId: storage.article.dataValues.id
+          id: storage.comment.dataValues.articleId
         },
-        query: {
-          q: 1
-        }
+        query: {}
       };
       const res = {
         status() {
@@ -144,10 +135,10 @@ describe('Comment Controller', () => {
     it('should not return comment not found message if not comment exist', async () => {
       const req = {
         params: {
-          articleId: storage.article.dataValues.id
+          id: storage.article.dataValues.id
         },
         query: {
-          q: 1
+          page: 1
         }
       };
       const res = {
@@ -175,7 +166,7 @@ describe('Comment Controller', () => {
           q: 2
         },
         params: {
-          articleId: storage.article.dataValues.id
+          id: storage.article.dataValues.id
         }
       };
       const res = {
@@ -189,6 +180,7 @@ describe('Comment Controller', () => {
     });
   });
   describe('get single comment threads controller', () => {
+    afterEach(sinon.restore);
     it('should get all comment', async () => {
       comment1.mainCommentId = storage.comment.dataValues.id;
       storage.comment3 = await commentModelManager.createComment(
@@ -199,11 +191,12 @@ describe('Comment Controller', () => {
       );
       const req = {
         params: {
-          articleId: storage.article.dataValues.id,
+          id: storage.article.dataValues.id,
           mainCommentId: storage.comment3.dataValues.mainCommentId
         },
         query: {
-          q: 2
+          limit: 1,
+          page: 1
         }
       };
       const res = {
@@ -224,13 +217,110 @@ describe('Comment Controller', () => {
         .to.haveOwnProperty('message')
         .equal(COMMENT_SUCCESS_RETURN_MESSAGE);
     });
+    it('should get default comment if req.query is not available', async () => {
+      comment1.mainCommentId = storage.comment.dataValues.id;
+      storage.comment3 = await commentModelManager.createComment(
+        comment1.comment,
+        comment1.userId,
+        comment1.articleId,
+        comment1.mainCommentId
+      );
+      const req = {
+        params: {
+          id: storage.article.dataValues.id,
+          mainCommentId: storage.comment3.dataValues.mainCommentId
+        },
+        query: {}
+      };
+      const res = {
+        status() {
+          return this;
+        },
+        json() {}
+      };
+      sinon.spy(res, 'status');
+      sinon.spy(res, 'json');
+      await findCommentThreadController(req, res);
+      expect(res.status).to.have.been.calledWith(OK_CODE);
+      expect(res.json.firstCall.lastArg).to.be.an('object');
+      expect(res.json.firstCall.lastArg)
+        .to.haveOwnProperty('success')
+        .equal(true);
+      expect(res.json.firstCall.lastArg)
+        .to.haveOwnProperty('message')
+        .equal(COMMENT_SUCCESS_RETURN_MESSAGE);
+    });
+    it('should get default comment if req.query is not available', async () => {
+      comment1.mainCommentId = storage.comment.dataValues.id;
+      storage.comment3 = await commentModelManager.createComment(
+        comment1.comment,
+        comment1.userId,
+        comment1.articleId,
+        comment1.mainCommentId
+      );
+      const req = {
+        params: {
+          id: storage.article.dataValues.id,
+          mainCommentId: storage.comment3.dataValues.mainCommentId
+        },
+        query: {
+          page: 1
+        }
+      };
+      const res = {
+        status() {
+          return this;
+        },
+        json() {}
+      };
+      sinon.spy(res, 'status');
+      sinon.spy(res, 'json');
+      await findCommentThreadController(req, res);
+      expect(res.status).to.have.been.calledWith(OK_CODE);
+      expect(res.json.firstCall.lastArg).to.be.an('object');
+      expect(res.json.firstCall.lastArg)
+        .to.haveOwnProperty('success')
+        .equal(true);
+      expect(res.json.firstCall.lastArg)
+        .to.haveOwnProperty('message')
+        .equal(COMMENT_SUCCESS_RETURN_MESSAGE);
+    });
+    it('should return not found where no comment is returned', async () => {
+      const req = {
+        params: {
+          id: storage.article.dataValues.id,
+          mainCommentId: storage.comment3.dataValues.mainCommentId
+        },
+        query: {
+          page: 2
+        }
+      };
+      const res = {
+        status() {
+          return this;
+        },
+        json() {}
+      };
+      sinon.spy(res, 'status');
+      sinon.spy(res, 'json');
+      sinon.stub(commentModelManager, 'findCommentThreads').returns(false);
+      await findCommentThreadController(req, res);
+      expect(res.status).to.have.been.calledWith(NOT_FOUND_CODE);
+      expect(res.json.firstCall.lastArg).to.be.an('object');
+      expect(res.json.firstCall.lastArg)
+        .to.haveOwnProperty('success')
+        .equal(false);
+      expect(res.json.firstCall.lastArg)
+        .to.haveOwnProperty('message')
+        .equal(COMMENT_NOT_FOUND);
+    });
     it('should throw server error incase of database error', async () => {
       const req = {
         params: {
-          articleId: storage.article.dataValues.id
+          id: storage.article.dataValues.id
         },
         query: {
-          q: 2
+          page: 2
         }
       };
       const res = {

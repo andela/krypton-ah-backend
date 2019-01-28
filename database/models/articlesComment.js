@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const ArticlesComments = sequelize.define('ArticlesComments', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
     comment: {
       type: DataTypes.TEXT,
       allowNull: false
@@ -19,10 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'user'
     });
-    ArticlesComments.belongsTo(models.Articles, {
-      foreignKey: 'articleId',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+    ArticlesComments.hasMany(ArticlesComments, {
+      foreignKey: 'mainCommentId',
+      as: 'threads'
     });
     ArticlesComments.hasMany(models.CommentsReactions, {
       foreignKey: 'commentId'
