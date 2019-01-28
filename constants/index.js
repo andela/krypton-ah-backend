@@ -85,7 +85,14 @@ const BAD_REQUEST_CODE = 400,
   COMMENT_OFFSET = 1,
   COMMENT_ERROR_MESSAGE = 'comment is required',
   PARAMS_ERROR_MESSAGE = 'must be UUID',
-  COMMENT_LIMIT = 5;
+  COMMENT_LIMIT = 5,
+  BOOKMARKED = 'Article bookmarked succesfully',
+  NO_BOOKMARK = 'No article bookmarked yet',
+  REMOVE_BOOKMARK = 'Article removed successfully',
+  BOOKMARK_RETRIEVED = 'Articles Retrieved Successfully',
+  BOOKMARKED_ALREADY = 'Article already bookmarked',
+  ARTICLE_NOT_FOUND = 'Article does not exist',
+  BOOKMARK_NOT_FOUND = 'Article not found in users bookmark';
 
 module.exports = {
   FROM,
@@ -174,5 +181,12 @@ module.exports = {
   COMMENT_OFFSET,
   COMMENT_ERROR_MESSAGE,
   PARAMS_ERROR_MESSAGE,
-  COMMENT_LIMIT
+  COMMENT_LIMIT,
+  BOOKMARKED,
+  NO_BOOKMARK,
+  REMOVE_BOOKMARK,
+  BOOKMARK_RETRIEVED,
+  BOOKMARKED_ALREADY,
+  BOOKMARK_NOT_FOUND,
+  ARTICLE_NOT_FOUND
 };
