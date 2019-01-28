@@ -5,7 +5,8 @@ const chai = require('chai'),
   jwtUtil = require('../../lib/utils/jwtUtil'),
   expirationTime = '1h',
   payLoad = '1576a842-7ceb-4848-9a9c-2c925ba959d1',
-  socialMediaController = require('../../controllers/socialLoginControllers');
+  { socailLoginsCallback, getUserToken } = require('../../controllers/socialLoginControllers'),
+  User = require('../../lib/modelManagers/usermodel');
 
 chai.use(sinonChai);
 const { expect, should } = chai;
@@ -30,7 +31,7 @@ describe('Verfied social user', () => {
       send() {},
     };
     sinon.stub(res, 'status').returnsThis();
-    await socialMediaController.getUserToken(req, res);
+    await getUserToken(req, res);
     expect(res.status).to.have.been.calledWith(200);
   });
   it('should return an error when a user is not valid', async () => {
@@ -41,7 +42,7 @@ describe('Verfied social user', () => {
       send() {},
     };
     sinon.stub(res, 'status').returnsThis();
-    await socialMediaController.getUserToken(req, res);
+    await getUserToken(req, res);
     expect(res.status).to.have.been.calledWith(400);
   });
 
@@ -103,5 +104,27 @@ describe('Verfied social user', () => {
     expect(res).to.be.an('object');
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
+  });
+  it('should return user detail from the social media', async () => {
+    let accessToken, refreshToken;
+    const profile = {
+      displayName: 'Afolayan kunle',
+      emails: [{ value: 'iafolayan@gmail.com' }]
+    };
+    const done = () => { };
+    await socailLoginsCallback(accessToken, refreshToken, profile, done);
+    expect(done).to.be.a('function');
+    expect(profile).to.be.an('object');
+    expect(profile.displayName).to.be.a('string');
+  });
+  it('should display user information from the database', async () => {
+    const emails = [{ value: 'iafolayan@gmail.com' }];
+    const name = ['Afoolayan', 'Isaiah'];
+    const query = await User.findOrCreateUser(emails, name);
+    expect(query[0].dataValues).to.haveOwnProperty('email');
+    expect(query[0].dataValues).to.haveOwnProperty('password');
+    expect(query[0].dataValues).to.haveOwnProperty('firstname');
+    expect(query[0].dataValues).to.haveOwnProperty('lastname');
+    expect(query[0].dataValues).to.haveOwnProperty('isverified').to.be.eql(true);
   });
 });
