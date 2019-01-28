@@ -53,15 +53,6 @@ const userdata3 = {
   isverified: true
 };
 
-const userdata4 = {
-  id: faker.random.uuid(),
-  email: faker.internet.email(),
-  password: 'password',
-  firstname: 'firstname',
-  lastname: 'lastname',
-  isverified: true
-};
-
 const fakeUserData = {
   id: faker.random.uuid(),
   email: 'jjk@hjh.com',
@@ -115,22 +106,13 @@ const article = authorid => ({
   description: faker.lorem.sentence(10, 20),
   content: faker.lorem.paragraph(30),
   featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
-  averageRating: 0,
+  averageRating: faker.random.number(5),
   slug: faker.helpers.slugify('title'),
-  readTime: 0,
+  readTime: faker.random.number(),
   authorId: authorid
 });
 
-const invalidarticle = authorid => ({
-  title: 'this is an invlaid article',
-  description: faker.lorem.sentence(10, 20),
-  content: faker.lorem.paragraph(30),
-  featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
-  averageRating: 0,
-  Slug: faker.helpers.slugify('title'),
-  readTime: 0,
-  authorId: authorid
-});
+// here
 
 const newArticle = {
   title: 'This is a test title',
@@ -142,7 +124,6 @@ const newArticle = {
   readTime: faker.random.number(),
   authorId: faker.random.uuid()
 };
-
 const goodArticle = authorid => ({
   title: 'New title',
   description: faker.lorem.sentence(10, 20),
@@ -170,21 +151,17 @@ const updatearticle = authorid => ({
   description: faker.lorem.sentence(10, 20),
   content: faker.lorem.paragraph(30),
   featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
-  averageRating: 0,
+  averageRating: faker.random.number(5),
   Slug: faker.helpers.slugify('title'),
-  readTime: 0,
+  readTime: faker.random.number(),
   authorId: authorid
 });
 
 const tag = {
   tag1: 'Andela',
   tag2: 'JavaScript',
-  tag3: 'Sequelize',
-  invalidTag: '*&come',
-  validTag: '#TIA',
-  tag4: 'Java'
+  tag3: 'Sequelize'
 };
-
 const userSample = {
   email: faker.internet.email(),
   password: 'ABCabc123',
@@ -219,16 +196,9 @@ const reaction = (commentId, UserId) => ({
   updatedAt: faker.date.recent()
 });
 
-const articleReaction = (articleId, userId) => ({
-  id: faker.random.uuid(),
-  articleId,
-  userId,
-  reaction: 'like',
-  createdAt: faker.date.recent(),
-  updatedAt: faker.date.recent()
-});
-
-const tags = { tag: 'Andela, JavaScript,Sequelize' };
+const options = {
+  where: {}
+};
 
 const destroyData = () => {
   User.destroy({
@@ -247,24 +217,6 @@ const destroyData = () => {
     where: {}
   });
 };
-const returnedTag = [];
-returnedTag.push({
-  dataValues: {
-    tagName: 'JavaScript'
-  }
-});
-
-const tagArray = ['JavaScript', 'Java'];
-const contents = {
-  words200: faker.lorem.sentence(200),
-  words400: faker.lorem.sentence(400),
-  words1000: faker.lorem.sentence(1000)
-};
-
-const options = {
-  where: {}
-};
-
 module.exports = {
   token,
   article,
@@ -277,26 +229,19 @@ module.exports = {
   userdata2,
   userdata3,
   userprofile,
-  articleReaction,
   userprofile2,
   userprofile3,
-  userdata4,
   negativequery,
   fakeUserData,
   tag,
-  tags,
   badArticle,
   goodArticle,
   comment,
-  destroyData,
-  tagArray,
-  returnedTag,
-  invalidarticle,
-  contents,
-  options,
-  newArticle,
-  userSample,
   comment1,
   comment2,
-  comment3
+  comment3,
+  destroyData,
+  options,
+  userSample,
+  newArticle
 };

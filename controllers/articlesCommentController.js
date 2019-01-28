@@ -7,8 +7,7 @@ const Comment = require('../lib/modelManagers/articlesComment'),
     SERVER_ERROR_CODE,
     SERVER_ERROR_MESSAGE,
     COMMENT_NOT_FOUND,
-    NOT_FOUND_CODE,
-    COMMENT_LIMIT
+    NOT_FOUND_CODE
   } = require('../constants'),
   pagination = require('../lib//utils/pagination/paginationHelper'),
   { successResponse, failureResponse } = require('../lib/utils/messageHandler');
@@ -23,8 +22,8 @@ const Comment = require('../lib/modelManagers/articlesComment'),
 async function createCommentController(req, res) {
   try {
     const { comment, userId, mainCommentId } = req.body;
-    const { articleId } = req.params;
-    const comments = await Comment.createComment(comment, userId, articleId, mainCommentId);
+    const { id } = req.params;
+    const comments = await Comment.createComment(comment, userId, id, mainCommentId);
     return successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
   } catch (error) {
     return failureResponse(res, SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
@@ -40,14 +39,11 @@ async function createCommentController(req, res) {
  */
 async function findCommentController(req, res) {
   try {
-    const { articleId } = req.params;
-    let { page } = req.query;
-    if (!page) {
-      page = 1;
-    }
-    const query = { offset: page / page, limit: COMMENT_LIMIT * page };
+    const { id } = req.params;
+    const { limit, page } = req.query;
+    const query = { offset: page, limit };
     const paginate = pagination(query);
-    const comments = await Comment.findAllComment(articleId, paginate.limit, paginate.offset);
+    const comments = await Comment.findAllComment(id, paginate.limit, paginate.offset);
     if (!comments[0]) {
       return failureResponse(res, COMMENT_NOT_FOUND, NOT_FOUND_CODE);
     }
@@ -70,15 +66,12 @@ async function findCommentController(req, res) {
  */
 async function findCommentThreadController(req, res) {
   try {
-    const { articleId, mainCommentId } = req.params;
-    let { page } = req.query;
-    if (!page) {
-      page = 1;
-    }
-    const query = { offset: page / page, limit: COMMENT_LIMIT * page };
+    const { id, mainCommentId } = req.params;
+    const { limit, page } = req.query;
+    const query = { offset: page, limit };
     const paginate = pagination(query);
     const commentThread = await Comment.findCommentThreads(
-      articleId,
+      id,
       mainCommentId,
       paginate.limit,
       paginate.offset
@@ -86,9 +79,6 @@ async function findCommentThreadController(req, res) {
     if (!commentThread) {
       return failureResponse(res, COMMENT_NOT_FOUND, NOT_FOUND_CODE);
     }
-    console.log('commentThread--->>>', commentThread);
-    console.log('articleId--->>>', articleId);
-    console.log('mainCommentId--->>>', mainCommentId);
     return successResponse(res, COMMENT_SUCCESS_RETURN_MESSAGE, OK_CODE, commentThread);
   } catch (error) {
     return failureResponse(res, SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
