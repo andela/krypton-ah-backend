@@ -15,7 +15,7 @@ const {
 } = require('../mockData');
 const {
   email, password, firstname, lastname
-} = require('../mockData').userdata;
+} = require('../mockData').userdata4;
 
 let newUser, newArticle, newComment, newReaction;
 chai.use(sinonChai);

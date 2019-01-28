@@ -4,6 +4,7 @@ const { expect } = require('chai');
 
 const User = require('../../database/models/user');
 const Article = require('../../database/models/articles');
+const ArticlesReactions = require('../../database/models/articlesReaction');
 
 describe('Test Article Model', () => {
   const articles = Article(sequelize, dataTypes);
@@ -53,10 +54,16 @@ describe('Test Article Model', () => {
         articles.associate({
           User
         });
+        articles.associate({
+          ArticlesReactions
+        });
       });
 
       it('should have a belongsTo association with UserModel', () => {
         expect(articles.belongsTo.calledWith(User)).to.equal(true);
+      });
+      it('should have a hasMany association with ArticleReaction model', () => {
+        expect(articles.hasMany.calledWith(ArticlesReactions)).to.equal(true);
       });
     });
   });
