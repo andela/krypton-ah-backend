@@ -80,7 +80,8 @@ const BAD_REQUEST_CODE = 400,
   INVALID_TAG_NAME = 'Tags can only start with a number, an alphabet or the # symbol',
   FOUND_TAGS_MESSAGE = 'Below are the matching tags',
   TAGS_NOT_FOUND = 'No tags with the matching string',
-  VALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNDE1ZTJlZmEtMTllNy0xMWU5LWFiMTQtZDY2M2JkODczZDkzIiwiaWF0IjoxNTQ3ODIxMjk2LCJleHAiOjE1NDc5MDc2OTZ9.DVwT7E9aU92ByHEw7GNn8URI-iZAR2VCLIY47dilOec';
+  VALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNDE1ZTJlZmEtMTllNy0xMWU5LWFiMTQtZDY2M2JkODczZDkzIiwiaWF0IjoxNTQ3ODIxMjk2LCJleHAiOjE1NDc5MDc2OTZ9.DVwT7E9aU92ByHEw7GNn8URI-iZAR2VCLIY47dilOec',
+  AVERAGE_READ_TIME = 200;
 
 module.exports = {
   FROM,
@@ -164,5 +165,6 @@ module.exports = {
   INVALID_TAG_NAME,
   FOUND_TAGS_MESSAGE,
   TAGS_NOT_FOUND,
-  VALID_TOKEN
+  VALID_TOKEN,
+  AVERAGE_READ_TIME
 };
