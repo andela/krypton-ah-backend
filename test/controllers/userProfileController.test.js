@@ -36,7 +36,7 @@ describe('User profile controller', () => {
     it('should successfully create user profile', async () => {
       const req = {
         decodedToken: {
-          userId: dataStore.newUser.id
+          payLoad: dataStore.newUser.id
         },
         body: {
           ...userProfileMock

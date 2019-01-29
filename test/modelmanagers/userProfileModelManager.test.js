@@ -46,7 +46,32 @@ describe('User Profile Model Manager', async () => {
       expect(dataStore.user.userprofile.gender).to.equal(gender);
       expect(dataStore.user.userprofile.emailnotification).to.equal(emailnotification);
     });
+
+    it('should get the users profile created', async () => {
+      userProfileMock.userId = dataStore.newUser.id;
+      await UserProfileModelManager.getUserDetails('UserId', userProfileMock.userId);
+      const {
+        avatar,
+        userId,
+        bio,
+        username,
+        country,
+        phonenumber,
+        gender,
+        emailnotification
+      } = userProfileMock;
+      expect(dataStore.user.userprofile.avatar).to.equal(avatar);
+      expect(dataStore.user.userprofile.UserId).to.equal(userId);
+      expect(dataStore.user.userprofile.bio).to.equal(bio);
+      expect(dataStore.user.userprofile.username).to.equal(username);
+      expect(dataStore.user.userprofile.country).to.equal(country);
+      expect(dataStore.user.userprofile.phonenumber).to.equal(phonenumber);
+      expect(dataStore.user.userprofile.gender).to.equal(gender);
+      expect(dataStore.user.userprofile.emailnotification).to.equal(emailnotification);
+    });
   });
+
+
   describe('Update user profile', async () => {
     before(async () => {
       const newUser = await UserModelManager.create(

@@ -13,6 +13,7 @@ const BAD_REQUEST_CODE = 400,
   OFFSET = 1,
   RESET_REACTION = 'Reaction removed successfully',
   SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
+  NEW_ARTICLE_SUBJECT = 'New article by followed author',
   FROM = 'no-reply@authorshaven.com',
   UNAUTHORIZED_REQUEST = 'Unauthorized request',
   JWT_EXPIRED = 'The token provided has expired',
@@ -196,5 +197,6 @@ module.exports = {
   USER_NOT_FOUND_MESSAGE,
   RESEND_ACTIVATION_MAIL,
   GET_USER_READSTAT_FAILED,
-  GET_USER_READSTAT_SUCCESS
+  GET_USER_READSTAT_SUCCESS,
+  NEW_ARTICLE_SUBJECT
 };

@@ -6,7 +6,8 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
   jwtValidator = require('../../middlewares/jwtValidator'),
   paramsValidator = require('../../lib/utils/paramsValidator'),
   commentValidator = require('../../lib/utils/commentValidator'),
-  commentController = require('../../controllers/articlesCommentController');
+  commentController = require('../../controllers/articlesCommentController'),
+  emailNotification = require('../../middlewares/emailNotification');
 
 /**
  * @swagger
@@ -64,7 +65,7 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
  *
  *
  */
-router.post('/', verify, articleValidator, calculateReadTime, ArticlesController.createArticles);
+router.post('/', verify, articleValidator, calculateReadTime, ArticlesController.createArticles, emailNotification.notifyFollowers);
 
 /**
  * @swagger

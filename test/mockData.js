@@ -97,7 +97,7 @@ const userprofile2 = {
   bio: faker.name.jobType(),
   phonenumber: faker.phone.phoneNumber(),
   gender: 'M',
-  emailnotification: faker.random.boolean(),
+  emailnotification: true,
   createdAt: faker.date.recent(),
   updatedAt: faker.date.recent()
 };
@@ -110,7 +110,7 @@ const userprofile3 = {
   bio: faker.name.jobType(),
   phonenumber: faker.phone.phoneNumber(),
   gender: 'M',
-  emailnotification: faker.random.boolean(),
+  emailnotification: true,
   createdAt: faker.date.recent(),
   updatedAt: faker.date.recent()
 };

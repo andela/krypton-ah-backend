@@ -28,6 +28,9 @@ describe('Articles controller', () => {
     });
   });
   before(async () => {
+    user.destroy({
+      where: {}
+    });
     res = await user.create(constants.userdata3).then(async (newUser) => {
       await userprofile.create(constants.userprofile3);
       return newUser;
@@ -45,16 +48,21 @@ describe('Articles controller', () => {
       body: {
         ...testArticle
       }
+
+
     };
     const res = {
-      status: () => {},
-      json: () => {}
+      status() { return this; },
+      json() { }
     };
-    const statusStub = sinon.stub(res, 'status').returnsThis();
-    const jsonStub = sinon.stub(res, 'json').returnsThis();
-    await ArticlesController.createArticles(req, res);
-    expect(statusStub.calledOnceWithExactly(responses.OK_CODE)).to.equal(true);
-    expect(jsonStub.firstCall.args[0].success).to.equal(true);
+
+    const nextMock = {
+      next: () => {}
+    };
+
+    const nextStub = sinon.stub(nextMock, 'next');
+    await ArticlesController.createArticles(req, res, nextMock.next);
+    expect(nextStub.calledOnce).to.equal(true);
   });
 
 
