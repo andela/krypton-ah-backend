@@ -5,7 +5,8 @@ const {
   ArticlesComments,
   Tags,
   CommentsReactions,
-  Bookmarks
+  Bookmarks,
+  ArticlesReactions
 } = require('../database/models');
 
 const negativequery = {
@@ -265,7 +266,8 @@ const destroyData = () => {
   CommentsReactions.destroy({
     where: {}
   });
-  Bookmarks.destroy({
+  Bookmarks.destroy({ where: {} });
+  ArticlesReactions.destroy({
     where: {}
   });
 };

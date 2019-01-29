@@ -1,11 +1,17 @@
-const { getComment, findReaction } = require('../lib/modelManagers/commentsReactionModel');
+const { getComment } = require('../lib/modelManagers/commentsReactionModel');
+const { getArticlesby } = require('../lib/modelManagers/articlemodel');
 const {
   SERVER_ERROR_MESSAGE,
   COMMENT_NOT_FOUND,
   REACTIONS,
-  INVALID_REACTION_ID
+  INVALID_REACTION_ID,
+  ARTICLE_NOT_FOUND,
+  ID,
+  INVALID_REACTION,
+  BAD_REQUEST_CODE
 } = require('../constants');
 const { failureResponse, serverFailure } = require('../lib/utils/messageHandler');
+
 /**
  *
  *
@@ -45,16 +51,39 @@ class valueVerifier {
    * @returns {object| next} response | next function
    * @memberof valueVerifier
    */
-  static async verifyReactionId(req, res, next) {
+  static async verifyArticleId(req, res, next) {
     try {
-      const reactionId = await findReaction(req.params.reactionId);
-      if (reactionId) {
+      const article = await getArticlesby(ID, req.params.articleId);
+      if (article.length > 0) {
         return next();
       }
-      return failureResponse(res, INVALID_REACTION_ID);
+      return failureResponse(res, ARTICLE_NOT_FOUND);
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {*} modelManager
+   * @memberof valueVerifier
+   * @returns {*} something
+   */
+  static verifyReactionId(modelManager) {
+    return async (req, res, next) => {
+      try {
+        const reaction = await modelManager(req.params.reactionId);
+
+        if (reaction) {
+          return next();
+        }
+        return failureResponse(res, INVALID_REACTION_ID);
+      } catch (error) {
+        return serverFailure(res, SERVER_ERROR_MESSAGE);
+      }
+    };
   }
 
   /**
@@ -68,9 +97,10 @@ class valueVerifier {
    * @memberof valueVerifier
    */
   static async validateReaction(req, res, next) {
-    return REACTIONS.includes(req.params.reaction)
+    return REACTIONS.includes(req.params.reaction || req.query.reaction)
       ? next()
-      : serverFailure(res, SERVER_ERROR_MESSAGE);
+      : failureResponse(res, INVALID_REACTION, BAD_REQUEST_CODE);
   }
 }
+
 module.exports = valueVerifier;

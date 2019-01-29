@@ -6,6 +6,7 @@ const {
   verifyReactionId,
   validateReaction
 } = require('../../middlewares/valueVerifier');
+const { findReaction } = require('../../lib/modelManagers/commentsReactionModel');
 /**
  * @swagger
  *
@@ -39,5 +40,5 @@ router.post(
   likeOrDislike
 );
 
-router.delete('/:reactionId', jwtValidator, verifyReactionId, cancelReaction);
+router.delete('/:reactionId', jwtValidator, verifyReactionId(findReaction), cancelReaction);
 module.exports = router;

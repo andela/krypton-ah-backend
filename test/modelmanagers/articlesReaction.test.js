@@ -2,9 +2,9 @@ const chai = require('chai'),
   sinonChai = require('sinon-chai'),
   { expect, should } = chai,
   {
-    getArticleReactions,
+    getTotalReactions,
     getUserReaction,
-    findReaction,
+    getReaction,
     createReaction,
     updateReaction,
     removeReaction
@@ -31,19 +31,15 @@ describe('Test for article reaction model', () => {
   });
 
   it('Should return number of likes for an article', async () => {
-    const returnedValue = await getArticleReactions(newArticle.id, 'like');
-    expect(returnedValue).to.be.a('object');
-    expect(returnedValue).to.have.property('count');
-    expect(returnedValue).to.have.property('rows');
-    expect(returnedValue.count).to.be.eql(1);
+    const returnedValue = await getTotalReactions(newArticle.id, 'like');
+    expect(returnedValue).to.be.a('number');
+    expect(returnedValue).to.be.eql(1);
   });
 
   it('Should return number of dislikes for an article', async () => {
-    const returnedValue = await getArticleReactions(newArticle.id, 'dislike');
-    expect(returnedValue).to.be.a('object');
-    expect(returnedValue).to.have.property('count');
-    expect(returnedValue).to.have.property('rows');
-    expect(returnedValue.count).to.be.eql(0);
+    const returnedValue = await getTotalReactions(newArticle.id, 'dislike');
+    expect(returnedValue).to.be.a('number');
+    expect(returnedValue).to.be.eql(0);
   });
 
   it('Should return an existing reaction for a user', async () => {
@@ -55,7 +51,7 @@ describe('Test for article reaction model', () => {
   });
 
   it('Should return reaction if the id is valid', async () => {
-    const returnedValue = await findReaction(newReaction.id);
+    const returnedValue = await getReaction(newReaction.id);
     expect(returnedValue).to.be.an('object');
     expect(returnedValue.dataValues).to.have.property('userId');
     expect(returnedValue.dataValues).to.have.property('articleId');

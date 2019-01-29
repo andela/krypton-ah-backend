@@ -4,7 +4,12 @@ const {
   updateReaction,
   removeReaction
 } = require('../lib/modelManagers/commentsReactionModel');
-const { SERVER_ERROR_MESSAGE, RESET_REACTION, RESOURCE_CREATED_CODE } = require('../constants');
+const {
+  SERVER_ERROR_MESSAGE,
+  RESET_REACTION,
+  RESOURCE_CREATED_CODE,
+  REACTION_STATUS
+} = require('../constants');
 const { successResponse, serverFailure, formatReaction } = require('../lib/utils/messageHandler');
 
 let newReaction;
@@ -24,7 +29,7 @@ class commentsReactionController {
    * @returns {object} response of the request
    */
   static async likeOrDislike(req, res) {
-    const message = formatReaction(req.params.reaction);
+    const message = formatReaction(req.params.reaction, REACTION_STATUS);
     try {
       const reactionId = await getUserReaction(req.params.commentId, req.decodedToken.payLoad);
       if (reactionId) {

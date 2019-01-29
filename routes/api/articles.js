@@ -8,6 +8,17 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
   commentValidator = require('../../lib/utils/commentValidator'),
   commentController = require('../../controllers/articlesCommentController'),
   emailNotification = require('../../middlewares/emailNotification');
+const { getReaction } = require('../../lib/modelManagers/articlesReactionModel');
+const {
+  likeOrDislike,
+  cancelReaction,
+  allReactions
+} = require('../../controllers/articlesReactionController');
+const {
+  verifyArticleId,
+  verifyReactionId,
+  validateReaction
+} = require('../../middlewares/valueVerifier');
 
 /**
  * @swagger
@@ -65,7 +76,14 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
  *
  *
  */
-router.post('/', verify, articleValidator, calculateReadTime, ArticlesController.createArticles, emailNotification.notifyFollowers);
+router.post(
+  '/',
+  verify,
+  articleValidator,
+  calculateReadTime,
+  ArticlesController.createArticles,
+  emailNotification.notifyFollowers
+);
 
 /**
  * @swagger
@@ -297,5 +315,84 @@ router.get(
   paramsValidator,
   commentController.findCommentThreadController
 );
+
+/**
+ * @swagger
+ *
+ * /:articleId/:reaction:
+ *    put:
+ *     description: React to a particular article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: The id of an existing article
+ *         in:  request
+ *       - name: reaction
+ *         description: A like or a dislike
+ *         in:  query
+ *     responses:
+ *       - 200:
+ *         message: article has been liked/disliked
+ *       - 500:
+ *         message: Internal server error
+ *       - 404:
+ *         message: article not found
+ *
+ *
+ */
+router.put('/reaction/:articleId/', jwtValidator, verifyArticleId, validateReaction, likeOrDislike);
+
+/**
+ * @swagger
+ *
+ * /:articleId/:reaction:
+ *     get:
+ *     description: Get number of likes or dislikes for an article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: The id of an existing article
+ *         in:  request
+ *       - name: reaction
+ *         description: like or a dislike
+ *         in:  query
+ *     responses:
+ *       - 200:
+ *         message: Total number of likes/dislikes for this article
+ *         data: {count:[number of likes or dislikes]}
+ *       - 500:
+ *         message: Internal server error
+ *       - 404:
+ *         message: article not found
+ *
+ *
+ */
+router.get('/reaction/:articleId/', verifyArticleId, validateReaction, allReactions);
+
+/**
+ * @swagger
+ *
+ * /:articleId/:reaction:
+ *     delete:
+ *     description: Delete an existing reaction to an article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: reactionId
+ *         description: The id of an existing reaction
+ *         in:  request
+ *     responses:
+ *       - 200:
+ *         message: Reaction removed successfully
+ *       - 500:
+ *         message: Internal server error
+ *       - 404:
+ *         message: Invalid reaction Id
+ *
+ *
+ */
+router.delete('/reaction/:reactionId', jwtValidator, verifyReactionId(getReaction), cancelReaction);
 
 module.exports = router;
