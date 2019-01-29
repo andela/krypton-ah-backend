@@ -71,9 +71,9 @@ const userdata4 = {
 const fakeUserData = {
   id: faker.random.uuid(),
   email: 'jjk@hjh.com',
-  password: 'refre',
-  firstname: 'Gej',
-  lastname: 'yut',
+  password: 'Wer3#refre',
+  firstname: 'Gejhgfngmhvcnvbmc',
+  lastname: 'yuthgvcgvbnvnb',
   isverified: faker.random.boolean()
 };
 
@@ -303,6 +303,24 @@ const options = {
 };
 
 const articleId = 'ad94832a-19cf-11e9-ab14-d663bd873e29';
+const emptyArray = [];
+const sampleFoundArticle = [
+  {
+    title: 'This is a test title',
+    description: faker.lorem.sentence(10, 20),
+    content: faker.lorem.paragraph(30),
+    featuredImageUrl: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
+    averageRating: faker.random.number(5),
+    slug: faker.helpers.slugify('title'),
+    readTime: faker.random.number(),
+    authorId: faker.random.uuid(),
+    articleAuthor: {
+      firstname: 'sampleName',
+      lastname: 'sampleName',
+      userprofile: 'sampleName.jpg'
+    },
+  }
+];
 
 module.exports = {
   token,
@@ -342,5 +360,7 @@ module.exports = {
   fakeUser,
   fakeEmail,
   fakeUser2,
-  createArticlesHighlightMock
+  createArticlesHighlightMock,
+  emptyArray,
+  sampleFoundArticle,
 };

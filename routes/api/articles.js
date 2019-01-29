@@ -21,6 +21,103 @@ const { verifyArticleId, validateReaction } = require('../../middlewares/valueVe
   createArticleHighlight = require('../../middlewares/createArticleHighlight');
 
 /**
+  * @swagger
+  * /search?query parameters:
+  * get:
+  *     summary: search articles by keyword
+  *     description: users can search for an article by keywords
+  *     produces:
+  *       - "application/json"
+  *     parameters:
+  *       - in: query
+  *         name: value
+  *         description: value is the search query parameter the user pass in to search by
+  *         type: string
+  *         required: true
+  *     responses:
+  *       200:
+  *         description: Below are the matching articles
+  *       404:
+  *         description: No article with the search parameter
+  *       500:
+  *          description: Ooops! Something went wrong, kindly try again
+  */
+router.get('/search', ArticlesController.searchByKeyword);
+
+/**
+ * @swagger
+ * /search/title?query parameters:
+ * get:
+ *     summary: search articles by title
+ *     description: users can search for an article through the article title
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - in: query
+ *         name: value
+ *         description: value is the search query parameter the user pass in to search by
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Below are the matching articles
+ *       404:
+ *         description: No article with the search parameter
+ *       500:
+ *          description: Ooops! Something went wrong, kindly try again
+ */
+router.get('/search/title/', ArticlesController.searchByTitle);
+
+/**
+ * @swagger
+ * /search/author?query parameters:
+ * get:
+ *     summary: search articles by author
+ *     description: users can search for an article through the article author
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - in: query
+ *         name: value
+ *         description: value is the search query parameter the user pass in to search by
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Below are the matching articles
+ *       404:
+ *         description: No article with the search parameter
+ *       500:
+ *          description: Ooops! Something went wrong, kindly try again
+ */
+router.get('/search/author/', ArticlesController.searchByAuthor);
+
+/**
+ * @swagger
+ * /search/tag?query parameters:
+ * get:
+ *     summary: search articles by tag
+ *     description: users can search for an article through the article tag
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - in: query
+ *         name: value
+ *         description: value is the search query parameter the user pass in to search by
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Below are the matching articles
+ *       404:
+ *         description: No article with the search parameter
+ *       500:
+ *          description: Ooops! Something went wrong, kindly try again
+ */
+router.get('/search/tag/', ArticlesController.searchByTag);
+
+
+/**
  * @swagger
  *
  * /create an article:
@@ -196,7 +293,8 @@ router.put('/:id', verify, articleValidator, calculateReadTime, ArticlesControll
  *
  *
  */
-router.route('/:id')
+router
+  .route('/:id')
   .get(partialJwtValidator, getArticleValidator, ArticlesController.getArticle, updateReadStat);
 
 /**
