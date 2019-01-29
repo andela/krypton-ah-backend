@@ -53,6 +53,15 @@ const userdata3 = {
   isverified: true
 };
 
+const userdata4 = {
+  id: faker.random.uuid(),
+  email: faker.internet.email(),
+  password: 'password',
+  firstname: 'firstname',
+  lastname: 'lastname',
+  isverified: true
+};
+
 const fakeUserData = {
   id: faker.random.uuid(),
   email: 'jjk@hjh.com',
@@ -156,14 +165,14 @@ const updatearticle = authorid => ({
   authorId: authorid
 });
 
-const tag = ({
+const tag = {
   tag1: 'Andela',
   tag2: 'JavaScript',
   tag3: 'Sequelize',
   invalidTag: '*&come',
   validTag: '#TIA',
   tag4: 'Java'
-});
+};
 
 const comment = (articleId, userId) => ({
   id: faker.random.uuid(),
@@ -177,6 +186,15 @@ const reaction = (commentId, UserId) => ({
   commentId,
   UserId,
   reaction: 'dislike',
+  createdAt: faker.date.recent(),
+  updatedAt: faker.date.recent()
+});
+
+const articleReaction = (articleId, userId) => ({
+  id: faker.random.uuid(),
+  articleId,
+  userId,
+  reaction: 'like',
   createdAt: faker.date.recent(),
   updatedAt: faker.date.recent()
 });
@@ -202,10 +220,9 @@ const destroyData = () => {
 };
 const returnedTag = [];
 returnedTag.push({
-  dataValues:
-   {
-     tagName: 'JavaScript'
-   },
+  dataValues: {
+    tagName: 'JavaScript'
+  }
 });
 
 const tagArray = ['JavaScript', 'Java'];
@@ -227,8 +244,10 @@ module.exports = {
   userdata2,
   userdata3,
   userprofile,
+  articleReaction,
   userprofile2,
   userprofile3,
+  userdata4,
   negativequery,
   fakeUserData,
   tag,

@@ -4,6 +4,7 @@ const { expect } = require('chai');
 
 const profile = require('../../database/models/userprofile');
 const User = require('../../database/models/user');
+const ArticlesReactions = require('../../database/models/articlesReaction');
 
 describe('User Model', () => {
   const users = User(sequelize, dataTypes);
@@ -31,12 +32,16 @@ describe('User Model', () => {
     context('Check the User Model associations', () => {
       before(() => {
         users.associate({
-          profile,
+          profile
+        });
+        users.associate({
+          ArticlesReactions
         });
       });
 
-      it('should have a one-to-one association with the profile Model', () => {
-
+      it('should have a one-to-one association with the profile Model', () => {});
+      it('should have a hasMany association with ArticleReaction model', () => {
+        expect(users.hasMany.calledWith(ArticlesReactions)).to.equal(true);
       });
     });
   });
