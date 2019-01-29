@@ -31,8 +31,5 @@ describe('Articles Comment Test', () => {
     it('should belong to User Model', () => {
       expect(articlesComments.belongsTo.calledWith(User)).to.equal(true);
     });
-    it('should belong to a Articles Model', () => {
-      expect(articlesComments.belongsTo.calledWith(Articles)).to.equal(true);
-    });
   });
 });
