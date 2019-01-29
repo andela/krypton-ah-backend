@@ -10,7 +10,7 @@ const {
 } = require('../mockData');
 const {
   email, password, firstname, lastname
-} = require('../mockData').userdata3;
+} = require('../mockData').userdata4;
 
 let newUser, newArticle, newComment, req, newReaction;
 chai.use(sinonChai);
