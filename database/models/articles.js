@@ -92,6 +92,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id',
       as: 'articleId'
     });
+    Articles.hasMany(models.ReadStats, {
+      foreignKey: 'articleId',
+      as: 'views',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   };
   return Articles;
 };

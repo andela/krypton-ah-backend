@@ -14,5 +14,6 @@ router.use('/reaction', require('./commentsReaction'));
 router.use(require('./authRoutes'));
 router.use('/profile', require('./userProfile'));
 router.use('/', require('./tagsRoute'));
+router.use('./readstats', require('./readStats'));
 
 module.exports = router;
