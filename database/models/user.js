@@ -64,6 +64,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id',
       as: 'userId'
     });
+    User.belongsTo(models.AdminRoles, {
+      foreignKey: 'UserId'
+    });
   };
   return User;
 };
