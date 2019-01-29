@@ -1,6 +1,9 @@
 const chaiHttp = require('chai-http');
 const chai = require('chai');
+<<<<<<< HEAD
 
+=======
+>>>>>>> send notification to user following author
 const { expect } = require('chai');
 const sendVerficationMail = require('../../lib/utils/sendNotifications');
 const user = require('../../database/models').User;
