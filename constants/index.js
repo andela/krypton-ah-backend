@@ -19,7 +19,7 @@ const BAD_REQUEST_CODE = 400,
   JWT_MALFORMED = 'Wrong token provided or Invalid signature',
   TOKEN_TIMESPAN = '1d',
   SERVER_ERROR_MESSAGE = 'Ooops! Something went wrong, kindly try again',
-  ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account',
+  ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account. In case you did not receive the activation link in your mail, kindly visit this link localhost:3000/api/v1/users/resend/activation/mail to resend the mail.',
   ALREADY_ACTIVATED_ERROR = 'Account is already activated',
   ACCOUNT_ACTIVATED = 'Your Account is Now Activated!',
   INVALID_USER = 'Invalid user',
@@ -92,7 +92,9 @@ const BAD_REQUEST_CODE = 400,
   BOOKMARK_RETRIEVED = 'Articles Retrieved Successfully',
   BOOKMARKED_ALREADY = 'Article already bookmarked',
   ARTICLE_NOT_FOUND = 'Article does not exist',
-  BOOKMARK_NOT_FOUND = 'Article not found in users bookmark';
+  BOOKMARK_NOT_FOUND = 'Article not found in users bookmark',
+  USER_NOT_FOUND_MESSAGE = 'User not found',
+  RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.';
 
 module.exports = {
   FROM,
@@ -188,5 +190,7 @@ module.exports = {
   BOOKMARK_RETRIEVED,
   BOOKMARKED_ALREADY,
   BOOKMARK_NOT_FOUND,
-  ARTICLE_NOT_FOUND
+  ARTICLE_NOT_FOUND,
+  USER_NOT_FOUND_MESSAGE,
+  RESEND_ACTIVATION_MAIL
 };
