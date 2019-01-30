@@ -21,7 +21,8 @@ const Comment = require('../lib/modelManagers/articlesComment'),
  */
 async function createCommentController(req, res) {
   try {
-    const { comment, userId, mainCommentId } = req.body;
+    const userId = req.decodedToken.payLoad;
+    const { comment, mainCommentId } = req.body;
     const { id } = req.params;
     const comments = await Comment.createComment(comment, userId, id, mainCommentId);
     return successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
