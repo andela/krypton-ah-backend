@@ -4,7 +4,8 @@ const Users = require('../../controllers/Users/userController'),
   jwtValidator = require('../../middlewares/jwtValidator'),
   resendMail = require('../../controllers/resendVerificationMailController'),
   verifyNewUser = require('../../controllers/verificationEmailController'),
-  sendVerificationMail = require('../../lib/utils/emailService/emailVerification');
+  sendVerificationMail = require('../../lib/utils/emailService/emailVerification'),
+  { getUserReadStatController } = require('../../controllers/readStatsController');
 
 /**
  * @swagger
@@ -290,5 +291,32 @@ router.post('/resend/activation/mail', resendMail, sendVerificationMail);
  *         message: Ooops! Something went wrong, kindly try again
  */
 router.get('/verifyemail/:token', jwtValidator, verifyNewUser);
+
+/**
+ * @swagger
+ * /api/v1/readstat:
+ *  post:
+ *    summary: Get the read statistics of user
+ *    description: Returns the articles title and description for an authenticated user
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - name: userId
+ *        description: uuid of the authenticated user
+ *        in: jwt token
+ *        required: true
+ *        type: string
+ *    responses:
+ *      200:
+ *        description: Sucessfully get user's readstat
+ *        schema:
+ *          type: object
+ *      500:
+ *        description: Error getting user's readstat
+ *        schema:
+ *          type: object
+ */
+
+router.get('/readstats', jwtValidator, getUserReadStatController);
 
 module.exports = router;

@@ -157,7 +157,7 @@ describe('Articles controller', () => {
 
   it('should throw error when deleting an article', async () => {
     chai.request(app)
-      .delete('/api/v1/articles/')
+      .delete('/api/v1/articles/a')
       .end((err, res) => {
         expect(res.status).to.equals(responses.SERVER_ERROR_CODE);
       });
@@ -224,5 +224,41 @@ describe('Articles controller', () => {
     sinon.stub(articleModelManager, 'createArticle').throws();
     await ArticlesController.createArticles(req, res);
     expect(statusStub.calledOnceWithExactly(responses.SERVER_ERROR_CODE)).to.equal(true);
+  });
+});
+
+describe('getArticle controller', () => {
+  const dataStore = {};
+  afterEach(() => {
+    constants.destroyData();
+    sinon.restore();
+  });
+  beforeEach(async () => {
+    dataStore.newUser = await user.create(constants.userdata2);
+    dataStore.newUser2 = await user.create(constants.userdata);
+    dataStore.articleMock = constants.goodArticle(dataStore.newUser.id);
+    dataStore.newArticle = await articleModelManager.createArticle(dataStore.articleMock);
+  });
+  it('should get article and call next', async () => {
+    const { responseMock, requestMock, nextMock } = responses;
+    requestMock.params = { id: dataStore.newArticle.id };
+    requestMock.decodedToken = { payLoad: dataStore.newUser2.id };
+    const statusStub = sinon.stub(responseMock, 'status').returnsThis();
+    const jsonStub = sinon.stub(responseMock, 'json').returnsThis();
+    const nextStub = sinon.stub(nextMock, 'next');
+    await ArticlesController.getArticle(requestMock, responseMock, nextMock.next);
+    expect(statusStub.calledOnceWithExactly(responses.OK_CODE)).to.equal(true);
+    expect(jsonStub.calledOnce).to.equal(true);
+    expect(nextStub.called);
+  });
+  it('should return not found error', async () => {
+    const { responseMock, requestMock } = responses;
+    requestMock.params = { id: constants.userdata3.id };
+    requestMock.decodedToken = { payLoad: dataStore.newUser2.id };
+    const statusStub = sinon.stub(responseMock, 'status').returnsThis();
+    const jsonStub = sinon.stub(responseMock, 'json').returnsThis();
+    await ArticlesController.getArticle(requestMock, responseMock);
+    expect(statusStub.calledOnceWithExactly(responses.NOT_FOUND_CODE)).to.equal(true);
+    expect(jsonStub.calledOnce).to.equal(true);
   });
 });

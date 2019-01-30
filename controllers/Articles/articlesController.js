@@ -41,7 +41,7 @@ class ArticlesController {
       response.failureResponse(
         res,
         constants.SERVER_RETRIEVAL_MESSAGE,
-        constants.SERVER_ERROR_CODE,
+        constants.SERVER_ERROR_CODE
       );
     }
   }
@@ -69,11 +69,10 @@ class ArticlesController {
       response.failureResponse(
         res,
         constants.SERVER_RETRIEVAL_MESSAGE,
-        constants.SERVER_ERROR_CODE,
+        constants.SERVER_ERROR_CODE
       );
     }
   }
-
 
   /**
    *
@@ -84,7 +83,7 @@ class ArticlesController {
    * @return {*} object
    * @memberof ArticlesController
    */
-  static async getArticle(req, res) {
+  static async getArticles(req, res) {
     const { field, value } = req.params;
     try {
       const returnedArticle = await articleModelManager.getArticlesby(field, value);
@@ -95,7 +94,38 @@ class ArticlesController {
       response.failureResponse(
         res,
         constants.SERVER_RETRIEVAL_MESSAGE,
-        constants.SERVER_ERROR_CODE,
+        constants.SERVER_ERROR_CODE
+      );
+    }
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {object} next
+   * @return {*} *
+   * @memberof ArticlesController
+   */
+  static async getArticle(req, res, next) {
+    const { id } = req.params;
+    try {
+      const returnedArticle = await articleModelManager.getArticlesby('id', id);
+      if (returnedArticle.length === 1) {
+        response.successResponse(res, constants.ARTICLES_RETRIEVAL_SUCCESS, returnedArticle[0]);
+        req.authorId = returnedArticle[0].authorId;
+        next();
+      } else {
+        response
+          .successResponse(res, constants.NOT_FOUND_CODE_MESSAGE, '', constants.NOT_FOUND_CODE);
+      }
+    } catch (error) {
+      response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE
       );
     }
   }
@@ -122,7 +152,7 @@ class ArticlesController {
       response.failureResponse(
         res,
         constants.SERVER_RETRIEVAL_MESSAGE,
-        constants.SERVER_ERROR_CODE,
+        constants.SERVER_ERROR_CODE
       );
     }
   }

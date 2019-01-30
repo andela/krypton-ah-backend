@@ -13,7 +13,10 @@ const {
   cancelReaction,
   allReactions
 } = require('../../controllers/articlesReactionController');
-const { verifyArticleId, validateReaction } = require('../../middlewares/valueVerifier');
+const { verifyArticleId, validateReaction } = require('../../middlewares/valueVerifier'),
+  partialJwtValidator = require('../../middlewares/partialJwtValidator'),
+  getArticleValidator = require('../../middlewares/getArticleValidator'),
+  updateReadStat = require('../../middlewares/updateReadStat');
 
 /**
  * @swagger
@@ -191,7 +194,60 @@ router.put('/:id', verify, articleValidator, calculateReadTime, ArticlesControll
  *
  *
  */
-router.get('/', ArticlesController.getArticle);
+router.route('/:id')
+  .get(partialJwtValidator, getArticleValidator, ArticlesController.getArticle, updateReadStat);
+
+/**
+ * @swagger
+ *
+ * /get an article:
+ *   post:
+ *     description: To get an article on author's haven
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: description
+ *         description: A short update description of the article to be created
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: string
+ *       - name: content
+ *         description: The update content of the article to be created
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: string
+ *       - name: featuredImageUrl
+ *         description: The update url of the main image of the article
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: Url
+ *       - name: slug
+ *         description: A update description of the article
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: string
+ *       - name: authorId
+ *         description: The authorId
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: string
+ *     responses:
+ *        - 200:
+ *          description: articles
+ *          message: articles retrieved succesfully
+ *          Data: articles
+ *        - 404:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
+ */
+router.get('/', ArticlesController.getArticles);
 
 /**
  * @swagger
