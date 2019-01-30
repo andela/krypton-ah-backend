@@ -9,15 +9,14 @@ const {
     failureResponse,
     successResponse
   } = require('../lib/utils/helper_function');
-
+const response = require('../lib/utils/helper_function');
+const constants = require('../constants');
 const {
   OK_CODE,
-  RESOURCE_CREATED_CODE,
   BAD_REQUEST_CODE,
   ALREADY_FOLLOWING_AUTHOR,
   FOLLOW_SELF,
   NOT_FOUND_CODE,
-  NOW_FOLLOWING_USER,
   UNFOLLOW_USER_MESSAGE,
   MY_FOLLOWEES,
   MY_FOLLOWERS,
@@ -39,10 +38,11 @@ class FollowUsersController {
   * @static
   * @param {any} req Request Object
   * @param {any} res Response Object
+  * @param {any} next Response Object
   * @returns {*} - Return a new follower
   * @memberOf FollowUsersController
   */
-  static async follow(req, res) {
+  static async follow(req, res, next) {
     try {
       const followeeId = req.decodedToken.payLoad;
       const { id } = req.params;
@@ -51,7 +51,13 @@ class FollowUsersController {
         if (id !== followeeId) {
           const followAUser = await followUser(followeeId, id);
           if (followAUser) {
-            return successResponse(res, NOW_FOLLOWING_USER, followAUser, RESOURCE_CREATED_CODE);
+            req.id = id;
+            req.followeeId = followeeId;
+            req.followAUser = followAUser;
+            return (response.successResponse(res,
+              constants.NOW_FOLLOWING_USER,
+              req.followAUser,
+              constants.RESOURCE_CREATED_CODE), next());
           }
           return failureResponse(res, ALREADY_FOLLOWING_AUTHOR, BAD_REQUEST_CODE);
         }

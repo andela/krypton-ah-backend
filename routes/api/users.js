@@ -5,7 +5,8 @@ const Users = require('../../controllers/Users/userController'),
   resendMail = require('../../controllers/resendVerificationMailController'),
   verifyNewUser = require('../../controllers/verificationEmailController'),
   sendVerificationMail = require('../../lib/utils/emailService/emailVerification'),
-  { getUserReadStatController } = require('../../controllers/readStatsController');
+  { getUserReadStatController } = require('../../controllers/readStatsController'),
+  emailNotification = require('../../middlewares/emailNotification');
 
 /**
  * @swagger
@@ -100,7 +101,8 @@ router.get('/', Users.listUsers);
 router.post(
   '/:id/follow',
   jwtValidator,
-  FollowUsersController.follow
+  FollowUsersController.follow,
+  emailNotification.followNotification
 );
 
 /**

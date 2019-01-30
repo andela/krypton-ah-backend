@@ -14,7 +14,7 @@ const Comment = require('../lib/modelManagers/articlesComment'),
 
 /**
  *
- * @description create Articles Comment Controller
+ *
  * @param {*} req
  * @param {*} res
  * @param {*} next
