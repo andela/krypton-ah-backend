@@ -24,10 +24,47 @@ async function createCommentController(req, res) {
     const userId = req.decodedToken.payLoad;
     const { comment, mainCommentId } = req.body;
     const { id } = req.params;
-    const comments = await Comment.createComment(comment, userId, id, mainCommentId);
+    const comments = await Comment.createComment({
+      comment,
+      userId,
+      articleId: id,
+      mainCommentId
+    });
     return successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
   } catch (error) {
     return failureResponse(res, SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+  }
+}
+
+/**
+ *
+ * @description update Article Comment Controller
+ * @param {*} req
+ * @param {*} res
+ * @returns {*} *
+ */
+async function updateCommentController(req, res) {
+  try {
+    const userId = req.decodedToken.payLoad;
+    const { commentId, comment } = req.body;
+    const { articleId } = req.params;
+    const commenter = await Comment.findComment(articleId, commentId);
+    await Comment.updateArticleComment({ updated: true }, commentId);
+    const createComment = await Comment.createComment({
+      comment,
+      userId,
+      articleId,
+      mainCommentId: commenter.mainCommentId,
+      createdAt: commenter.createdAt
+    });
+    if (commenter.mainCommentId === null) {
+      await Comment.updateCommentThreads({
+        mainCommentId: createComment.id
+      }, commentId);
+    }
+    return successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, createComment);
+  } catch (error) {
+    return failureResponse(res, error, SERVER_ERROR_CODE);
   }
 }
 
@@ -54,7 +91,7 @@ async function findCommentController(req, res) {
     });
     return successResponse(res, COMMENT_SUCCESS_RETURN_MESSAGE, OK_CODE, comment);
   } catch (error) {
-    return failureResponse(res, SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+    return failureResponse(res, error, SERVER_ERROR_CODE);
   }
 }
 
@@ -88,6 +125,7 @@ async function findCommentThreadController(req, res) {
 
 module.exports = {
   createCommentController,
+  updateCommentController,
   findCommentController,
   findCommentThreadController
 };

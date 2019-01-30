@@ -20,11 +20,6 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING
     },
-    action: {
-      allowNull: false,
-      type: Sequelize.ENUM('update', 'delete'),
-      defaultValue: 'update'
-    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

@@ -22,16 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    action: {
-      allowNull: false,
-      type: DataTypes.ENUM('update', 'delete'),
-      defaultValue: 'update',
-      validate: {
-        notEmpty: {
-          msg: 'Empty action: Sorry! the action performed is required.'
-        },
-      },
-    },
   }, { tableName: 'CommentsHistory' });
   CommentsHistory.associate = (models) => {
     CommentsHistory.belongsTo(models.ArticlesComments, {

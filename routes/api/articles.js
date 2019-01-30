@@ -297,4 +297,6 @@ router.get(
   commentController.findCommentThreadController
 );
 
+router.put('/:articleId/comments', jwtValidator, commentController.updateCommentController);
+
 module.exports = router;
