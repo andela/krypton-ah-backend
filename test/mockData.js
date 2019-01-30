@@ -203,6 +203,20 @@ const comment3 = {
   mainCommentId: faker.random.uuid()
 };
 
+const fakeUser = {
+  email: 'fake@email.com',
+  pass: 'F3kepassword',
+  fname: 'fakename',
+  lname: 'fakename',
+  isverified: true
+};
+const fakeUser2 = {
+  email: 'fake@email.com',
+  password: 'F3kepassword',
+  firstname: 'fakename',
+  lastname: 'fakename',
+  isverified: false
+};
 const comment = (articleId, userId) => ({
   id: faker.random.uuid(),
   comment: 'This is a test title',
@@ -260,6 +274,10 @@ const contents = {
   words400: faker.lorem.sentence(400),
   words1000: faker.lorem.sentence(1000)
 };
+const fakeEmail = {
+  email1: 'test@mail.com',
+  email2: 'michael.i.owolabi@gmail.com'
+};
 
 const options = {
   where: {}
@@ -298,5 +316,8 @@ module.exports = {
   userSample,
   comment1,
   comment2,
-  comment3
+  comment3,
+  fakeUser,
+  fakeEmail,
+  fakeUser2
 };

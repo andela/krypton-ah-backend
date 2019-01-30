@@ -84,7 +84,9 @@ describe('Test make sure token fails when nothing is provided', () => {
       headers: {
         token: undefined
       },
-      params: { token: undefined }
+      params: {
+        token: undefined
+      }
     };
     const res = {
       status() {},
@@ -94,7 +96,7 @@ describe('Test make sure token fails when nothing is provided', () => {
 
     sinon.stub(res, 'status').returnsThis();
     jwtValidator(req, res, next);
-    expect(res.status).to.have.been.calledWith(400);
+    expect(res.status).to.have.been.calledWith(401);
     expect(res).to.be.an('object');
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);

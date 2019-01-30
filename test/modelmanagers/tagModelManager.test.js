@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const { tag } = require('../mockData');
 const { findOrCreateTag, getTag } = require('../../lib/modelManagers/tagModel');
 const { Tags } = require('../../database/models');
-const { options } = require('../testHelpers');
+const { options } = require('../testHelper');
 
 describe('create article tag', () => {
   let createdTag;
