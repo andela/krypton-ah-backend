@@ -5,7 +5,7 @@ const { expect } = require('chai'),
   {
     destroyData, userdata, userdata2, goodArticle
   } = require('../mockData');
-const { User, ReadStats, Articles } = require('../../database/models');
+const { User, ReadStats } = require('../../database/models');
 
 describe('Read stat model manager', async () => {
   const dataStore = {};
@@ -38,17 +38,13 @@ describe('Read stat model manager', async () => {
         where: { id: dataStore.newUser2.id },
         include: [{ model: ReadStats, as: 'readstats' }]
       });
-      dataStore.articleWithReadStat = await Articles.findOne({
-        where: { id: dataStore.newArticle.id },
-        include: [{ model: ReadStats, as: 'views' }]
-      });
     });
     it('should create readStat', async () => {
       expect(dataStore.readStat[0].articleId).to.equal(dataStore.newArticle.id);
     });
   });
 
-  describe('User can read many articles, articles can be read by many users', () => {
+  describe('User can read many articles', () => {
     before(async () => {
       dataStore.author = await UserModelManager.create(
         'author@email.com',
@@ -91,14 +87,9 @@ describe('Read stat model manager', async () => {
         where: { id: dataStore.newUser1.id },
         include: [{ model: ReadStats, as: 'readstats' }]
       });
-      dataStore.articleWithReadStat = await Articles.findOne({
-        where: { id: dataStore.newArticle.id },
-        include: [{ model: ReadStats, as: 'views' }]
-      });
     });
     it('should create readStat', async () => {
       expect(dataStore.userWithReadStat.readstats.length).to.equal(2);
-      expect(dataStore.articleWithReadStat.views.length).to.equal(2);
     });
   });
 
@@ -134,12 +125,7 @@ describe('Read stat model manager', async () => {
         where: { id: dataStore.newUser1.id },
         include: [{ model: ReadStats, as: 'readstats' }]
       });
-      dataStore.articleWithReadStat = await Articles.findOne({
-        where: { id: dataStore.newArticle.id },
-        include: [{ model: ReadStats, as: 'views' }]
-      });
       expect(dataStore.userWithReadStat.readstats[0].readStat).to.equal(2);
-      expect(dataStore.articleWithReadStat.views[0].readStat).to.equal(2);
     });
   });
 
@@ -213,12 +199,7 @@ describe('Read stat model manager', async () => {
         where: { id: dataStore.newUser1.id },
         include: [{ model: ReadStats, as: 'readstats' }]
       });
-      dataStore.articleWithReadStat = await Articles.findOne({
-        where: { id: dataStore.newArticle.id },
-        include: [{ model: ReadStats, as: 'views' }]
-      });
       expect(dataStore.userWithReadStat.readstats[0].readStat).to.equal(1);
-      expect(dataStore.articleWithReadStat.views[0].readStat).to.equal(1);
     });
     it('should create and update readStat', async () => {
       await ReadStatModelManager.readStatUpdater(
@@ -235,12 +216,7 @@ describe('Read stat model manager', async () => {
         where: { id: dataStore.newUser1.id },
         include: [{ model: ReadStats, as: 'readstats' }]
       });
-      dataStore.articleWithReadStat = await Articles.findOne({
-        where: { id: dataStore.newArticle.id },
-        include: [{ model: ReadStats, as: 'views' }]
-      });
       expect(dataStore.userWithReadStat.readstats[0].readStat).to.equal(2);
-      expect(dataStore.articleWithReadStat.views[0].readStat).to.equal(2);
     });
     it('should not create or update readStat', async () => {
       await ReadStatModelManager.readStatUpdater(
@@ -257,12 +233,7 @@ describe('Read stat model manager', async () => {
         where: { id: dataStore.newUser1.id },
         include: [{ model: ReadStats, as: 'readstats' }]
       });
-      dataStore.articleWithReadStat = await Articles.findOne({
-        where: { id: dataStore.newArticle.id },
-        include: [{ model: ReadStats, as: 'views' }]
-      });
       expect(dataStore.userWithReadStat.readstats.length).to.equal(0);
-      expect(dataStore.articleWithReadStat.views.length).to.equal(0);
     });
   });
 });
