@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+router.use('/articles/bookmark/', require('./bookmark'));
 router.use('/users', require('./authRoutes'));
 router.use('/auth', require('./AuthRoute'));
 router.use('/articles/rating/', require('./articleRating'));

@@ -1,6 +1,11 @@
 const faker = require('faker');
 const {
-  User, Articles, ArticlesComments, Tags, CommentsReactions
+  User,
+  Articles,
+  ArticlesComments,
+  Tags,
+  CommentsReactions,
+  Bookmarks
 } = require('../database/models');
 
 const negativequery = {
@@ -260,6 +265,9 @@ const destroyData = () => {
   CommentsReactions.destroy({
     where: {}
   });
+  Bookmarks.destroy({
+    where: {}
+  });
 };
 const returnedTag = [];
 returnedTag.push({
@@ -282,6 +290,8 @@ const fakeEmail = {
 const options = {
   where: {}
 };
+
+const articleId = 'ad94832a-19cf-11e9-ab14-d663bd873e29';
 
 module.exports = {
   token,
@@ -317,6 +327,7 @@ module.exports = {
   comment1,
   comment2,
   comment3,
+  articleId,
   fakeUser,
   fakeEmail,
   fakeUser2
