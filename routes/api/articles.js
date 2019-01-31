@@ -297,6 +297,13 @@ router.get(
   commentController.findCommentThreadController
 );
 
-router.put('/:articleId/comments', jwtValidator, commentController.updateCommentController);
+// Update a comment
+router.put('/:articleId/comments/', jwtValidator, commentController.updateCommentController);
+
+// Get all comment history for an article
+router.get('/:articleId/comments/history/', jwtValidator, commentController.updateCommentController);
+
+// Get all thread history under a comment
+router.get('/:articleId/comments/history/:commentId', jwtValidator, commentController.updateCommentController);
 
 module.exports = router;
