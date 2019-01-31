@@ -66,6 +66,9 @@ describe('Test for articles reaction controller', () => {
     req = {
       params: {
         reactionId: newReaction.id
+      },
+      decodedToken: {
+        payLoad: newUser.id
       }
     };
     const res = {
@@ -82,6 +85,9 @@ describe('Test for articles reaction controller', () => {
     req = {
       params: {
         reactionId: '65719288-0395'
+      },
+      decodedToken: {
+        payLoad: newUser.id
       }
     };
     const res = {
@@ -94,7 +100,26 @@ describe('Test for articles reaction controller', () => {
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });
-  it('Should throw an error when trying to react on an invalid reaction', async () => {
+  it('Should throw an error with invalid reactionId', async () => {
+    req = {
+      params: {
+        reactionId: 'd75d1ca0-b1db-4b9f-abd8-a56d3cb173f6'
+      },
+      decodedToken: {
+        payLoad: newUser.id
+      }
+    };
+    const res = {
+      status() {},
+      json() {}
+    };
+    sinon.stub(res, 'status').returnsThis();
+    await cancelReaction(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    res.status.called.should.equal(true);
+    res.status.callCount.should.equal(1);
+  });
+  it('Should throw an error when trying to react on an invalid article', async () => {
     req = {
       params: {
         articleId: '65719288-0395'

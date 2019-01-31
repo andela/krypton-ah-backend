@@ -79,7 +79,7 @@ describe('Test for article reaction model', () => {
   });
 
   it('Should delete an existing reaction of a user', async () => {
-    const returnedValue = await removeReaction(newReaction.id);
+    const returnedValue = await removeReaction(newReaction.id, newUser.id);
     expect(returnedValue).to.be.a('number');
     expect(returnedValue).to.be.eql(1);
   });

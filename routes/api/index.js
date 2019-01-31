@@ -4,7 +4,6 @@ router.use('/articles/bookmark/', require('./bookmark'));
 router.use('/users', require('./authRoutes'));
 router.use('/auth', require('./AuthRoute'));
 router.use('/articles', require('./articles'));
-// router.use('/articles', require('./articleReaction'));
 router.use('/articles/rating/', require('./articleRating'));
 router.use('/', require('./users'));
 

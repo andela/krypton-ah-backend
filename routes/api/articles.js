@@ -8,17 +8,12 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
   commentValidator = require('../../lib/utils/commentValidator'),
   commentController = require('../../controllers/articlesCommentController'),
   emailNotification = require('../../middlewares/emailNotification');
-const { getReaction } = require('../../lib/modelManagers/articlesReactionModel');
 const {
   likeOrDislike,
   cancelReaction,
   allReactions
 } = require('../../controllers/articlesReactionController');
-const {
-  verifyArticleId,
-  verifyReactionId,
-  validateReaction
-} = require('../../middlewares/valueVerifier');
+const { verifyArticleId, validateReaction } = require('../../middlewares/valueVerifier');
 
 /**
  * @swagger
@@ -393,6 +388,6 @@ router.get('/reaction/:articleId/', verifyArticleId, validateReaction, allReacti
  *
  *
  */
-router.delete('/reaction/:reactionId', jwtValidator, verifyReactionId(getReaction), cancelReaction);
+router.delete('/reaction/:reactionId', jwtValidator, cancelReaction);
 
 module.exports = router;

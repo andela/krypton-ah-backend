@@ -10,11 +10,13 @@ const {
   SERVER_ERROR_MESSAGE,
   RESET_REACTION,
   ARTICLE_REACTION_STATUS,
-  OK_CODE
+  OK_CODE,
+  INVALID_REACTION_ID
 } = require('../constants');
 const {
   successResponse,
   serverFailure,
+  failureResponse,
   formatReaction,
   formatMessage
 } = require('../lib/utils/messageHandler');
@@ -38,8 +40,8 @@ class ArticlesReactionController {
   static async allReactions(req, res) {
     const message = formatMessage(req.query.reaction);
     try {
-      const numberOfReactions = await getTotalReactions(req.params.articleId, req.query.reaction);
-      return successResponse(res, message, OK_CODE, { numberOfReactions });
+      const reactionCount = await getTotalReactions(req.params.articleId, req.query.reaction);
+      return successResponse(res, message, OK_CODE, { reactionCount });
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
@@ -84,10 +86,11 @@ class ArticlesReactionController {
    */
   static async cancelReaction(req, res) {
     try {
-      const removedReaction = await removeReaction(req.params.reactionId);
+      const removedReaction = await removeReaction(req.params.reactionId, req.decodedToken.payLoad);
       if (removedReaction) {
         return successResponse(res, RESET_REACTION);
       }
+      return failureResponse(res, INVALID_REACTION_ID);
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
