@@ -8,9 +8,16 @@ const {
   SERVER_ERROR_MESSAGE,
   RESET_REACTION,
   RESOURCE_CREATED_CODE,
-  REACTION_STATUS
+  REACTION_STATUS,
+  VERIFY_CRIDENTIALS,
+  BAD_REQUEST_CODE
 } = require('../constants');
-const { successResponse, serverFailure, formatReaction } = require('../lib/utils/messageHandler');
+const {
+  successResponse,
+  serverFailure,
+  formatReaction,
+  failureResponse
+} = require('../lib/utils/messageHandler');
 
 let newReaction;
 /**
@@ -58,10 +65,11 @@ class commentsReactionController {
    */
   static async cancelReaction(req, res) {
     try {
-      const removedReaction = await removeReaction(req.params.reactionId);
+      const removedReaction = await removeReaction(req.params.reactionId, req.decodedToken.payLoad);
       if (removedReaction) {
         return successResponse(res, RESET_REACTION);
       }
+      return failureResponse(res, VERIFY_CRIDENTIALS, BAD_REQUEST_CODE);
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }

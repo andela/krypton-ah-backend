@@ -1,12 +1,7 @@
 const router = require('express').Router();
 const { likeOrDislike, cancelReaction } = require('../../controllers/commentsReactionController');
 const jwtValidator = require('../../middlewares/jwtValidator');
-const {
-  verifyCommentId,
-  verifyReactionId,
-  validateReaction
-} = require('../../middlewares/valueVerifier');
-const { findReaction } = require('../../lib/modelManagers/commentsReactionModel');
+const { verifyCommentId, validateReaction } = require('../../middlewares/valueVerifier');
 /**
  * @swagger
  *
@@ -40,5 +35,5 @@ router.post(
   likeOrDislike
 );
 
-router.delete('/:reactionId', jwtValidator, verifyReactionId(findReaction), cancelReaction);
+router.delete('/:reactionId', jwtValidator, cancelReaction);
 module.exports = router;

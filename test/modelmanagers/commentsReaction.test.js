@@ -74,7 +74,7 @@ describe('Test for comment reaction model', () => {
   });
 
   it('Should delete an existing reaction', async () => {
-    const returnedValue = await removeReaction(newReaction.id);
+    const returnedValue = await removeReaction(newReaction.id, newUser.id);
     expect(returnedValue).to.be.a('number');
     expect(returnedValue).to.be.eql(1);
   });

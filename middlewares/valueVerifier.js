@@ -4,7 +4,6 @@ const {
   SERVER_ERROR_MESSAGE,
   COMMENT_NOT_FOUND,
   REACTIONS,
-  INVALID_REACTION_ID,
   ARTICLE_NOT_FOUND,
   ID,
   INVALID_REACTION,
@@ -61,29 +60,6 @@ class valueVerifier {
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {*} modelManager
-   * @memberof valueVerifier
-   * @returns {*} something
-   */
-  static verifyReactionId(modelManager) {
-    return async (req, res, next) => {
-      try {
-        const reaction = await modelManager(req.params.reactionId);
-
-        if (reaction) {
-          return next();
-        }
-        return failureResponse(res, INVALID_REACTION_ID);
-      } catch (error) {
-        return serverFailure(res, SERVER_ERROR_MESSAGE);
-      }
-    };
   }
 
   /**

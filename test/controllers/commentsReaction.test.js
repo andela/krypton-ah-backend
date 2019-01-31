@@ -72,6 +72,9 @@ describe('Test for comment reaction controller', () => {
     req = {
       params: {
         reactionId: newReaction.id
+      },
+      decodedToken: {
+        payLoad: newUser.id
       }
     };
     const res = {
@@ -81,6 +84,25 @@ describe('Test for comment reaction controller', () => {
     sinon.stub(res, 'status').returnsThis();
     await cancelReaction(req, res);
     expect(res.status).to.have.been.calledWith(200);
+    res.status.called.should.equal(true);
+    res.status.callCount.should.equal(1);
+  });
+  it('Should throw an error with invalid reactionId', async () => {
+    req = {
+      params: {
+        reactionId: 'd75d1ca0-b1db-4b9f-abd8-a56d3cb173f6'
+      },
+      decodedToken: {
+        payLoad: newUser.id
+      }
+    };
+    const res = {
+      status() {},
+      json() {}
+    };
+    sinon.stub(res, 'status').returnsThis();
+    await cancelReaction(req, res);
+    expect(res.status).to.have.been.calledWith(400);
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });

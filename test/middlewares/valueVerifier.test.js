@@ -5,8 +5,7 @@ const chai = require('chai'),
   {
     verifyCommentId,
     validateReaction,
-    verifyArticleId,
-    verifyReactionId
+    verifyArticleId
   } = require('../../middlewares/valueVerifier');
 const { Articles, ArticlesComments, CommentsReactions } = require('../../database/models');
 const { create } = require('../../lib/modelManagers/usermodel');
@@ -16,7 +15,6 @@ const {
 const {
   email, password, firstname, lastname
 } = require('../mockData').userdata3;
-const { findReaction } = require('../../lib/modelManagers/commentsReactionModel');
 
 let newUser, newArticle, newComment, req, newReaction;
 chai.use(sinonChai);
@@ -141,69 +139,6 @@ describe('Test for comment reaction controller', () => {
     res.status.callCount.should.equal(1);
   });
 
-  it('Should take a function as parameter', async () => {
-    await verifyReactionId(findReaction);
-    expect(findReaction).to.be.a('function');
-  });
-
-  it('Should return a function', async () => {
-    const returnedFunction = await verifyReactionId(findReaction);
-    expect(returnedFunction).to.be.a('function');
-  });
-  it('Should call next for a valid reactionId', async () => {
-    req = {
-      params: {
-        reactionId: newReaction.id
-      }
-    };
-    const res = {
-      status() {},
-      json() {}
-    };
-    const next = sinon.stub();
-    sinon.stub(res, 'status').returnsThis();
-    const modelManager = verifyReactionId(findReaction);
-    await modelManager(req, res, next);
-    expect(next.calledOnce).to.be.eq(true);
-  });
-
-  it('Should return not found for non-existing reaction id', async () => {
-    req = {
-      params: {
-        reactionId: '65719288-0395-445e-b587-2b98b70bdec9'
-      }
-    };
-    const res = {
-      status() {},
-      json() {}
-    };
-    const next = sinon.stub();
-    sinon.stub(res, 'status').returnsThis();
-    const modelManager = verifyReactionId(findReaction);
-    await modelManager(req, res, next);
-    expect(res.status).to.have.been.calledWith(404);
-    res.status.called.should.equal(true);
-    res.status.callCount.should.equal(1);
-  });
-
-  it('Should return a server error for invalid reaction id', async () => {
-    req = {
-      params: {
-        reactionId: '65719288-0395'
-      }
-    };
-    const res = {
-      status() {},
-      json() {}
-    };
-    const next = sinon.stub();
-    sinon.stub(res, 'status').returnsThis();
-    const modelManager = verifyReactionId(findReaction);
-    await modelManager(req, res, next);
-    expect(res.status).to.have.been.calledWith(500);
-    res.status.called.should.equal(true);
-    res.status.callCount.should.equal(1);
-  });
   it('Should make sure reaction is like or dislike', async () => {
     req = {
       query: {

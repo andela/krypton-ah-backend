@@ -11,7 +11,8 @@ const {
   RESET_REACTION,
   ARTICLE_REACTION_STATUS,
   OK_CODE,
-  INVALID_REACTION_ID
+  VERIFY_CRIDENTIALS,
+  BAD_REQUEST_CODE
 } = require('../constants');
 const {
   successResponse,
@@ -90,7 +91,7 @@ class ArticlesReactionController {
       if (removedReaction) {
         return successResponse(res, RESET_REACTION);
       }
-      return failureResponse(res, INVALID_REACTION_ID);
+      return failureResponse(res, VERIFY_CRIDENTIALS, BAD_REQUEST_CODE);
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }

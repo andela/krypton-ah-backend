@@ -115,7 +115,7 @@ describe('Test for articles reaction controller', () => {
     };
     sinon.stub(res, 'status').returnsThis();
     await cancelReaction(req, res);
-    expect(res.status).to.have.been.calledWith(404);
+    expect(res.status).to.have.been.calledWith(400);
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });
