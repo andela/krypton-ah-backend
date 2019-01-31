@@ -81,13 +81,14 @@ describe('Comment Controller', () => {
   describe('create comment controller', () => {
     afterEach(sinon.restore);
     it('should create comment', async () => {
+      const userId = storage.userdata.dataValues.id;
       const req = {
-        decodedToken: {
-          payLoad: storage.userdata.dataValues.id
-        },
         body: {
-          comment: comment2.comment,
-          mainCommentId: null
+          mainCommentId: null,
+          comment: comment2.comment
+        },
+        decodedToken: {
+          payLoad: userId
         },
         params: {
           articleId: storage.article.dataValues.id

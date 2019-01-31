@@ -1,18 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-  const ArticleTags = sequelize.define('ArticleTags', {
+  const UserRoles = sequelize.define('UserRoles', {
     id: {
       primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    articleId: {
+    roleId: {
       type: DataTypes.UUID,
       allowNull: false
     },
-    tagId: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false
     }
   });
-  return ArticleTags;
+  return UserRoles;
 };

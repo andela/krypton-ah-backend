@@ -3,7 +3,7 @@ const response = require('../lib/utils/responses'),
   { validateUUID, validateRating } = require('../lib/utils/validate');
 
 /**
- * Rating validator middleware.
+ * @descriptionRating validator middleware.
  * @param {object} req - The request sent by user.
  * @param {object} res - The response sent to user.
  * @param {function} next - Next middleware to be called.

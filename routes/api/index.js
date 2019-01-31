@@ -8,6 +8,7 @@ router.use('/articles/rating/', require('./articleRating'));
 router.use('/', require('./users'));
 
 router.use('/users', require('./users'));
+router.use('/roles', require('../api/admin'));
 
 router.use('/users', require('./users'));
 router.use('/comments', require('./commentsReaction'));

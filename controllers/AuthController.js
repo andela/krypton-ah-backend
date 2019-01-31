@@ -1,13 +1,16 @@
 const bcrypt = require('bcrypt'),
   userModelManager = require('../lib/modelManagers/usermodel'),
+  RoleManager = require('../lib/modelManagers/userRoleManager'),
   jwtUtil = require('../lib/utils/jwtUtil'),
   checkVerificationStatus = require('../lib/utils/verifiedUserUtil'),
+  { successResponse } = require('../lib/utils/messageHandler'),
   {
     BAD_REQUEST_CODE,
     OK_CODE,
     NOT_FOUND_CODE,
     UNSUCCESSFUL,
     SUCCESSFUL,
+    ADMIN_LOGIN,
     TOKEN_TIMESPAN
   } = require('../constants/index');
 
@@ -49,18 +52,27 @@ class AuthController {
     const userRecord = await userModelManager.findUser('email', req.body.email);
     if (userRecord) {
       const { id, password, isverified } = userRecord.dataValues;
-
+      const adminRecord = await RoleManager.findUserRole(id);
       const decryptedPassword = bcrypt.compareSync(req.body.password, password);
       if (decryptedPassword) {
         verificationStatus = checkVerificationStatus(isverified);
 
         if (verificationStatus) {
-          const token = jwtUtil.generateToken(TOKEN_TIMESPAN, id);
-          return res.status(OK_CODE).json({
-            success: SUCCESSFUL,
-            message: 'Login Successful',
-            loginToken: token
-          });
+          let token;
+          const payLoad = {
+            id
+          };
+          if (!adminRecord) {
+            token = jwtUtil.generateToken(TOKEN_TIMESPAN, id);
+            return res.status(OK_CODE).json({
+              success: SUCCESSFUL,
+              message: 'Login Successful',
+              loginToken: token
+            });
+          }
+          payLoad.status = 'admin';
+          token = jwtUtil.generateToken(TOKEN_TIMESPAN, payLoad);
+          return successResponse(res, ADMIN_LOGIN, OK_CODE, token);
         }
         if (!verificationStatus) {
           return res.status(BAD_REQUEST_CODE).json({
