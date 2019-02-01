@@ -203,7 +203,8 @@ const userSample = {
   email: faker.internet.email(),
   password: 'ABCabc123',
   firstname: 'Lucky',
-  lastname: 'Omokarho'
+  lastname: 'Omokarho',
+  emailnotification: true
 };
 const comment1 = {
   id: faker.random.uuid(),

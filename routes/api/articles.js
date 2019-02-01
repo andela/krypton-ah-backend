@@ -317,7 +317,6 @@ router.post(
   articlesHighlightValidator,
   commentController.createCommentController,
   createArticleHighlight,
-  commentController.createCommentController,
   emailNotification.CommentNotification
 );
 

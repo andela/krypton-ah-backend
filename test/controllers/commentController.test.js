@@ -68,7 +68,6 @@ describe('Comment Controller', () => {
         },
         decodedToken: {
           payLoad: storage.userdata.dataValues.id
-
         }
       };
       const res = {
@@ -77,9 +76,12 @@ describe('Comment Controller', () => {
         },
         json() {}
       };
+
+      const next = sinon.stub();
+
       sinon.spy(res, 'status');
       sinon.spy(res, 'json');
-      await createCommentController(req, res);
+      await createCommentController(req, res, next);
       expect(res.json.firstCall.lastArg).to.be.an('object');
       expect(res.json.firstCall.lastArg)
         .to.haveOwnProperty('success')

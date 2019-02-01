@@ -54,10 +54,12 @@ class FollowUsersController {
             req.id = id;
             req.followeeId = followeeId;
             req.followAUser = followAUser;
-            return (response.successResponse(res,
+            return (response.successResponse(
+              res,
               constants.NOW_FOLLOWING_USER,
               req.followAUser,
-              constants.RESOURCE_CREATED_CODE), next());
+              constants.RESOURCE_CREATED_CODE
+            ), next());
           }
           return failureResponse(res, ALREADY_FOLLOWING_AUTHOR, BAD_REQUEST_CODE);
         }
