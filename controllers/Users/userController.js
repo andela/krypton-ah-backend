@@ -1,10 +1,16 @@
 const User = require('../../lib/modelManagers/usermodel');
 const pagination = require('../../lib/utils/pagination/paginationHelper');
-const response = require('../../lib/utils/helper_function');
 const constants = require('../../constants');
+const response = require('../../lib/utils/helper_function');
 const { getHistory } = require('../../lib/modelManagers/commentsHistoryModel');
-const { successResponse, serverFailure } = require('../../lib/utils/messageHandler');
-const { OK_CODE, SERVER_ERROR_MESSAGE, HISTORY_RETRIEVED } = require('../../constants');
+const { successResponse, failureResponse, serverFailure } = require('../../lib/utils/messageHandler');
+const {
+  OK_CODE,
+  SERVER_ERROR_MESSAGE,
+  NOT_FOUND_CODE,
+  HISTORY_RETRIEVED,
+  HISTORY_NOT_FOUND
+} = require('../../constants');
 
 /**
  *
@@ -44,6 +50,9 @@ class UsersController {
     const { userId } = req.params;
     try {
       const history = await getHistory('userId', userId);
+      if (!history) {
+        return failureResponse(res, HISTORY_NOT_FOUND, NOT_FOUND_CODE);
+      }
       successResponse(res, HISTORY_RETRIEVED, OK_CODE, history);
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);

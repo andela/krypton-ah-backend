@@ -291,6 +291,6 @@ router.post('/resend/activation/mail', resendMail, sendVerificationMail);
  */
 router.get('/verifyemail/:token', jwtValidator, verifyNewUser);
 
-router.get('/comment/history', jwtValidator, Users.getcommentsHistory);
+router.get('/comment/:userId/history', jwtValidator, Users.getcommentsHistory);
 
 module.exports = router;

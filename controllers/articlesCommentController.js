@@ -11,7 +11,8 @@ const Comment = require('../lib/modelManagers/articlesComment'),
     COMMENT_NOT_FOUND,
     NOT_FOUND_CODE,
     COMMENT_UPDATED,
-    HISTORY_RETRIEVED
+    HISTORY_RETRIEVED,
+    HISTORY_NOT_FOUND
   } = require('../constants'),
   pagination = require('../lib//utils/pagination/paginationHelper');
 
@@ -117,7 +118,7 @@ async function updateCommentController(req, res) {
       createdAt: commenter.createdAt
     });
     if (!commenter.mainCommentId) {
-      await Comment.updateCommentThreads({
+      await Comment.updateAllCommentThreads({
         mainCommentId: createComment.id
       }, commentId);
     }
@@ -136,7 +137,10 @@ async function updateCommentController(req, res) {
 async function getAllHistory(req, res) {
   try {
     const history = await commentHistory.getAllHistory();
-    successResponse(res, HISTORY_RETRIEVED, OK_CODE, history);
+    const commentCount = history.count,
+      comments = history.rows;
+    const result = { commentCount, comments };
+    successResponse(res, HISTORY_RETRIEVED, OK_CODE, result);
   } catch (error) {
     return serverFailure(res, SERVER_ERROR_MESSAGE);
   }
@@ -152,6 +156,9 @@ async function getArticlesHistory(req, res) {
   const { articleId } = req.params;
   try {
     const history = await commentHistory.getHistory('articleId', articleId);
+    if (!history) {
+      return failureResponse(res, HISTORY_NOT_FOUND, NOT_FOUND_CODE);
+    }
     successResponse(res, HISTORY_RETRIEVED, OK_CODE, history);
   } catch (error) {
     return serverFailure(res, SERVER_ERROR_MESSAGE);
@@ -168,6 +175,9 @@ async function getThreadsHistory(req, res) {
   const { commentId } = req.params;
   try {
     const history = await commentHistory.getHistory('mainCommentId', commentId);
+    if (!history) {
+      return failureResponse(res, HISTORY_NOT_FOUND, NOT_FOUND_CODE);
+    }
     successResponse(res, HISTORY_RETRIEVED, OK_CODE, history);
   } catch (error) {
     return serverFailure(res, SERVER_ERROR_MESSAGE);

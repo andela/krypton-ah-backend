@@ -97,7 +97,8 @@ const BAD_REQUEST_CODE = 400,
   RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.',
   COMMENT_UPDATED = 'Comment updated successfully',
   COMMENT_DELETED = 'Comment deleted successfully',
-  HISTORY_RETRIEVED = 'Comment history retrieved successfully';
+  HISTORY_RETRIEVED = 'Comment history retrieved successfully',
+  HISTORY_NOT_FOUND = 'Comment history not found';
 
 module.exports = {
   FROM,
@@ -198,5 +199,6 @@ module.exports = {
   RESEND_ACTIVATION_MAIL,
   COMMENT_UPDATED,
   COMMENT_DELETED,
-  HISTORY_RETRIEVED
+  HISTORY_RETRIEVED,
+  HISTORY_NOT_FOUND
 };
