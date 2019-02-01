@@ -1,4 +1,5 @@
 const Comment = require('../lib/modelManagers/articlesComment'),
+  { successResponse, serverFailure, failureResponse } = require('../lib/utils/messageHandler'),
   {
     COMMENT_CREATED,
     RESOURCE_CREATED_CODE,
@@ -7,10 +8,17 @@ const Comment = require('../lib/modelManagers/articlesComment'),
     SERVER_ERROR_CODE,
     SERVER_ERROR_MESSAGE,
     COMMENT_NOT_FOUND,
-    NOT_FOUND_CODE
+    NOT_FOUND_CODE,
+    COMMENT_UPDATED,
+    COMMENT_DELETED,
+    UNAUTHORIZED_CODE,
+    UNAUTHORIZED_REQUEST
   } = require('../constants'),
   pagination = require('../lib//utils/pagination/paginationHelper'),
-  { successResponse, failureResponse } = require('../lib/utils/messageHandler');
+  {
+    getOriginalId,
+    updateMainCommentId
+  } = require('../lib//utils/articleCommentHelper');
 
 /**
  *
@@ -25,7 +33,12 @@ async function createCommentController(req, res, next) {
     const { comment, mainCommentId } = req.body;
     const userId = req.decodedToken.payLoad;
     const { id } = req.params;
-    const comments = await Comment.createComment(comment, userId, id, mainCommentId);
+    const comments = await Comment.createComment({
+      comment,
+      userId,
+      articleId: id,
+      mainCommentId
+    });
     successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
     const { articleId } = comments.dataValues;
     req.commentDetails = {
@@ -57,7 +70,7 @@ async function findCommentController(req, res) {
       return failureResponse(res, COMMENT_NOT_FOUND, NOT_FOUND_CODE);
     }
     const comment = comments.map((thread) => {
-      thread.threads = thread.threads.length;
+      thread.dataValues.threads = thread.threads.length;
       return thread;
     });
     return successResponse(res, COMMENT_SUCCESS_RETURN_MESSAGE, OK_CODE, comment);
@@ -94,8 +107,76 @@ async function findCommentThreadController(req, res) {
   }
 }
 
+/**
+ *
+ * @description update Article Comment Controller
+ * @param {*} req
+ * @param {*} res
+ * @returns {*} *
+ */
+async function updateCommentController(req, res) {
+  try {
+    const userId = req.decodedToken.payLoad;
+    const { commentId, comment } = req.body;
+    const { articleId } = req.params;
+    const commentDetails = await Comment.findComment(articleId, commentId);
+    if (userId !== commentDetails.userId) {
+      return failureResponse(res, UNAUTHORIZED_REQUEST, UNAUTHORIZED_CODE);
+    }
+    const originalId = getOriginalId(commentDetails);
+    await Comment.updateArticleComment({ updated: true }, commentId);
+    const newComment = await Comment.createComment({
+      comment,
+      userId,
+      articleId,
+      originalId,
+      mainCommentId: commentDetails.mainCommentId,
+      originalDate: commentDetails.createdAt
+    });
+    updateMainCommentId(commentDetails, newComment, commentId);
+    return successResponse(res, COMMENT_UPDATED, OK_CODE, newComment);
+  } catch (error) {
+    return serverFailure(res, SERVER_ERROR_MESSAGE);
+  }
+}
+
+/**
+ *
+ * @description update Article Comment Controller
+ * @param {*} req
+ * @param {*} res
+ * @returns {*} *
+ */
+async function deleteCommentController(req, res) {
+  try {
+    const userId = req.decodedToken.payLoad;
+    const { commentId } = req.body;
+    const { articleId } = req.params;
+    const commentDetails = await Comment.findComment(articleId, commentId);
+    if (userId !== commentDetails.userId) {
+      return failureResponse(res, UNAUTHORIZED_REQUEST, UNAUTHORIZED_CODE);
+    }
+    const originalId = getOriginalId(commentDetails);
+    await Comment.updateArticleComment({ deleted: true }, commentId);
+    const newComment = await Comment.createComment({
+      comment: '',
+      userId,
+      articleId,
+      originalId,
+      mainCommentId: commentDetails.mainCommentId,
+      originalDate: commentDetails.createdAt
+    });
+    updateMainCommentId(commentDetails, newComment, commentId);
+    return successResponse(res, COMMENT_DELETED, OK_CODE);
+  } catch (error) {
+    return serverFailure(res, SERVER_ERROR_MESSAGE);
+  }
+}
+
 module.exports = {
   createCommentController,
   findCommentController,
-  findCommentThreadController
+  findCommentThreadController,
+  updateCommentController,
+  deleteCommentController
 };

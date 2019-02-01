@@ -320,4 +320,36 @@ router.get('/verifyemail/:token', jwtValidator, verifyNewUser);
 
 router.get('/readstats', jwtValidator, getUserReadStatController);
 
+/**
+ * @swagger
+ *   get:
+ *     description: Get all comments updated or deleted that belongs to a user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: token
+ *         description: verification token sent to users email
+ *         in:  headers
+ *         required: true
+ *         type: string
+ *         format: json web token
+ *       - name: userId
+ *         description: the id of the user whose comment history is to be found
+ *         in:  params
+ *         required: true
+ *         type: string
+ *         format: uuid
+ *     responses:
+ *       - 200:
+ *         description: Comments retrieved succesfully
+ *         message: Comment history retrieved successfully
+ *       - 404:
+ *         description: No updated or deleted comment for the user
+ *         message: Comment history not found
+ *       - 500:
+ *         description: Server error
+ *         message: Ooops! Something went wrong, kindly try again
+ */
+router.get('/comments/:userId/modified', jwtValidator, Users.getModifiedComments);
+
 module.exports = router;

@@ -1,7 +1,14 @@
 const User = require('../../lib/modelManagers/usermodel');
 const pagination = require('../../lib/utils/pagination/paginationHelper');
-const response = require('../../lib/utils/helper_function');
 const constants = require('../../constants');
+const response = require('../../lib/utils/helper_function');
+const { getModifiedComments } = require('../../lib/modelManagers/commentsHistoryModel');
+const { successResponse, serverFailure } = require('../../lib/utils/messageHandler');
+const {
+  OK_CODE,
+  SERVER_ERROR_MESSAGE,
+  HISTORY_RETRIEVED,
+} = require('../../constants');
 
 /**
  *
@@ -28,6 +35,22 @@ class UsersController {
         constants.SERVER_RETRIEVAL_MESSAGE,
         constants.SERVER_ERROR_CODE
       );
+    }
+  }
+
+  /**
+ * @description Gets users comment history Controller
+ * @param {*} req
+ * @param {*} res
+ * @returns {*} *
+ */
+  static async getModifiedComments(req, res) {
+    const { userId } = req.params;
+    try {
+      const history = await getModifiedComments('userId', userId);
+      successResponse(res, HISTORY_RETRIEVED, OK_CODE, history);
+    } catch (error) {
+      return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
   }
 }

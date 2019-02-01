@@ -109,7 +109,11 @@ const BAD_REQUEST_CODE = 400,
   USER_NOT_FOUND_MESSAGE = 'User not found',
   RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.',
   GET_USER_READSTAT_SUCCESS = 'Read statistics of the current user',
-  GET_USER_READSTAT_FAILED = 'Error getting read statistics of the user';
+  GET_USER_READSTAT_FAILED = 'Error getting read statistics of the user',
+  COMMENT_UPDATED = 'Comment updated successfully',
+  COMMENT_DELETED = 'Comment deleted successfully',
+  HISTORY_RETRIEVED = 'Comment history retrieved successfully',
+  HISTORY_NOT_FOUND = 'Comment history not found';
 
 module.exports = {
   FROM,
@@ -222,5 +226,9 @@ module.exports = {
   AUTHOR_COMMENT_SUBJECT,
   ARTICLE_SUBJECT,
   THREAD_SUBJECT,
-  NEW_FOLLOWER_SUBJECT
+  NEW_FOLLOWER_SUBJECT,
+  COMMENT_UPDATED,
+  COMMENT_DELETED,
+  HISTORY_RETRIEVED,
+  HISTORY_NOT_FOUND
 };

@@ -322,6 +322,12 @@ const sampleFoundArticle = [
   }
 ];
 
+const shortComment1 = 'We are happy!';
+
+const shortComment2 = 'How are you feeling?';
+
+const shortComment3 = 'How can we help you';
+
 module.exports = {
   token,
   article,
@@ -363,4 +369,7 @@ module.exports = {
   createArticlesHighlightMock,
   emptyArray,
   sampleFoundArticle,
+  shortComment1,
+  shortComment2,
+  shortComment3
 };
