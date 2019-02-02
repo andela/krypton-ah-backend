@@ -6,7 +6,8 @@ const chai = require('chai'),
     getUserReaction,
     createReaction,
     updateReaction,
-    removeReaction
+    removeReaction,
+    findReaction
   } = require('../../lib/modelManagers/commentsReactionModel');
 const { Articles, ArticlesComments, CommentsReactions } = require('../../database/models');
 const { create } = require('../../lib/modelManagers/usermodel');
@@ -66,8 +67,14 @@ describe('Test for comment reaction model', () => {
     await updateReaction(newreaction, commentId, userId);
   });
 
+  it('Should find an existing reaction', async () => {
+    const returnedValue = await findReaction(newReaction.id);
+    expect(returnedValue.dataValues).to.be.an('object');
+    expect(returnedValue.dataValues.id).to.be.eql(newReaction.id);
+  });
+
   it('Should delete an existing reaction', async () => {
-    const returnedValue = await removeReaction(newReaction.id);
+    const returnedValue = await removeReaction(newReaction.id, newUser.id);
     expect(returnedValue).to.be.a('number');
     expect(returnedValue).to.be.eql(1);
   });

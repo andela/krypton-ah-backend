@@ -2,9 +2,9 @@ const chai = require('chai'),
   sinonChai = require('sinon-chai'),
   { expect, should } = chai,
   {
-    getArticleReactions,
+    getTotalReactions,
     getUserReaction,
-    findReaction,
+    getReaction,
     createReaction,
     updateReaction,
     removeReaction
@@ -30,20 +30,16 @@ describe('Test for article reaction model', () => {
     destroyData();
   });
 
-  it('Should return number of likes for an article', async () => {
-    const returnedValue = await getArticleReactions(newArticle.id, 'like');
-    expect(returnedValue).to.be.a('object');
-    expect(returnedValue).to.have.property('count');
-    expect(returnedValue).to.have.property('rows');
-    expect(returnedValue.count).to.be.eql(1);
-  });
-
-  it('Should return number of dislikes for an article', async () => {
-    const returnedValue = await getArticleReactions(newArticle.id, 'dislike');
-    expect(returnedValue).to.be.a('object');
-    expect(returnedValue).to.have.property('count');
-    expect(returnedValue).to.have.property('rows');
-    expect(returnedValue.count).to.be.eql(0);
+  it('Should return number of reactions for an article', async () => {
+    const where = {
+      articleId: newArticle.id
+    };
+    const returnedValue = await getTotalReactions(where);
+    expect(returnedValue).to.be.an('array');
+    expect(returnedValue.length).to.eql(1);
+    expect(returnedValue[0]).to.be.an('object');
+    expect(returnedValue[0]).to.have.property('reaction');
+    expect(returnedValue[0].reaction).to.eql('like');
   });
 
   it('Should return an existing reaction for a user', async () => {
@@ -55,7 +51,7 @@ describe('Test for article reaction model', () => {
   });
 
   it('Should return reaction if the id is valid', async () => {
-    const returnedValue = await findReaction(newReaction.id);
+    const returnedValue = await getReaction(newReaction.id);
     expect(returnedValue).to.be.an('object');
     expect(returnedValue.dataValues).to.have.property('userId');
     expect(returnedValue.dataValues).to.have.property('articleId');
@@ -83,7 +79,7 @@ describe('Test for article reaction model', () => {
   });
 
   it('Should delete an existing reaction of a user', async () => {
-    const returnedValue = await removeReaction(newReaction.id);
+    const returnedValue = await removeReaction(newReaction.id, newUser.id);
     expect(returnedValue).to.be.a('number');
     expect(returnedValue).to.be.eql(1);
   });
