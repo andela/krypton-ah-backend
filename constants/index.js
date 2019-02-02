@@ -94,7 +94,9 @@ const BAD_REQUEST_CODE = 400,
   ARTICLE_NOT_FOUND = 'Article does not exist',
   BOOKMARK_NOT_FOUND = 'Article not found in users bookmark',
   USER_NOT_FOUND_MESSAGE = 'User not found',
-  RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.';
+  RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.',
+  GET_USER_READSTAT_SUCCESS = 'Read statistics of the current user',
+  GET_USER_READSTAT_FAILED = 'Error getting read statistics of the user';
 
 module.exports = {
   FROM,
@@ -192,5 +194,7 @@ module.exports = {
   BOOKMARK_NOT_FOUND,
   ARTICLE_NOT_FOUND,
   USER_NOT_FOUND_MESSAGE,
-  RESEND_ACTIVATION_MAIL
+  RESEND_ACTIVATION_MAIL,
+  GET_USER_READSTAT_FAILED,
+  GET_USER_READSTAT_SUCCESS
 };
