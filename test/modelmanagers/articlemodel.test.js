@@ -11,6 +11,9 @@ let articleid, article2id;
 let testArticle, testArticle2;
 describe('Unit test article model manager functions', () => {
   before(async () => {
+    user.destroy({
+      where: {}
+    });
     res = await user.create(constants.userdata).then(async (newUser) => {
       await userprofile.create(constants.userprofile);
       return newUser;

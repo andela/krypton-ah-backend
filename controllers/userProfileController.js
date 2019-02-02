@@ -17,7 +17,7 @@ const UserProfileManager = require('../lib/modelManagers/userProfileModel'),
  */
 
 const createUserProfileController = async (req, res) => {
-  const { userId } = req.decodedToken;
+  const userId = req.decodedToken.payLoad;
   const userProfileUpdate = getUserProfileFromRequest(req);
   try {
     const createdProfile = await UserProfileManager.createUserProfile({

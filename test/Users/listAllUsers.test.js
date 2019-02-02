@@ -13,6 +13,9 @@ let token;
 
 describe('Test that users are returned when request is made', () => {
   before(async () => {
+    user.destroy({
+      where: {}
+    });
     await user.bulkCreate([mockData.userdata2, mockData.userdata3]).then(async (newUser) => {
       await userprofile.bulkCreate([mockData.userprofile2, mockData.userprofile3]);
       return newUser;

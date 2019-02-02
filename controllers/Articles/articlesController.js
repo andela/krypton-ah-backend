@@ -10,13 +10,17 @@ const generateTags = require('../../lib/utils/tagGenarator');
  * @class ArticlesController
  */
 class ArticlesController {
-  /**
-   * @static
-   * @returns { undefined } undefined
-   * @param {*} req
-   * @param {*} res
-   */
-  static async createArticles(req, res) {
+/**
+ *
+ *
+ * @static
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns {*} next
+ * @memberof ArticlesController
+ */
+  static async createArticles(req, res, next) {
     const authorId = req.decodedToken.payLoad;
     const slug = generateSlug(req.body.title, authorId.toString());
     const articleDetails = { ...slug.slugs, authorId, ...req.body };
@@ -24,7 +28,14 @@ class ArticlesController {
       const createdArticles = await articleModelManager.createArticle(articleDetails);
       generateTags(req.body.tags, createdArticles.dataValues.id);
       if (createdArticles) {
-        response.successResponse(res, constants.ARTICLES_CREATED, createdArticles);
+        req.createdArticles = { ...createdArticles, authorId };
+        req.createdArticles = createdArticles;
+        return (response.successResponse(
+          res,
+          constants.OK_CODE,
+          createdArticles
+        ),
+        next());
       }
     } catch (error) {
       response.failureResponse(
