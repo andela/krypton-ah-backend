@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-expressions */
 const chai = require('chai'),
   sinon = require('sinon'),
-  paramsValidator = require('../../lib/utils/paramsValidator');
+  paramsValidator = require('../../middlewares/paramsValidator'),
+  { userdata } = require('../mockData');
 
 const { expect, should } = chai;
 should();
@@ -13,7 +14,8 @@ describe('params validator', () => {
       isUUID() {},
       trim() {},
       withMessage() {},
-      validationErrors() {}
+      validationErrors() {},
+      params: userdata.id
     };
     const res = {
       status() {},
@@ -35,6 +37,7 @@ describe('params validator', () => {
       body: {
         mainCommentId: true
       },
+      params: userdata.id,
       check() {},
       trim() {},
       isUUID() {},

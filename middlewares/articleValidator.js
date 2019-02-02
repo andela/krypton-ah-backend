@@ -1,7 +1,7 @@
 const {
     validateUrl,
     validateArticleTitle,
-    validateArticleContent,
+    validateContent,
     validateArticleDescription,
     validateIsPublished
   } = require('../lib/utils/validate'),
@@ -14,7 +14,7 @@ const articleValidator = async (req, res, next) => {
     await validateArticleTitle(req);
     await validateArticleDescription(req);
     await validateUrl(req, 'featuredImageUrl');
-    await validateArticleContent(req);
+    await validateContent(req, 'content');
     await validateIsPublished(req);
     await req.asyncValidationErrors();
     next();

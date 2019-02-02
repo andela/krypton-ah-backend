@@ -171,6 +171,14 @@ const badArticle = authorId => ({
   authorId
 });
 
+const createArticlesHighlightMock = (articleId, commentId) => ({
+  startIndex: 2,
+  endIndex: 10,
+  highlightedText: 'Highlighted text',
+  articleId,
+  commentId
+});
+
 const updatearticle = authorid => ({
   title: faker.lorem.sentence(10, 20),
   description: faker.lorem.sentence(10, 20),
@@ -332,5 +340,6 @@ module.exports = {
   articleId,
   fakeUser,
   fakeEmail,
-  fakeUser2
+  fakeUser2,
+  createArticlesHighlightMock
 };

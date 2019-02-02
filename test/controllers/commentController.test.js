@@ -62,10 +62,13 @@ describe('Comment Controller', () => {
       const req = {
         body: {
           comment: comment2.comment,
-          userId: storage.userdata.dataValues.id
         },
         params: {
           articleId: storage.article.dataValues.id
+        },
+        decodedToken: {
+          payLoad: storage.userdata.dataValues.id
+
         }
       };
       const res = {
