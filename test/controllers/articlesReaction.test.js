@@ -27,11 +27,11 @@ describe('Test for articles reaction controller', () => {
       params: {
         articleId: newArticle.id
       },
-      query: {
-        reaction: 'like'
-      },
       decodedToken: {
         payLoad: newUser.id
+      },
+      query: {
+        reaction: 'Like'
       }
     };
   });

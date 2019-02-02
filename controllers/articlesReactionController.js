@@ -9,18 +9,14 @@ const {
 const {
   SERVER_ERROR_MESSAGE,
   RESET_REACTION,
-  ARTICLE_REACTION_STATUS,
+  OPERATION_SUCCESSFUL,
   OK_CODE,
   VERIFY_CRIDENTIALS,
-  BAD_REQUEST_CODE
+  NUMBER_OF_REACTIONS,
+  BAD_REQUEST_CODE,
+  DISLIKE
 } = require('../constants');
-const {
-  successResponse,
-  serverFailure,
-  failureResponse,
-  formatReaction,
-  formatMessage
-} = require('../lib/utils/messageHandler');
+const { successResponse, serverFailure, failureResponse } = require('../lib/utils/messageHandler');
 
 let newReaction;
 /**
@@ -39,10 +35,18 @@ class ArticlesReactionController {
    * @returns {object} response of the request
    */
   static async allReactions(req, res) {
-    const message = formatMessage(req.query.reaction);
+    const where = {
+      articleId: req.params.articleId
+    };
+
     try {
-      const reactionCount = await getTotalReactions(req.params.articleId, req.query.reaction);
-      return successResponse(res, message, OK_CODE, { reactionCount });
+      const allReactions = await getTotalReactions(where),
+        dislikes = allReactions.filter(article => article.reaction === DISLIKE),
+        likes = allReactions.length - dislikes.length;
+      return successResponse(res, NUMBER_OF_REACTIONS, OK_CODE, {
+        dislikes: dislikes.length,
+        likes
+      });
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
@@ -58,19 +62,15 @@ class ArticlesReactionController {
    * @returns {object} response of the request
    */
   static async likeOrDislike(req, res) {
-    const message = formatReaction(req.query.reaction, ARTICLE_REACTION_STATUS);
+    const reaction = req.query.reaction.toLowerCase();
     try {
       const userReaction = await getUserReaction(req.params.articleId, req.decodedToken.payLoad);
       if (userReaction) {
-        await updateReaction(req.query.reaction, req.params.articleId, req.decodedToken.payLoad);
-        return successResponse(res, message);
+        await updateReaction(reaction, req.params.articleId, req.decodedToken.payLoad);
+        return successResponse(res, OPERATION_SUCCESSFUL);
       }
-      newReaction = await createReaction(
-        req.params.articleId,
-        req.decodedToken.payLoad,
-        req.query.reaction
-      );
-      return successResponse(res, message, OK_CODE, { newReaction });
+      newReaction = await createReaction(req.params.articleId, req.decodedToken.payLoad, reaction);
+      return successResponse(res, OPERATION_SUCCESSFUL, OK_CODE, { newReaction });
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }

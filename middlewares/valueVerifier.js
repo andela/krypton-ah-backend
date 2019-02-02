@@ -1,15 +1,15 @@
 const { getComment } = require('../lib/modelManagers/commentsReactionModel');
 const { getArticlesby } = require('../lib/modelManagers/articlemodel');
 const {
-  SERVER_ERROR_MESSAGE,
   COMMENT_NOT_FOUND,
   REACTIONS,
   ARTICLE_NOT_FOUND,
+  PARAMS_ERROR_MESSAGE,
   ID,
   INVALID_REACTION,
   BAD_REQUEST_CODE
 } = require('../constants');
-const { failureResponse, serverFailure } = require('../lib/utils/messageHandler');
+const { failureResponse } = require('../lib/utils/messageHandler');
 
 /**
  *
@@ -36,7 +36,7 @@ class valueVerifier {
       }
       return failureResponse(res, COMMENT_NOT_FOUND);
     } catch (error) {
-      return serverFailure(res, SERVER_ERROR_MESSAGE);
+      return failureResponse(res, PARAMS_ERROR_MESSAGE, BAD_REQUEST_CODE);
     }
   }
 
@@ -58,7 +58,7 @@ class valueVerifier {
       }
       return failureResponse(res, ARTICLE_NOT_FOUND);
     } catch (error) {
-      return serverFailure(res, SERVER_ERROR_MESSAGE);
+      return failureResponse(res, PARAMS_ERROR_MESSAGE, BAD_REQUEST_CODE);
     }
   }
 
@@ -73,7 +73,8 @@ class valueVerifier {
    * @memberof valueVerifier
    */
   static async validateReaction(req, res, next) {
-    return REACTIONS.includes(req.params.reaction || req.query.reaction)
+    const reactionValue = req.params.reaction || req.query.reaction;
+    return REACTIONS.includes(reactionValue.toLowerCase())
       ? next()
       : failureResponse(res, INVALID_REACTION, BAD_REQUEST_CODE);
   }

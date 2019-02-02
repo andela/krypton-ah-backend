@@ -30,16 +30,16 @@ describe('Test for article reaction model', () => {
     destroyData();
   });
 
-  it('Should return number of likes for an article', async () => {
-    const returnedValue = await getTotalReactions(newArticle.id, 'like');
-    expect(returnedValue).to.be.a('number');
-    expect(returnedValue).to.be.eql(1);
-  });
-
-  it('Should return number of dislikes for an article', async () => {
-    const returnedValue = await getTotalReactions(newArticle.id, 'dislike');
-    expect(returnedValue).to.be.a('number');
-    expect(returnedValue).to.be.eql(0);
+  it('Should return number of reactions for an article', async () => {
+    const where = {
+      articleId: newArticle.id
+    };
+    const returnedValue = await getTotalReactions(where);
+    expect(returnedValue).to.be.an('array');
+    expect(returnedValue.length).to.eql(1);
+    expect(returnedValue[0]).to.be.an('object');
+    expect(returnedValue[0]).to.have.property('reaction');
+    expect(returnedValue[0].reaction).to.eql('like');
   });
 
   it('Should return an existing reaction for a user', async () => {

@@ -329,8 +329,8 @@ router.get(
  *     responses:
  *       - 200:
  *         message: article has been liked/disliked
- *       - 500:
- *         message: Internal server error
+ *       - 400:
+ *         message: Value must be a UUID OR Try using 'like' or 'dislike'
  *       - 404:
  *         message: article not found
  *
@@ -343,28 +343,25 @@ router.put('/reaction/:articleId/', jwtValidator, verifyArticleId, validateReact
  *
  * /:articleId/:reaction:
  *     get:
- *     description: Get number of likes or dislikes for an article
+ *     description: Get number of likes and dislikes for an article
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: articleId
  *         description: The id of an existing article
  *         in:  request
- *       - name: reaction
- *         description: like or a dislike
- *         in:  query
  *     responses:
  *       - 200:
- *         message: Total number of likes/dislikes for this article
- *         data: {count:[number of likes or dislikes]}
- *       - 500:
- *         message: Internal server error
+ *         message: Total number of reactions
+ *         data: {likes:number of likes , dislikes:number of dislikes}
+ *       - 400:
+ *         message: Value must be a UUID
  *       - 404:
- *         message: article not found
+ *         message: Article does not exist
  *
  *
  */
-router.get('/reaction/:articleId/', verifyArticleId, validateReaction, allReactions);
+router.get('/reaction/:articleId/reactions', verifyArticleId, allReactions);
 
 /**
  * @swagger
@@ -381,8 +378,8 @@ router.get('/reaction/:articleId/', verifyArticleId, validateReaction, allReacti
  *     responses:
  *       - 200:
  *         message: Reaction removed successfully
- *       - 500:
- *         message: Internal server error
+ *       - 400:
+ *         message: Value must be a UUID
  *       - 404:
  *         message: Invalid reaction Id
  *

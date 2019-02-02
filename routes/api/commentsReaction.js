@@ -35,5 +35,5 @@ router.post(
   likeOrDislike
 );
 
-router.delete('/:reactionId', jwtValidator, cancelReaction);
+router.delete('/reaction/:reactionId', jwtValidator, cancelReaction);
 module.exports = router;

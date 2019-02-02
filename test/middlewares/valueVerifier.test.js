@@ -82,7 +82,7 @@ describe('Test for comment reaction controller', () => {
     const next = sinon.stub();
     sinon.stub(res, 'status').returnsThis();
     await verifyCommentId(req, res, next);
-    expect(res.status).to.have.been.calledWith(500);
+    expect(res.status).to.have.been.calledWith(400);
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });
@@ -134,7 +134,7 @@ describe('Test for comment reaction controller', () => {
     const next = sinon.stub();
     sinon.stub(res, 'status').returnsThis();
     await verifyArticleId(req, res, next);
-    expect(res.status).to.have.been.calledWith(500);
+    expect(res.status).to.have.been.calledWith(400);
     res.status.called.should.equal(true);
     res.status.callCount.should.equal(1);
   });
@@ -158,16 +158,17 @@ describe('Test for comment reaction controller', () => {
   it('Should return error if reaction is not like or dislike', async () => {
     req = {
       query: {
-        reaction: 'like'
+        reaction: 'liked'
       },
       params: {
-        reaction
+        reaction: 'LIKED'
       }
     };
     const res = {
       status() {},
       json() {}
     };
+
     const next = sinon.stub();
     sinon.stub(res, 'status').returnsThis();
     await validateReaction(req, res, next);
