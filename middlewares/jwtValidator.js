@@ -7,6 +7,7 @@ const jwtUtil = require('../lib/utils/jwtUtil'),
     UNAUTHORIZED_REQUEST
   } = require('../constants/index');
 const { failureResponse } = require('../lib/utils/messageHandler');
+const { getTokenFromReq } = require('../lib/utils/helpers');
 /**
  * Token validator middleware.
  * @param {object} req - The request sent by user.
@@ -15,7 +16,7 @@ const { failureResponse } = require('../lib/utils/messageHandler');
  * @returns {object} The status of response and body of the response.
  */
 const jwtValidator = (req, res, next) => {
-  const token = req.body.token || req.query.token || req.headers.authorization || req.params.token;
+  const token = getTokenFromReq(req);
 
   if (token) {
     try {

@@ -56,13 +56,13 @@ describe('Read stat model manager', async () => {
           id: dataStore.newArticle.id,
           title: dataStore.newArticle.title,
           description: dataStore.newArticle.description,
-          numberOfTimesRead: 2
+          numberOfTimesViewed: 2
         },
         {
           id: dataStore.newArticle2.id,
           title: dataStore.newArticle2.title,
           description: dataStore.newArticle2.description,
-          numberOfTimesRead: 1
+          numberOfTimesViewed: 1
         }]
       };
       await getUserReadStatController(requestMock, responseMock);
