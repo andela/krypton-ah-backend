@@ -261,6 +261,8 @@ const reportTagName = 'Social';
 
 const role = 'admin';
 
+const newRole = 'moderator';
+
 const role2 = {
   id: faker.random.uuid(),
   role: 'admin'
@@ -391,5 +393,6 @@ module.exports = {
   shortComment1,
   shortComment2,
   shortComment3,
-  reportTagName
+  reportTagName,
+  newRole
 };

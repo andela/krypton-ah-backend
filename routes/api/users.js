@@ -5,7 +5,16 @@ const Users = require('../../controllers/Users/userController'),
   resendMail = require('../../controllers/resendVerificationMailController'),
   verifyNewUser = require('../../controllers/verificationEmailController'),
   { getUserReadStatController } = require('../../controllers/readStatsController'),
-  emailNotification = require('../../middlewares/emailNotification');
+  emailNotification = require('../../middlewares/emailNotification'),
+  {
+    assignRoleToUser,
+    getUserRoles,
+    deleteUserRole
+  } = require('../../controllers/userRoleController'),
+  RoleValidator = require('../../middlewares/roleValidator'),
+  emailValidator = require('../../middlewares/emailValidator'),
+  paramsValidator = require('../../middlewares/paramsValidator'),
+  roleValidator = require('../../lib/utils/roleValidator');
 
 /**
  * @swagger
@@ -148,11 +157,7 @@ router.post(
  *               items:
  *                 type: string
  */
-router.delete(
-  '/:id/unfollow',
-  jwtValidator,
-  FollowUsersController.unfollow
-);
+router.delete('/:id/unfollow', jwtValidator, FollowUsersController.unfollow);
 
 /**
  * @swagger
@@ -188,10 +193,7 @@ router.delete(
  *               items:
  *                 type: string
  */
-router.get(
-  '/followers',
-  FollowUsersController.followers
-);
+router.get('/followers', FollowUsersController.followers);
 /**
  * @swagger
  * following:
@@ -226,10 +228,7 @@ router.get(
  *               items:
  *                 type: string
  */
-router.get(
-  '/following',
-  FollowUsersController.following
-);
+router.get('/following', FollowUsersController.following);
 
 /**
  * @swagger
@@ -265,7 +264,6 @@ router.get(
  *         message: Ooops! Something went wrong, kindly try again
  */
 router.post('/resend/activation/mail', resendMail, emailNotification.notifyFollowers);
-
 
 /**
  * @swagger
@@ -359,5 +357,87 @@ router.get('/readstats', jwtValidator, getUserReadStatController);
  *         message: Ooops! Something went wrong, kindly try again
  */
 router.get('/comments/:userId/modified', jwtValidator, Users.getModifiedComments);
+
+/**
+ * @swagger
+ * /roles:
+ *   post:
+ *     summary: Assign Roles To Users
+ *     description: It allows admin to create roles
+ *     consumes:
+ *       - "application/json"
+ *       - "application/x-www-form-urlencoded"
+ *     parameters:
+ *       - in: body
+ *         name: role
+ *         description: new role to be created
+ *         type: string
+ *         required: true
+ *     responses:
+ *       - 200:
+ *         description: Role created successfully
+ *       - 400:
+ *         description: empty role field
+ *       - 403:
+ *         description: authorized user
+ */
+router.post(
+  '/roles',
+  jwtValidator,
+  RoleValidator('admin'),
+  roleValidator,
+  emailValidator,
+  assignRoleToUser
+);
+
+/**
+ * @swagger
+ * /:id/roles:
+ *   get:
+ *     summary: Get Roles assigned to a particular user
+ *     description: It allows admin to get roles
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         description: role to be returned
+ *         type: uuid
+ *         required: true
+ *     responses:
+ *       - 200:
+ *         description: Role returned successfully
+ *       - 400:
+ *         description: invalid role params
+ *       - 404:
+ *         description: not found
+ */
+router.get('/:id/roles', jwtValidator, RoleValidator('admin'), paramsValidator, getUserRoles);
+
+/**
+ * @swagger
+ * /user:
+ *   post:
+ *     summary: Delete User Role
+ *     description: It allows admin to create roles
+ *     parameters:
+ *       - in: query
+ *         name: roleId
+ *         description: role to be deleted
+ *         type: string
+ *         required: true
+ *     responses:
+ *       - 200:
+ *         description: Role created successfully
+ *       - 400:
+ *         description: empty role field
+ *       - 403:
+ *         description: authorized user
+ */
+router.delete(
+  '/:userId/roles/:roleId',
+  jwtValidator,
+  RoleValidator('admin'),
+  paramsValidator,
+  deleteUserRole
+);
 
 module.exports = router;

@@ -15,7 +15,7 @@ describe('role validator', () => {
       check() {},
       trim() {},
       notEmpty() {},
-      isAlpha() {},
+      matches() {},
       withMessage() {},
       validationErrors() {}
     };
@@ -28,7 +28,7 @@ describe('role validator', () => {
     sinon.stub(res, 'status').returnsThis();
     sinon.stub(req, 'check').returnsThis();
     sinon.stub(req, 'trim').returnsThis();
-    sinon.stub(req, 'isAlpha').returnsThis();
+    sinon.stub(req, 'matches').returnsThis();
     sinon.stub(req, 'notEmpty').returnsThis();
     sinon.stub(req, 'validationErrors').returns([{ msg: 'come' }]);
     sinon.stub(req, 'withMessage').returnsThis();
@@ -43,7 +43,7 @@ describe('role validator', () => {
       check() {},
       trim() {},
       notEmpty() {},
-      isAlpha() {},
+      matches() {},
       withMessage() {},
       validationErrors() {}
     };
@@ -56,7 +56,7 @@ describe('role validator', () => {
     sinon.stub(res, 'status').returnsThis();
     sinon.stub(req, 'check').returnsThis();
     sinon.stub(req, 'trim').returnsThis();
-    sinon.stub(req, 'isAlpha').returnsThis();
+    sinon.stub(req, 'matches').returnsThis();
     sinon.stub(req, 'notEmpty').returnsThis();
     sinon.stub(req, 'validationErrors').returns(false);
     sinon.stub(req, 'withMessage').returnsThis();

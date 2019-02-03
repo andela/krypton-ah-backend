@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 const userMock = {
@@ -63,22 +64,11 @@ const nextMock = {
 
 const adminUser = {
   id: 'aa94832a-19cf-11e9-ab14-d663bd873d65',
-  firstname: 'Admin',
-  lastname: 'AdminToo',
+  firstname: process.env.ADMIN_FIRSTNAME,
+  lastname: process.env.ADMIN_LASTNAME,
   isverified: true,
-  password: bcrypt.hashSync('luckyBo1', bcrypt.genSaltSync(8)),
-  email: 'lucky.oniovosa@andela.com',
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
-
-const adminUser2 = {
-  id: 'aa74832a-19cf-11e9-ab14-d663bd873d65',
-  firstname: 'Admin',
-  lastname: 'AdminToo',
-  isverified: true,
-  password: bcrypt.hashSync('luckyBo1', bcrypt.genSaltSync(8)),
-  email: 'itguy@gmail.com',
+  password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, bcrypt.genSaltSync(8)),
+  email: process.env.ADMIN_EMAIL_1,
   createdAt: new Date(),
   updatedAt: new Date()
 };
@@ -90,17 +80,10 @@ const role = {
   updatedAt: new Date()
 };
 
-const admin1 = {
+const admin = {
   id: 'cc94832a-19cf-11e9-ab14-d663bd873d33',
   roleId: 'bb94832a-19cf-11e9-ab14-d663bd873d32',
   userId: 'aa94832a-19cf-11e9-ab14-d663bd873d65',
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
-const admin2 = {
-  id: 'cc74832a-19cf-11e9-ab14-d663bd873d33',
-  roleId: 'bb94832a-19cf-11e9-ab14-d663bd873d32',
-  userId: 'aa74832a-19cf-11e9-ab14-d663bd873d65',
   createdAt: new Date(),
   updatedAt: new Date()
 };
@@ -115,8 +98,6 @@ module.exports = {
   responseMock,
   nextMock,
   adminUser,
-  adminUser2,
-  admin1,
-  admin2,
+  admin,
   role
 };

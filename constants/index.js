@@ -110,8 +110,10 @@ const BAD_REQUEST_CODE = 400,
   BOOKMARK_NOT_FOUND = 'Article not found in users bookmark',
   USER_NOT_FOUND_MESSAGE = 'User not found',
   ROLE_CREATED = 'role successfully created',
+  ROLE_ASSIGNED = 'role successfully assigned',
   ROLE_ALREADY_EXIST = 'Role already Exist',
   ADMIN_LOGIN = 'Admin Login Successful',
+  SUCCESS_LOGIN = 'Login Successful',
   SUCCESS_MESSAGE = 'Operation Successful',
   RESEND_ACTIVATION_MAIL = 'Activation link has been sent to your mail, kindly activate your account within 24 hours.',
   GET_USER_READSTAT_SUCCESS = 'Read statistics of the current user',
@@ -137,7 +139,8 @@ const BAD_REQUEST_CODE = 400,
   REPORT_REOPEN = 'You have reopen this report',
   TAG_ALREADY_EXIST = 'Ooops!!! Tag name already exist.',
   REDIRECT_CODE = 302,
-  CALLBACK_URL = 'http://localhost:5000';
+  CALLBACK_URL = 'http://localhost:5000',
+  NO_RECORD_FOUND = 'No record found';
 
 module.exports = {
   FROM,
@@ -244,6 +247,8 @@ module.exports = {
   BOOKMARKED_ALREADY,
   BOOKMARK_NOT_FOUND,
   ROLE_CREATED,
+  ROLE_ASSIGNED,
+  SUCCESS_LOGIN,
   ADMIN_LOGIN,
   ROLE_ALREADY_EXIST,
   USER_NOT_FOUND_MESSAGE,
@@ -276,6 +281,7 @@ module.exports = {
   REPORT_TAG_NOT_FOUND,
   REPORT_REOPEN,
   REPORT_CREATED,
+  NO_RECORD_FOUND,
   REDIRECT_CODE,
   CALLBACK_URL,
   SUCCESS_MESSAGE
