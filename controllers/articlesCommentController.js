@@ -17,14 +17,19 @@ const Comment = require('../lib/modelManagers/articlesComment'),
  * @description create Articles Comment Controller
  * @param {*} req
  * @param {*} res
+ * @param {*} next
  * @returns {*} *
  */
-async function createCommentController(req, res) {
+async function createCommentController(req, res, next) {
   try {
-    const { comment, userId, mainCommentId } = req.body;
+    const { comment, mainCommentId } = req.body;
+    const userId = req.decodedToken.payLoad;
     const { id } = req.params;
     const comments = await Comment.createComment(comment, userId, id, mainCommentId);
-    return successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
+    successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
+    req.body.commentId = comments.id;
+    req.body.articleId = id;
+    return next();
   } catch (error) {
     return failureResponse(res, SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
   }

@@ -4,7 +4,7 @@ const verify = require('../../middlewares/jwtValidator');
 const articleValidator = require('../../middlewares/articleValidator');
 const calculateReadTime = require('../../middlewares/calculateReadTime'),
   jwtValidator = require('../../middlewares/jwtValidator'),
-  paramsValidator = require('../../lib/utils/paramsValidator'),
+  paramsValidator = require('../../middlewares/paramsValidator'),
   commentValidator = require('../../lib/utils/commentValidator'),
   commentController = require('../../controllers/articlesCommentController'),
   emailNotification = require('../../middlewares/emailNotification');
@@ -16,7 +16,9 @@ const {
 const { verifyArticleId, validateReaction } = require('../../middlewares/valueVerifier'),
   partialJwtValidator = require('../../middlewares/partialJwtValidator'),
   getArticleValidator = require('../../middlewares/getArticleValidator'),
-  updateReadStat = require('../../middlewares/updateReadStat');
+  updateReadStat = require('../../middlewares/updateReadStat'),
+  articlesHighlightValidator = require('../../middlewares/articlesHighlightValidator'),
+  createArticleHighlight = require('../../middlewares/createArticleHighlight');
 
 /**
  * @swagger
@@ -310,9 +312,11 @@ router.delete('/:id', ArticlesController.deleteArticle);
  */
 router.post(
   '/:id/comments',
-  commentValidator,
   jwtValidator,
-  commentController.createCommentController
+  commentValidator,
+  articlesHighlightValidator,
+  commentController.createCommentController,
+  createArticleHighlight
 );
 
 /**
@@ -335,7 +339,7 @@ router.post(
  *       404:
  *         description: empty comment field
  */
-router.get('/:id/comments', commentController.findCommentController);
+router.get('/:id/comments', paramsValidator, commentController.findCommentController);
 /**
  * @swagger
  * /:articleId/comments/commentId:

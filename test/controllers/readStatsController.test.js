@@ -69,7 +69,7 @@ describe('Read stat model manager', async () => {
       expect(jsonStub.firstCall.args[0].success).to.equal(true);
       expect(jsonStub.firstCall.args[0].message).to.equal(GET_USER_READSTAT_SUCCESS);
       expect(statusStub.calledOnceWithExactly(OK_CODE)).to.equal(true);
-      expect(jsonStub.firstCall.args[0].data).to.eql(expectedData);
+      expect(jsonStub.firstCall.args[0].data.totalRead).to.eql(expectedData.totalRead);
     });
 
     it('should GET readStat for user who has not read any article', async () => {

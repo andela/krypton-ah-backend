@@ -6,11 +6,12 @@ const { expect } = require('chai'),
     validateGender,
     validateEmailNotification,
     validateUsername,
-    validateArticleContent,
+    validateContent,
     validateIsPublished,
     validateArticleDescription,
     validateArticleTitle,
-    validateTag
+    validateTag,
+    validateIndex,
   } = require('../../lib/utils/validate'),
   {
     requestMock,
@@ -21,7 +22,8 @@ const { expect } = require('chai'),
     VALIDATE_USERNAME_ERROR,
     VALIDATE_ARTICLE_CONTENT_ERROR,
     isRequiredError,
-    booleanError
+    booleanError,
+    isNumberError
   } = require('../../constants'),
   UserModelManager = require('../../lib/modelManagers/usermodel'),
   articleModelManager = require('../../lib/modelManagers/articlemodel'),
@@ -184,7 +186,7 @@ describe('Profile validators', async () => {
     before(async () => {
       requestMock.body.content = 'This is a valid article content!';
       it('should validate valid article content', async () => {
-        validateArticleContent(req);
+        validateContent(req, 'content');
         const errors = req.validationErrors();
         expect(errors).to.equal(false);
       });
@@ -198,7 +200,7 @@ describe('Profile validators', async () => {
       });
     });
     it('should not validate invalid article content', async () => {
-      validateArticleContent(req);
+      validateContent(req, 'content');
       const errors = req.validationErrors();
       expect(errors[0].msg).to.equal(VALIDATE_ARTICLE_CONTENT_ERROR);
     });
@@ -359,6 +361,75 @@ describe('Profile validators', async () => {
       validateTag(req);
       const tagError = req.validationErrors();
       expect(tagError).to.equal(false);
+    });
+  });
+  describe('ValidateIndex', async () => {
+    it('should validate valid index', async () => {
+      requestMock.body.startIndex = 1;
+      requestMock.body.endIndex = 2;
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateIndex(req, 'startIndex');
+      await validateIndex(req, 'endIndex');
+      const errors = req.validationErrors();
+      expect(errors).to.equal(false);
+    });
+  });
+  describe('ValidateIndex', async () => {
+    it('should not validate invalid index', async () => {
+      requestMock.body.startIndex = 'a';
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateIndex(req, 'startIndex');
+      const errors = req.validationErrors();
+      expect(errors[0].msg).to.equal(isNumberError('startIndex'));
+    });
+  });
+  describe('ValidateIndex', async () => {
+    it('should not validate invalid index', async () => {
+      requestMock.body.endIndex = null;
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateIndex(req, 'endIndex');
+      const errors = req.validationErrors();
+      expect(errors[0].msg).to.equal(isRequiredError('endIndex'));
+      expect(errors[1].msg).to.equal(isNumberError('endIndex'));
+    });
+  });
+  describe('ValidateHighlightedText', async () => {
+    it('should not validate invalid index', async () => {
+      requestMock.body.highlightedText = 'Valid highlighted text';
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateContent(req, 'highlightedText');
+      const errors = req.validationErrors();
+      expect(errors).to.equal(false);
+    });
+  });
+  describe('ValidateHighlightedText', async () => {
+    it('should not validate invalid index', async () => {
+      requestMock.body.highlightedText = 'Valid highlighted text';
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateContent(req, 'highlightedText');
+      const errors = req.validationErrors();
+      expect(errors).to.equal(false);
+    });
+  });
+  describe('ValidateHighlightedText', async () => {
+    it('should not validate invalid index', async () => {
+      requestMock.body.highlightedText = ' ';
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+      await validateContent(req, 'highlightedText');
+      const errors = req.validationErrors();
+      expect(errors[0].msg).to.equal(isRequiredError('highlightedText'));
     });
   });
 });
