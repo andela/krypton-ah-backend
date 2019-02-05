@@ -6,6 +6,7 @@ const sgMail = require('@sendgrid/mail');
 const emailTemplate = require('../../lib/utils/emailService/emailTemplate');
 const sendVerificationMail = require('../../lib/utils/emailService/emailVerification');
 const { fakeEmail } = require('../mockData');
+const EmailVerificationMail = require('../../lib/utils/emailService/emailVerification');
 const {
   FROM,
   SUBJECT,
@@ -42,14 +43,14 @@ describe('Send Verification Email', () => {
     };
     sinon.stub(sgMail, 'send').returns(undefined);
     sinon.stub(res, 'status').returnsThis();
-    await sendVerificationMail(req, res);
+    await EmailVerificationMail(req, res);
     expect(sgMail.send).to.have.been.calledWith(msg);
   });
 
   it('Should send verification mail to newly registered user', async () => {
     sinon.stub(sgMail, 'send').returns(true);
     sinon.stub(res, 'status').returnsThis();
-    await sendVerificationMail(req, res);
+    await EmailVerificationMail(req, res);
     expect(res.status).to.have.been.calledWith(RESOURCE_CREATED_CODE);
   });
 

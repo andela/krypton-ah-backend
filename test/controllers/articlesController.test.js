@@ -35,7 +35,7 @@ describe('Articles controller', () => {
       await userprofile.create(constants.userprofile3);
       return newUser;
     });
-    userid = res.dataValues.id;
+    userid = res.id;
     testArticle = constants.article(userid);
     testArticle2 = constants.article(userid);
   });
@@ -68,7 +68,7 @@ describe('Articles controller', () => {
 
   it('should successfully update article details', async () => {
     const result = await article.createArticle(testArticle);
-    articleid = result.dataValues.id;
+    articleid = result.id;
     const req = {
       decodedToken: {
         payLoad: userid

@@ -13,7 +13,11 @@ const BAD_REQUEST_CODE = 400,
   OFFSET = 1,
   RESET_REACTION = 'Reaction removed successfully',
   SUBJECT = 'Welcome to Authors Haven! Verify Your Email',
+  AUTHOR_COMMENT_SUBJECT = 'Comment made on your article',
+  ARTICLE_SUBJECT = 'Comment made on article you liked',
+  THREAD_SUBJECT = 'A comment was made on your response',
   NEW_ARTICLE_SUBJECT = 'New article by followed author',
+  NEW_FOLLOWER_SUBJECT = 'You have a new follower',
   FROM = 'no-reply@authorshaven.com',
   UNAUTHORIZED_REQUEST = 'Unauthorized request',
   JWT_EXPIRED = 'The token provided has expired',
@@ -210,5 +214,9 @@ module.exports = {
   RESEND_ACTIVATION_MAIL,
   GET_USER_READSTAT_FAILED,
   GET_USER_READSTAT_SUCCESS,
-  NEW_ARTICLE_SUBJECT
+  NEW_ARTICLE_SUBJECT,
+  AUTHOR_COMMENT_SUBJECT,
+  ARTICLE_SUBJECT,
+  THREAD_SUBJECT,
+  NEW_FOLLOWER_SUBJECT
 };

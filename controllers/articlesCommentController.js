@@ -14,7 +14,7 @@ const Comment = require('../lib/modelManagers/articlesComment'),
 
 /**
  *
- * @description create Articles Comment Controller
+ *
  * @param {*} req
  * @param {*} res
  * @param {*} next
@@ -27,6 +27,10 @@ async function createCommentController(req, res, next) {
     const { id } = req.params;
     const comments = await Comment.createComment(comment, userId, id, mainCommentId);
     successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
+    const { articleId } = comments.dataValues;
+    req.commentDetails = {
+      id, comment, mainCommentId, userId, articleId
+    };
     req.body.commentId = comments.id;
     req.body.articleId = id;
     return next();
@@ -53,7 +57,7 @@ async function findCommentController(req, res) {
       return failureResponse(res, COMMENT_NOT_FOUND, NOT_FOUND_CODE);
     }
     const comment = comments.map((thread) => {
-      thread.dataValues.threads = thread.threads.length;
+      thread.threads = thread.threads.length;
       return thread;
     });
     return successResponse(res, COMMENT_SUCCESS_RETURN_MESSAGE, OK_CODE, comment);

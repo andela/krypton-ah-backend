@@ -12,7 +12,7 @@ const filterTags = async (req, res) => {
   if (foundTags.length === 0) {
     return failureResponse(res, TAGS_NOT_FOUND, NOT_FOUND_CODE, foundTags);
   }
-  const matchingTags = foundTags.map(tags => tags.dataValues.tagName);
+  const matchingTags = foundTags.map(tags => tags.tagName);
   return successResponse(res, FOUND_TAGS_MESSAGE, matchingTags);
 };
 module.exports = filterTags;

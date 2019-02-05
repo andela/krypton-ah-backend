@@ -26,7 +26,7 @@ class ArticlesController {
     const articleDetails = { ...slug.slugs, authorId, ...req.body };
     try {
       const createdArticles = await articleModelManager.createArticle(articleDetails);
-      generateTags(req.body.tags, createdArticles.dataValues.id);
+      generateTags(req.body.tags, createdArticles.id);
       if (createdArticles) {
         req.createdArticles = { ...createdArticles, authorId };
         req.createdArticles = createdArticles;
