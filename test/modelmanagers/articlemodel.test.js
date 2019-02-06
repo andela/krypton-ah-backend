@@ -1,8 +1,20 @@
 const { expect } = require('chai');
 const user = require('../../database/models').User;
+const { Articles } = require('../../database/models');
 const { userprofile } = require('../../database/models');
 const article = require('../../lib/modelManagers/articlemodel');
 const constants = require('../mockData');
+const { options } = require('../testHelper');
+const { findOrCreateTag } = require('../../lib/modelManagers/tagModel');
+const {
+    titleWhere,
+    authorWhere,
+    tagWhere,
+    keywordWhere,
+  } = require('../../lib/utils/helpers'),
+  {
+    tag,
+  } = require('../mockData');
 
 
 let userid;
@@ -80,5 +92,39 @@ describe('Unit test article model manager functions', () => {
   it('should delete an article when a valid id is provided', async () => {
     const res = await article.deleteArticle(articleid);
     expect(res).to.be.equals(1);
+  });
+});
+
+describe('article model manager search functions', () => {
+  beforeEach(async () => {
+    article.authorId = userid;
+    await article.createArticle(constants.article(userid));
+  });
+  afterEach('delete article created', async () => {
+    Articles.destroy(options);
+  });
+
+  it('should confirm that the article is found by the appropriate title', async () => {
+    const foundArticles = await article.getArticlesByTitle(titleWhere, 'test');
+    expect(foundArticles[0].title).to.equal('This is a test title');
+  });
+
+  it('should confirm that the article is found by the appropriate authors name', async () => {
+    const foundArticles = await article.getArticlesByAuthor(
+      authorWhere,
+      constants.userdata.firstname
+    );
+    expect(foundArticles[0].articleAuthor.firstname).to.equal(constants.userdata.firstname);
+  });
+
+  it('should confirm that the article is found by the article tag', async () => {
+    await findOrCreateTag(tag.tag1);
+    const foundArticles = await article.getArticlesByTag(tagWhere, tag.tag1);
+    expect(foundArticles[0].tags).to.eql([]);
+  });
+
+  it('should confirm that the article is found by keyword', async () => {
+    const foundArticles = await article.getArticlesByKeyword(keywordWhere, 'test');
+    expect(foundArticles[0].articleAuthor.firstname).to.equal(constants.userdata.firstname);
   });
 });

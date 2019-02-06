@@ -1,6 +1,7 @@
 const chaiHttp = require('chai-http');
 const chai = require('chai');
 const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
 const { expect } = require('chai');
 const app = require('../../index');
 const user = require('../../database/models').User;
@@ -12,8 +13,11 @@ const ArticlesController = require('../../controllers/Articles/articlesControlle
 const articleModelManager = require('../../lib/modelManagers/articlemodel');
 const tagGenerator = require('../../lib/utils/tagGenarator');
 const responses = require('../../constants/index');
+const helpers = require('../../lib/utils/helpers');
+const { sampleFoundArticle } = require('../mockData');
 
 chai.use(chaiHttp);
+chai.use(sinonChai);
 
 let res;
 let userid;
@@ -260,5 +264,79 @@ describe('getArticle controller', () => {
     await ArticlesController.getArticle(requestMock, responseMock);
     expect(statusStub.calledOnceWithExactly(responses.NOT_FOUND_CODE)).to.equal(true);
     expect(jsonStub.calledOnce).to.equal(true);
+  });
+});
+
+describe('articles controller search functions', async () => {
+  const req = {
+    query: {
+      value: 'this',
+    }
+  };
+  const res = {
+    status() {},
+    json() {}
+  };
+  afterEach('restore sinon', () => {
+    sinon.restore();
+  });
+  it('should search articles by author', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(helpers, 'searchResult');
+    sinon.stub(articleModelManager, 'getArticlesByAuthor').returns(sampleFoundArticle);
+    await ArticlesController.searchByAuthor(req, res);
+    await helpers.searchResult(sampleFoundArticle, res);
+    expect(res.status).to.have.been.calledWith(responses.OK_CODE);
+  });
+
+  it('should search articles by author', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(helpers, 'searchResult');
+    sinon.stub(articleModelManager, 'getArticlesByTitle').returns(sampleFoundArticle);
+    await ArticlesController.searchByTitle(req, res);
+    await helpers.searchResult(sampleFoundArticle, res);
+    expect(res.status).to.have.been.calledWith(responses.OK_CODE);
+  });
+
+  it('should search articles by author', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.spy(helpers, 'searchResult');
+    sinon.stub(articleModelManager, 'getArticlesByTag').returns(sampleFoundArticle);
+    await ArticlesController.searchByTag(req, res);
+    await helpers.searchResult(sampleFoundArticle, res);
+    expect(res.status).to.have.been.calledWith(responses.OK_CODE);
+  });
+
+  it('should search articles by keyword', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.spy(helpers, 'searchResult');
+    sinon.stub(articleModelManager, 'getArticlesByKeyword').returns(sampleFoundArticle);
+    await ArticlesController.searchByKeyword(req, res);
+    await helpers.searchResult(sampleFoundArticle, res);
+    expect(res.status).to.have.been.calledWith(responses.OK_CODE);
+  });
+  it('should return a server error when there is one', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(articleModelManager, 'getArticlesByTitle').throws();
+    await ArticlesController.searchByTitle(req, res);
+    expect(res.status).to.have.been.calledWith(responses.SERVER_ERROR_CODE);
+  });
+  it('should return a server error when there is one', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(articleModelManager, 'getArticlesByAuthor').throws();
+    await ArticlesController.searchByAuthor(req, res);
+    expect(res.status).to.have.been.calledWith(responses.SERVER_ERROR_CODE);
+  });
+  it('should return a server error when there is one', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(articleModelManager, 'getArticlesByTag').throws();
+    await ArticlesController.searchByTag(req, res);
+    expect(res.status).to.have.been.calledWith(responses.SERVER_ERROR_CODE);
+  });
+  it('should return a server error when there is one', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(articleModelManager, 'getArticlesByKeyword').throws();
+    await ArticlesController.searchByKeyword(req, res);
+    expect(res.status).to.have.been.calledWith(responses.SERVER_ERROR_CODE);
   });
 });

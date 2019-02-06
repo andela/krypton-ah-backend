@@ -1,8 +1,17 @@
+const {
+  articleByAuthorWhere,
+  articleByTagWhere,
+  articleByTitleWhere,
+  articleBykeywordWhere,
+  searchResult
+} = require('../../lib/utils/helpers');
+const { serverFailure } = require('../../lib/utils/messageHandler');
 const articleModelManager = require('../../lib/modelManagers/articlemodel');
 const response = require('../../lib/utils/helper_function');
 const constants = require('../../constants');
 const generateSlug = require('../../lib/utils/slugGenerator');
 const generateTags = require('../../lib/utils/tagGenarator');
+const paginate = require('../../lib/utils/pagination/paginationHelper');
 
 /**
  *
@@ -10,16 +19,16 @@ const generateTags = require('../../lib/utils/tagGenarator');
  * @class ArticlesController
  */
 class ArticlesController {
-/**
- *
- *
- * @static
- * @param {*} req
- * @param {*} res
- * @param {*} next
- * @returns {*} next
- * @memberof ArticlesController
- */
+  /**
+   *
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} next
+   * @memberof ArticlesController
+   */
   static async createArticles(req, res, next) {
     const authorId = req.decodedToken.payLoad;
     const slug = generateSlug(req.body.title, authorId.toString());
@@ -30,12 +39,7 @@ class ArticlesController {
       if (createdArticles) {
         req.createdArticles = { ...createdArticles, authorId };
         req.createdArticles = createdArticles;
-        return (response.successResponse(
-          res,
-          constants.OK_CODE,
-          createdArticles
-        ),
-        next());
+        return (response.successResponse(res, constants.OK_CODE, createdArticles), next());
       }
     } catch (error) {
       response.failureResponse(
@@ -118,8 +122,12 @@ class ArticlesController {
         req.authorId = returnedArticle[0].authorId;
         next();
       } else {
-        response
-          .successResponse(res, constants.NOT_FOUND_CODE_MESSAGE, '', constants.NOT_FOUND_CODE);
+        response.successResponse(
+          res,
+          constants.NOT_FOUND_CODE_MESSAGE,
+          '',
+          constants.NOT_FOUND_CODE
+        );
       }
     } catch (error) {
       response.failureResponse(
@@ -154,6 +162,98 @@ class ArticlesController {
         constants.SERVER_RETRIEVAL_MESSAGE,
         constants.SERVER_ERROR_CODE
       );
+    }
+  }
+
+  /**
+   * Search articles by title.
+   * @param {object} req Request Object.
+   * @param {object} res Response Object.
+   * @returns {object} Response with the article details that matches the search criteria.
+   */
+  static async searchByTitle(req, res) {
+    try {
+      const { value } = req.query;
+      const where = articleByTitleWhere(value);
+      const { limit, offset } = paginate(req.query);
+      const foundArticles = await articleModelManager.getArticlesByTitle(
+        where,
+        value,
+        limit,
+        offset
+      );
+      searchResult(foundArticles, res);
+    } catch (error) {
+      return serverFailure(res);
+    }
+  }
+
+  /**
+   * Search articles by Author.
+   * @param {object} req Request Object.
+   * @param {object} res Response Object.
+   * @returns {object} Response with the article details that matches the search criteria.
+   */
+  static async searchByAuthor(req, res) {
+    try {
+      const { value } = req.query;
+      const { limit, offset } = paginate(req.query);
+      const where = articleByAuthorWhere(value);
+      const foundArticles = await articleModelManager.getArticlesByAuthor(
+        where,
+        value,
+        limit,
+        offset,
+      );
+      searchResult(foundArticles, res);
+    } catch (error) {
+      return serverFailure(res);
+    }
+  }
+
+  /**
+   * Search articles by Tag.
+   * @param {object} req Request Object.
+   * @param {object} res Response Object.
+   * @returns {object} Response with the article details that matches the search criteria.
+   */
+  static async searchByTag(req, res) {
+    try {
+      const { value } = req.query;
+      const { limit, offset } = paginate(req.query);
+      const where = articleByTagWhere(value);
+      const foundArticles = await articleModelManager.getArticlesByTag(
+        where,
+        value,
+        limit,
+        offset,
+      );
+      searchResult(foundArticles, res);
+    } catch (error) {
+      return serverFailure(res);
+    }
+  }
+
+  /**
+   * Search articles by keyword.
+   * @param {object} req Request Object.
+   * @param {object} res Response Object.
+   * @returns {object} Response with the article details that matches the search criteria.
+   */
+  static async searchByKeyword(req, res) {
+    try {
+      const { value } = req.query;
+      const { limit, offset } = paginate(req.query);
+      const where = articleBykeywordWhere(value);
+      const foundArticles = await articleModelManager.getArticlesByKeyword(
+        where,
+        value,
+        limit,
+        offset,
+      );
+      searchResult(foundArticles, res);
+    } catch (error) {
+      return serverFailure(res);
     }
   }
 }
