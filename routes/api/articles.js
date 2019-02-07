@@ -7,18 +7,21 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
   paramsValidator = require('../../middlewares/paramsValidator'),
   commentValidator = require('../../lib/utils/commentValidator'),
   commentController = require('../../controllers/articlesCommentController'),
-  emailNotification = require('../../middlewares/emailNotification');
+  emailNotification = require('../../middlewares/emailNotification'),
+  { verifyArticleId, validateReaction } = require('../../middlewares/valueVerifier'),
+  partialJwtValidator = require('../../middlewares/partialJwtValidator'),
+  getArticleValidator = require('../../middlewares/getArticleValidator'),
+  updateReadStat = require('../../middlewares/updateReadStat'),
+  ReportController = require('../../controllers/reportController'),
+  uuidValidator = require('../../middlewares/uuidValidator'),
+  articlesHighlightValidator = require('../../middlewares/articlesHighlightValidator'),
+  createArticleHighlight = require('../../middlewares/createArticleHighlight');
+
 const {
   likeOrDislike,
   cancelReaction,
   allReactions
 } = require('../../controllers/articlesReactionController');
-const { verifyArticleId, validateReaction } = require('../../middlewares/valueVerifier'),
-  partialJwtValidator = require('../../middlewares/partialJwtValidator'),
-  getArticleValidator = require('../../middlewares/getArticleValidator'),
-  updateReadStat = require('../../middlewares/updateReadStat'),
-  articlesHighlightValidator = require('../../middlewares/articlesHighlightValidator'),
-  createArticleHighlight = require('../../middlewares/createArticleHighlight');
 
 /**
   * @swagger
@@ -246,6 +249,48 @@ router.put('/:id', verify, articleValidator, calculateReadTime, ArticlesControll
 /**
  * @swagger
  *
+ * /reports:
+ *   get:
+ *     description: To get all reports
+ *     produces:
+ *       - application/json
+ *     responses:
+ *        - 200:
+ *          description: report
+ *          message: Report retrieved successfully.
+ *          Data: reports
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
+ */
+router.get('/reports', jwtValidator, ReportController.getReports);
+
+/**
+ * @swagger
+ *
+ * /:id/report:
+ *   update:
+ *     description: resolved a report
+ *     produces:
+ *       - application/json
+ *     responses:
+ *        - 200:
+ *          description: resolve report
+ *          message: You have successfully resolve this report.
+ *          Data: id
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
+ */
+router.put('/:id/report', jwtValidator, ReportController.resolveReport);
+
+/**
+ * @swagger
+ *
  * /get an article:
  *   post:
  *     description: To get an article on author's haven
@@ -371,6 +416,7 @@ router.get('/', ArticlesController.getArticles);
  *         description: delete failed
  */
 router.delete('/:id', ArticlesController.deleteArticle);
+
 
 /**
  * @swagger
@@ -500,6 +546,38 @@ router.put('/reaction/:articleId/', jwtValidator, verifyArticleId, validateReact
 /**
  * @swagger
  *
+ * /:articleId/report:
+ *   post:
+ *     description: To report an article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: report Tag
+ *         description: The purpose of the report
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: string
+ *       - name: message
+ *         description: The content of the report
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: TEXT
+ *     responses:
+ *        - 200:
+ *          description: Report
+ *          message: Report was successfully created. Thank you.
+ *          Data: Null
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ */
+router.post('/:articleId/report', jwtValidator, ReportController.createAReport);
+
+/**
+ * @swagger
+ *
  * /:articleId/:reaction:
  *     get:
  *     description: Get number of likes and dislikes for an article
@@ -521,6 +599,26 @@ router.put('/reaction/:articleId/', jwtValidator, verifyArticleId, validateReact
  *
  */
 router.get('/reaction/:articleId/reactions', verifyArticleId, allReactions);
+/**
+ * @swagger
+ *
+ * /:id/report:
+ *   get:
+ *     description: To single report
+ *     produces:
+ *       - application/json
+ *     responses:
+ *        - 200:
+ *          description: report
+ *          message: Report retrieved successfully.
+ *          Data: report
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
+ */
+router.get('/:id/report', jwtValidator, uuidValidator, ReportController.getReport);
 
 /**
  * @swagger

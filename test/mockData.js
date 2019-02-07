@@ -257,6 +257,8 @@ const articleReaction = (articleId, userId) => ({
   updatedAt: faker.date.recent()
 });
 
+const reportTagName = 'Social';
+
 const tags = { tag: 'Andela, JavaScript,Sequelize' };
 
 const destroyData = () => {
@@ -297,6 +299,13 @@ const fakeEmail = {
   email1: 'test@mail.com',
   email2: 'michael.i.owolabi@gmail.com'
 };
+
+const dummyReport = (userId, articleId, reportTagId) => ({
+  userId,
+  articleId,
+  reportTagId,
+  message: faker.lorem.sentence(200)
+});
 
 const options = {
   where: {}
@@ -340,6 +349,8 @@ module.exports = {
   userprofile3,
   negativequery,
   fakeUserData,
+  fakeUser,
+  fakeUser2,
   tag,
   tags,
   badArticle,
@@ -356,11 +367,11 @@ module.exports = {
   comment1,
   comment2,
   comment3,
-  articleId,
-  fakeUser,
+  dummyReport,
   fakeEmail,
-  fakeUser2,
   createArticlesHighlightMock,
   emptyArray,
   sampleFoundArticle,
+  articleId,
+  reportTagName
 };

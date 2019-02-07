@@ -15,4 +15,6 @@ router.use(require('./authRoutes'));
 router.use('/profile', require('./userProfile'));
 router.use('/', require('./tagsRoute'));
 
+router.use('/reportTags', require('./reportTags'));
+
 module.exports = router;

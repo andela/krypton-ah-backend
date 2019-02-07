@@ -13,7 +13,7 @@ module.exports = {
     password: process.env.DATABASE_PASSWORD,
     database: process.env.TEST_DATABASE_NAME,
     host: process.env.DATABASE_HOST,
-    dialect: process.env.DATABASE_DIALECT
+    dialect: process.env.DATABASE_DIALECT,
   },
   production: {
     use_env_variable: 'DATABASE_URL'
