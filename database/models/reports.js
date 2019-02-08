@@ -26,6 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           max: 250
         }
+      },
+      resolved: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        validate: {
+          isBoolean: {
+            args: [true, false]
+          }
+        }
       }
     }, {}
   );
