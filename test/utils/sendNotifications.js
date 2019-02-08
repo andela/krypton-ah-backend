@@ -39,17 +39,18 @@ describe('Send email to users', () => {
     comment1.userId = userid;
     comment1.articleId = articleDetails.dataValues.id;
     await reaction.createReaction(comment1.articleId, comment1.userId, 'like');
-    const commentDetails = await commentModelManager.createComment(
-      comment1.comment,
-      comment1.userId,
-      comment1.articleId
-    );
-    thread = await commentModelManager.createComment(
-      comment1.comment,
-      comment1.userId,
-      comment1.articleId,
-      commentDetails.id
-    );
+    const commentDetails = await commentModelManager.createComment({
+      comment: comment1.comment,
+      userId: comment1.userId,
+      articleId: comment1.articleId
+    });
+    thread = await commentModelManager.createComment({
+      comment: comment1.comment,
+      userId: comment1.userId,
+      articleId: comment1.articleId,
+      mainCommentId: commentDetails.id
+    });
+
     followerId = userid;
     followeeId = user2.dataValues.id;
     await follow.followUser(user2.dataValues.id, userid);
