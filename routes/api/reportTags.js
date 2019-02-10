@@ -6,11 +6,14 @@ const router = require('express').Router(),
 /**
  * @swagger
  *
- * /tags:
+ * /reporttags:
  *   get:
+ *     summary: Get all report tags
  *     description: To get all tags
  *     produces:
  *       - application/json
+ *     tags:
+ *       - Report tag routes
  *     responses:
  *        - 200:
  *          description: retrieve all tags
@@ -22,7 +25,6 @@ const router = require('express').Router(),
  *
  *
  */
-
 router.get('/tags', ReportTagController.getTags);
 
 /**
@@ -30,7 +32,10 @@ router.get('/tags', ReportTagController.getTags);
  *
  * /tag:
  *   post:
+ *     summary: Create a report tag
  *     description: To create a new report tag
+ *     tags:
+ *       - Report tag routes
  *     produces:
  *       - application/json
  *     responses:
@@ -51,7 +56,10 @@ router.post('/tag', tagValidator, ReportTagController.createTag);
  *
  * /tag/:tagId:
  *   delete:
+ *     summary: Delete a report tag
  *     description: To delete a tag
+ *     tags:
+ *       - Report tag routes
  *     produces:
  *       - application/json
  *     responses:

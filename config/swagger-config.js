@@ -9,7 +9,7 @@ module.exports = {
         description: 'Author\'s Haven api documentation'
       },
       host: process.env.APP_BASE_URL,
-      basePath: '/'
+      basePath: '/api/v1'
     },
     apis: [
       path.resolve(path.resolve(__dirname), '../routes/**/*.js'),

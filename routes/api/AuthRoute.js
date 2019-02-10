@@ -8,9 +8,25 @@ const socialRouter = express.Router();
 socialRouter.use(passport.initialize());
 
 /**
- * Redirect the user to Facebook for authentication. When complete,
- * Facebook will redirect the user back to the application at
- * /facebook/callback
+ * @swagger
+ *
+ * /facebook:
+ *   get:
+ *     summary: Login a user through facebook
+ *     description: Login a user
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - Authentication routes
+ *     responses:
+ *        - 200:
+ *          description: retrieve user's data through facebook
+ *          message: Welcome back
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
  */
 socialRouter.get(
   '/facebook',
@@ -22,12 +38,6 @@ socialRouter.get(
   )
 );
 
-/**
- * Facebook will redirect the user to this URL after approval.  Finish the
- * authentication process by attempting to obtain an access token.  If
- * access was granted, the user will be logged in.  Otherwise,
- * authentication has failed.
- */
 socialRouter.get(
   '/facebook/callback',
   passport.authenticate('facebook', { session: false }),
@@ -40,6 +50,27 @@ socialRouter.get(
  * request.  The first step in Google authentication will involve
  * redirecting the user to google.com.  After authorization, Google
  * will redirect the user back to this application at /google/callback
+ */
+/**
+ * @swagger
+ *
+ * /google:
+ *   get:
+ *     summary: Login a user through google
+ *     description: Login a user
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - Authentication routes
+ *     responses:
+ *        - 200:
+ *          description: retrieve user's data through google
+ *          message: Welcome back
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
  */
 socialRouter.get(
   '/google',
@@ -57,6 +88,27 @@ socialRouter.get(
   SocialMediaController.getUserToken
 );
 
+/**
+ * @swagger
+ *
+ * /twitter:
+ *   get:
+ *     summary: Login a user through twitter
+ *     description: Login a user
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - Authentication routes
+ *     responses:
+ *        - 200:
+ *          description: retrieve user's data through twitter
+ *          message: Welcome back
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
+ */
 socialRouter.get(
   '/twitter',
   passport.authenticate(
@@ -73,7 +125,27 @@ socialRouter.get(
   SocialMediaController.getUserToken
 );
 
-// GET user information using linkedin
+/**
+ * @swagger
+ *
+ * /linkedin:
+ *   get:
+ *     summary: Login a user through linkedin
+ *     description: Login a user
+ *     produces:
+ *       - application/json
+ *     tags:
+ *       - Authentication routes
+ *     responses:
+ *        - 200:
+ *          description: retrieve user's data through linkedin
+ *          message: Welcome back
+ *        - 500:
+ *          description: Server Error
+ *          message: There as been a server error
+ *
+ *
+ */
 socialRouter.get(
   '/linkedin',
   passport.authenticate('linkedin')
