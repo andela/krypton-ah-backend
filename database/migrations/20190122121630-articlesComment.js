@@ -10,6 +10,15 @@ module.exports = {
       type: Sequelize.TEXT,
       allowNull: false
     },
+    originalId: {
+      type: Sequelize.UUID,
+      allowNull: true,
+      foreignKey: true,
+      references: {
+        model: 'ArticlesComments',
+        key: 'id'
+      }
+    },
     articleId: {
       type: Sequelize.UUID,
       onDelete: 'CASCADE',
@@ -30,6 +39,19 @@ module.exports = {
     },
     mainCommentId: {
       type: Sequelize.UUID
+    },
+    updated: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    deleted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    originalDate: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     },
     createdAt: {
       allowNull: false,

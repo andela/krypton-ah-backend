@@ -15,7 +15,8 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
   ReportController = require('../../controllers/reportController'),
   uuidValidator = require('../../middlewares/uuidValidator'),
   articlesHighlightValidator = require('../../middlewares/articlesHighlightValidator'),
-  createArticleHighlight = require('../../middlewares/createArticleHighlight');
+  createArticleHighlight = require('../../middlewares/createArticleHighlight'),
+  commentHistoryController = require('../../controllers/commentHistoryController');
 
 const {
   likeOrDislike,
@@ -581,6 +582,36 @@ router.get(
  */
 router.put('/reaction/:articleId/', jwtValidator, verifyArticleId, validateReaction, likeOrDislike);
 
+/*
+ * /update comment:
+ *   put:
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: commentId
+ *         description: The id of comment to be updated
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: uuid
+ *       - name: comment
+ *         description: The new comment
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         format: string
+ *     responses:
+ *       - 200:
+ *         description: articles
+ *         message: Comment updated succesfully
+ *         Data: Updated comment details
+ *       - 500:
+ *         description: Server Error
+ *         message: There as been a server error
+ */
+router.put('/:articleId/comments/', jwtValidator, commentController.updateCommentController);
+
+
 /**
  * @swagger
  *
@@ -693,5 +724,75 @@ router.get('/:id/report', jwtValidator, uuidValidator, ReportController.getRepor
  *
  */
 router.delete('/reaction/:reactionId', jwtValidator, cancelReaction);
+
+/*
+ *  delete:
+ *     description: Soft delete comment
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: commentId
+ *         description: the id of the comment to be deleted
+ *         in:  body
+ *         required: true
+ *         type: string
+ *     responses:
+ *       - 200:
+ *         description: Delete
+ *         message: Comment deleted Successfully
+ *       - 500:
+ *         description: Server Error
+ */
+router.delete('/:articleId/comments/', jwtValidator, commentController.deleteCommentController);
+
+/**
+ * @swagger
+ *   get:
+ *     description: Get all modified comments in an article
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - in: params
+ *         name: articleId
+ *         description: Id of article whose comments modified is to be retrieved
+ *         type: string
+ *         format: uuid
+ *         required: true
+ *     responses:
+ *       200:
+ *         message: Retrieved successfully
+ *       500:
+ *         description: Database service error
+ *         message: Ooops! Something went wrong, kindly try again
+ */
+router.get('/:articleId/modified/comments/', jwtValidator, commentHistoryController.getArticleCommentsModified);
+
+/**
+ * @swagger
+ *   get:
+ *     description: Get all modified threads in a comment
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - in: params
+ *         name: articleId
+ *         description: Id of article whose comment change history is to be retrieved
+ *         type: string
+ *         format: uuid
+ *         required: true
+ *       - in: params
+ *         name: commentId
+ *         description: Id of comment to get threads chenges from article
+ *         type: string
+ *         format: uuid
+ *         required: true
+ *     responses:
+ *       200:
+ *         message: Retrieved successfully
+ *       500:
+ *         description: Database service error
+ *         message: Ooops! Something went wrong, kindly try again
+ */
+router.get('/:articleId/comments/:commentId/modified/', jwtValidator, commentHistoryController.getThreadsModified);
 
 module.exports = router;

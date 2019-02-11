@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    originalId: {
+      type: DataTypes.UUID
+    },
     userId: {
       type: DataTypes.UUID
     },
@@ -17,6 +20,29 @@ module.exports = (sequelize, DataTypes) => {
     },
     mainCommentId: {
       type: DataTypes.UUID
+    },
+    updated: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      validate: {
+        isBoolean: {
+          args: [true, false]
+        }
+      }
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      validate: {
+        isBoolean: {
+          args: [true, false]
+        }
+      }
+    },
+    originalDate: {
+      allowNull: true,
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
   });
   ArticlesComments.associate = (models) => {
@@ -27,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     ArticlesComments.hasMany(ArticlesComments, {
       foreignKey: 'mainCommentId',
       as: 'threads'
+    });
+    ArticlesComments.hasMany(ArticlesComments, {
+      foreignKey: 'originalId',
+      as: 'history'
     });
     ArticlesComments.hasMany(models.CommentsReactions, {
       foreignKey: 'commentId'
