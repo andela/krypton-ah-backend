@@ -2,6 +2,7 @@ const router = require('express').Router();
 const signupValidator = require('../../lib/utils/signupValidator');
 const checkEmail = require('../../middlewares/checkEmail');
 const authController = require('../../controllers/AuthController');
+
 const sendVerficationMail = require('../../lib/utils/emailService/emailVerification');
 
 /**
@@ -9,7 +10,10 @@ const sendVerficationMail = require('../../lib/utils/emailService/emailVerificat
  *
  * /signin:
  *   post:
+ *     summary: Sign in a user to the application
  *     description: Signin to the application
+ *     tags:
+ *       - Authentication routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -49,7 +53,10 @@ router.route('/signin').post(authController.signIn);
  *
  * /signup:
  *   post:
+ *     summary: Create a new user account
  *     description: Creates a new user and moves to route for sending email
+ *     tags:
+ *       - Authentication routes
  *     parameters:
  *       - name: email
  *         description: user email to save for new user

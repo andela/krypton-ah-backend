@@ -28,8 +28,10 @@ const {
   * @swagger
   * /search?query parameters:
   * get:
-  *     summary: search articles by keyword
+  *     summary: Search articles by keyword
   *     description: users can search for an article by keywords
+  *     tags:
+  *       - Article routes
   *     produces:
   *       - "application/json"
   *     parameters:
@@ -52,8 +54,10 @@ router.get('/search', ArticlesController.searchByKeyword);
  * @swagger
  * /search/title?query parameters:
  * get:
- *     summary: search articles by title
+ *     summary: Search articles by title
  *     description: users can search for an article through the article title
+  *     tags:
+  *       - Article routes
  *     produces:
  *       - "application/json"
  *     parameters:
@@ -78,6 +82,8 @@ router.get('/search/title/', ArticlesController.searchByTitle);
  * get:
  *     summary: search articles by author
  *     description: users can search for an article through the article author
+  *     tags:
+  *       - Article routes
  *     produces:
  *       - "application/json"
  *     parameters:
@@ -102,6 +108,8 @@ router.get('/search/author/', ArticlesController.searchByAuthor);
  * get:
  *     summary: search articles by tag
  *     description: users can search for an article through the article tag
+  *     tags:
+  *       - Article routes
  *     produces:
  *       - "application/json"
  *     parameters:
@@ -126,7 +134,10 @@ router.get('/search/tag/', ArticlesController.searchByTag);
  *
  * /create an article:
  *   post:
+ *     summary: Create a new article
  *     description: To create an article on author's haven
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -189,9 +200,12 @@ router.post(
 /**
  * @swagger
  *
- * /create an article:
- *   post:
+ * /id:
+ *   put:
+ *     summary: Update an article
  *     description: To update an article on author's haven
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -252,7 +266,10 @@ router.put('/:id', verify, articleValidator, calculateReadTime, ArticlesControll
  *
  * /reports:
  *   get:
+ *     summary: Get all reports
  *     description: To get all reports
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     responses:
@@ -272,8 +289,11 @@ router.get('/reports', jwtValidator, ReportController.getReports);
  * @swagger
  *
  * /:id/report:
- *   update:
+ *   put:
+ *     summary: Update report status
  *     description: resolved a report
+ *     tags:
+ *        - Article routes
  *     produces:
  *       - application/json
  *     responses:
@@ -292,9 +312,12 @@ router.put('/:id/report', jwtValidator, ReportController.resolveReport);
 /**
  * @swagger
  *
- * /get an article:
- *   post:
+ * /:id:
+ *   get:
+ *     summary: Get a single article
  *     description: To get an article on author's haven
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -346,9 +369,12 @@ router
 /**
  * @swagger
  *
- * /get an article:
- *   post:
+ * /:
+ *   get:
+ *     summary: Get all articles
  *     description: To get an article on author's haven
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -398,9 +424,12 @@ router.get('/', ArticlesController.getArticles);
 /**
  * @swagger
  *
- * /delete:
- *   post:
+ * /:id:
+ *   delete:
+ *     summary: Delete an article
  *     description: Deletes articles from the system
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -422,9 +451,11 @@ router.delete('/:id', ArticlesController.deleteArticle);
 /**
  * @swagger
  * /:articleId/comments:
- * post:
+ *  post:
  *     summary: Create Article Comment
  *     description: It allows users to create articles and comment under articles
+ *     tags:
+ *       - Article routes
  *     consumes:
  *       - "application/json"
  *       - "application/x-www-form-urlencoded"
@@ -450,10 +481,10 @@ router.delete('/:id', ArticlesController.deleteArticle);
  *         type: UUID
  *         required: false
  *     responses:
- *       200:
- *         description: Comment added successfully
- *       400:
- *         description: empty comment field
+ *       -  200:
+ *          description: Comment added successfully
+ *       -  400:
+ *          description: empty comment field
  */
 router.post(
   '/:id/comments',
@@ -468,11 +499,13 @@ router.post(
 /**
  * @swagger
  * /:articleId/comments:
- * get:
- *     summary: Create Article Comment
- *     description: It allows users to create articles and comment under articles
+ *  get:
+ *     summary: Get Article Comment
+ *     description: It allows users to get articles and comment under articles
+ *     tags:
+ *       - Article routes
  *     produces:
- *     - "application/json"
+ *       - "application/json"
  *     parameters:
  *       - in: query
  *         name: articleId
@@ -480,18 +513,20 @@ router.post(
  *         type: integer
  *         required: true
  *     responses:
- *       200:
- *         description: Comment successfully returned
- *       404:
- *         description: empty comment field
+ *       -  200:
+ *          description: Comment successfully returned
+ *       -  404:
+ *          description: empty comment field
  */
 router.get('/:id/comments', paramsValidator, commentController.findCommentController);
 /**
  * @swagger
  * /:articleId/comments/commentId:
- * get:
+ *  get:
  *     summary: Create Article Comment
  *     description: It allows users to create articles and comment under articles
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - "application/json"
  *     parameters:
@@ -506,9 +541,9 @@ router.get('/:id/comments', paramsValidator, commentController.findCommentContro
  *         type: integer
  *         required: true
  *     responses:
- *       200:
+ *       - 200:
  *         description: Comment successfully returned
- *       404:
+ *       - 404:
  *         description: empty comment field
  */
 router.get(
@@ -521,8 +556,11 @@ router.get(
  * @swagger
  *
  * /:articleId/:reaction:
- *    put:
+ *   put:
+ *     summary: React to an article
  *     description: React to a particular article
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -579,7 +617,10 @@ router.put('/:articleId/comments/', jwtValidator, commentController.updateCommen
  *
  * /:articleId/report:
  *   post:
+ *     summary: Report an article
  *     description: To report an article
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -610,8 +651,11 @@ router.post('/:articleId/report', jwtValidator, ReportController.createAReport);
  * @swagger
  *
  * /:articleId/:reaction:
- *     get:
+ *   get:
+ *     summary: Get number of likes and dislike for an article
  *     description: Get number of likes and dislikes for an article
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -635,7 +679,10 @@ router.get('/reaction/:articleId/reactions', verifyArticleId, allReactions);
  *
  * /:id/report:
  *   get:
+ *     summary: Get a single report
  *     description: To single report
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     responses:
@@ -655,8 +702,11 @@ router.get('/:id/report', jwtValidator, uuidValidator, ReportController.getRepor
  * @swagger
  *
  * /:articleId/:reaction:
- *     delete:
+ *   delete:
+ *     summary: Delete a reaction
  *     description: Delete an existing reaction to an article
+ *     tags:
+ *       - Article routes
  *     produces:
  *       - application/json
  *     parameters:

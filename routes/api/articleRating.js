@@ -7,7 +7,10 @@ router
  * @swagger
  * /:
  *   post:
- *     description: Creates an article rating
+ *     summary: Rate an article
+ *     description: Creates an article
+ *     tags:
+ *       - Rating routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -24,7 +27,7 @@ router
  *         type: string
  *         format: uuid
  *       - name: rating
- *         description: Uaers rating for a specific article
+ *         description: Users rating for a specific article
  *         in:  body
  *         required: true
  *         type: number
@@ -44,9 +47,12 @@ router
 
 /**
  * @swagger
- * /:token:
+ * /:reviewerId/:articleId:
  *   get:
+ *     summary: Get rating of a specific article
  *     description: Get rating of a user for a specific article
+ *     tags:
+ *       - Rating routes
  *     parameters:
  *       - name: articleId
  *         description: Article to search for

@@ -7,7 +7,10 @@ const { verifyCommentId, validateReaction } = require('../../middlewares/valueVe
  *
  * /:commentId/:reaction:
  *    post:
- *     description: Reac to a particular comment
+ *     summary: React to a comment on an article
+ *     description: React to a particular comment
+ *     tags:
+ *       - Comment reaction route
  *     produces:
  *       - application/json
  *     parameters:

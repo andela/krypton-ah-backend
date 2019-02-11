@@ -9,10 +9,12 @@ const userProfileRouter = require('express').Router(),
 userProfileRouter.use(jwtValidator, userProfileValidator);
 /**
  * @swagger
- * /api/profile:
+ * /profile:
  *  post:
  *    summary: Create profile for an existing user
  *    description: Returns details of user profile
+ *    tags:
+ *      - User routes
  *    produces:
  *      - application/json
  *    parameters:
@@ -64,10 +66,12 @@ userProfileRouter.use(jwtValidator, userProfileValidator);
 
 /**
  * @swagger
- * /api/profile:
- *  post:
+ * /update:
+ *  put:
  *    summary: Updates the profile details of a user
  *    description: Returns details of user profile
+ *    tags:
+ *      - User routes
  *    produces:
  *      - application/json
  *    parameters:
