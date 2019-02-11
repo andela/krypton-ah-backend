@@ -14,7 +14,7 @@ const Users = require('../../controllers/Users/userController'),
  *     summary: List all the users present in the system
  *     description: Returns a list of all the users along with their profiels
  *     tags:
- *       - Get all users route
+ *       - User routes
  *     parameters:
  *       - in: query
  *         name: offset
@@ -60,7 +60,7 @@ router.get('/', Users.listUsers);
  *     summary: Follow a user
  *     description: It allows an authorized user to follow another author
  *     tags:
- *       - Get an author page
+ *       - User routes
  *     parameters:
  *       - in: query
  *         name: offset
@@ -111,7 +111,7 @@ router.post(
  *     summary: Unfollow a user
  *     description: It enables author to unfollow each other
  *     tags:
- *       - Delete following
+ *       - User routes
  *     parameters:
  *       - in: query
  *         name: offset
@@ -161,7 +161,7 @@ router.delete(
  *     summary: Get all followers
  *     description: Get the user followers
  *     tags:
- *       - my followers
+ *       - User routes
  *     parameters:
  *       - in: query
  *         name: offset
@@ -199,7 +199,7 @@ router.get(
  *     summary: Get all user followees
  *     description: Display all the users that the current user is following
  *     tags:
- *       - my followees
+ *       - User routes
  *     parameters:
  *       - in: query
  *         name: offset
@@ -234,9 +234,12 @@ router.get(
 /**
  * @swagger
  *
- * /Resend account activation mail:
+ * /resend:
  *   post:
+ *     summary: Resend account verification link
  *     description: resend new account activation link
+ *     tags:
+ *       - User routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -267,9 +270,12 @@ router.post('/resend/activation/mail', resendMail, emailNotification.notifyFollo
 /**
  * @swagger
  *
- * /Verify new user account:
+ * /Verify:
  *   get:
+ *     summary: Verify user account
  *     description: Verify new user account
+ *     tags:
+ *       - User routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -295,10 +301,12 @@ router.get('/verifyemail/:token', jwtValidator, verifyNewUser);
 
 /**
  * @swagger
- * /api/v1/readstat:
+ * /stat:
  *  post:
  *    summary: Get the read statistics of user
  *    description: Returns the articles title and description for an authenticated user
+ *    tags:
+ *      - User routes
  *    produces:
  *      - application/json
  *    parameters:

@@ -47,8 +47,10 @@ app.use(require('./routes'));
  *  get:
  *    summary: Author's Haven root endpoint
  *    description: Returns a welcome message
+ *    tags:
+ *      - Home
  *    responses:
- *      200:
+ *      - 200:
  *        description: A welcome message
  *        schema:
  *          type: string

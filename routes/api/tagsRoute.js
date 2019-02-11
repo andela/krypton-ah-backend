@@ -7,9 +7,12 @@ const filterTags = require('../../controllers/filterTagsController');
  *
  * /tags:
  *   get:
+ *     summary: Search and filter tags based on user's input
  *     description: search and filter tags based on user's input
  *     produces:
  *       - application/json
+ *     tags:
+ *       - Search routes
  *     parameters:
  *       - any string: string
  *         description: search and filter tags based on user's input

@@ -4,9 +4,12 @@ const forgetPassword = require('../../controllers/forgetPasswordController');
 router
 /**
  * @swagger
- * /:
+ * /reset:
  *   post:
+ *     summary: Send reset link to user email
  *     description: Sends reset link to users email
+ *     tags:
+ *      - User routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -31,9 +34,12 @@ router
 
 /**
  * @swagger
- * /:token:
+ * /token:
  *   get:
+ *     summary: Check token from reset link
  *     description: Check token from reset link
+ *     tags:
+ *       - User routes
  *     parameters:
  *       - in: params
  *         name: token
