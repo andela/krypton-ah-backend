@@ -56,7 +56,7 @@ const userdata3 = {
   password: 'password',
   firstname: 'firstname',
   lastname: 'lastname',
-  isverified: true
+  isverified: true,
 };
 
 const userdata4 = {
@@ -382,5 +382,5 @@ module.exports = {
   shortComment2,
   shortComment3,
   articleId,
-  reportTagName
+  reportTagName,
 };
