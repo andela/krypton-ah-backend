@@ -26,7 +26,7 @@ const BAD_REQUEST_CODE = 400,
   SERVER_ERROR_MESSAGE = 'Ooops! Something went wrong, kindly try again',
   ACCOUNT_CREATED = 'Account successfully created, Kindly check your email to activate your account. In case you did not receive the activation link in your mail, kindly visit this link localhost:3000/api/v1/users/resend/activation/mail to resend the mail.',
   ALREADY_ACTIVATED_ERROR = 'Account is already activated',
-  ACCOUNT_ACTIVATED = 'Your Account is Now Activated!',
+  ACCOUNT_ACTIVATED = 'Your Account is Now Activated! But we cannot redirect you to the desired destination because no callback URL was provided',
   INVALID_USER = 'Invalid user',
   WELCOME_NEW_USER = 'Welcome!',
   WELCOME_EXISTING_USER = 'Welcome back',
@@ -130,7 +130,9 @@ const BAD_REQUEST_CODE = 400,
   UPDATE_ERROR_MESSAGE = 'Ooops!!! Cannot find report. Resolved failed',
   REPORT_TAG_NOT_FOUND = 'Report tag id doesn\'t exist',
   REPORT_REOPEN = 'You have reopen this report',
-  TAG_ALREADY_EXIST = 'Ooops!!! Tag name already exist.';
+  TAG_ALREADY_EXIST = 'Ooops!!! Tag name already exist.',
+  REDIRECT_CODE = 302,
+  CALLBACK_URL = 'http://localhost:5000';
 
 module.exports = {
   FROM,
@@ -264,5 +266,7 @@ module.exports = {
   UPDATE_ERROR_MESSAGE,
   REPORT_TAG_NOT_FOUND,
   REPORT_REOPEN,
-  REPORT_CREATED
+  REPORT_CREATED,
+  REDIRECT_CODE,
+  CALLBACK_URL,
 };
