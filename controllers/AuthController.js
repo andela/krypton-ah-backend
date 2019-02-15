@@ -27,13 +27,15 @@ class AuthController {
       req.body.email,
       hashedPassword,
       req.body.firstname,
-      req.body.lastname
+      req.body.lastname,
+      req.body.callbackUrl
     );
 
     const { id } = userRecord.dataValues;
 
     req.jwtToken = jwtUtil.generateToken(TOKEN_TIMESPAN, id);
     req.email = req.body.email;
+    req.callbackUrl = req.body.callbackUrl;
     return next();
   }
 
