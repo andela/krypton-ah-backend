@@ -81,6 +81,8 @@ router.route('/signin').post(authController.signIn);
  *         required: true
  *         type: string
  */
-router.route('/signup').post(signupValidator, checkEmail, authController.signUp, sendVerficationMail);
+router
+  .route('/signup')
+  .post(signupValidator, checkEmail, authController.signUp, sendVerficationMail);
 
 module.exports = router;

@@ -128,7 +128,6 @@ router.get('/search/author/', ArticlesController.searchByAuthor);
  */
 router.get('/search/tag/', ArticlesController.searchByTag);
 
-
 /**
  * @swagger
  *
@@ -461,7 +460,7 @@ router.delete('/:id', ArticlesController.deleteArticle);
  *       - "application/x-www-form-urlencoded"
  *     parameters:
  *       - in: query
- *         name: articleId
+ *         name: id
  *         description: articleId is the Id of the article that comments will be tied to
  *         type: integer
  *         required: true
@@ -478,7 +477,7 @@ router.delete('/:id', ArticlesController.deleteArticle);
  *       - in: body
  *         name: mainCommentId
  *         description: user's comment under other comment
- *         type: UUID
+ *         type: string
  *         required: false
  *     responses:
  *       -  200:
@@ -508,7 +507,7 @@ router.post(
  *       - "application/json"
  *     parameters:
  *       - in: query
- *         name: articleId
+ *         name: id
  *         description: articleId is the Id of the article that comments will be tied to
  *         type: integer
  *         required: true
@@ -531,7 +530,7 @@ router.get('/:id/comments', paramsValidator, commentController.findCommentContro
  *       - "application/json"
  *     parameters:
  *       - in: query
- *         name: articleId
+ *         name: id
  *         description: articleId is the Id of the article that comments will be tied to
  *         type: integer
  *         required: true

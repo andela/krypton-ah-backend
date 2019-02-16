@@ -7,6 +7,7 @@
     "test": "export NODE_ENV=test && npm run db:reset && npm run db:migrate && mocha ./test/* --exit",
     "db:reset": "node_modules/.bin/sequelize db:migrate:undo:all",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "db:seed": "node_modules/.bin/sequelize db:seed:all",
     "test-coverage": "nyc --reporter=html --reporter=text mocha --recursive --exit",
     "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
