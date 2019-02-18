@@ -15,6 +15,7 @@ const tagGenerator = require('../../lib/utils/tagGenarator');
 const responses = require('../../constants/index');
 const helpers = require('../../lib/utils/helpers');
 const { sampleFoundArticle } = require('../mockData');
+const categoryModelManager = require('../../lib/modelManagers/categoriesModel');
 
 chai.use(chaiHttp);
 chai.use(sinonChai);
@@ -47,10 +48,12 @@ describe('Articles controller', () => {
   it('should successfully add a new article', async () => {
     const req = {
       decodedToken: {
-        payLoad: userid
+        payLoad: {
+          id: userid
+        }
       },
       body: {
-        ...testArticle
+        ...testArticle,
       }
 
 
@@ -66,6 +69,7 @@ describe('Articles controller', () => {
 
     const nextStub = sinon.stub(nextMock, 'next');
     await ArticlesController.createArticles(req, res, nextMock.next);
+    sinon.stub(categoryModelManager, 'createCategory').returns(true);
     expect(nextStub.calledOnce).to.equal(true);
   });
 
@@ -210,14 +214,14 @@ describe('Articles controller', () => {
     sinon.restore();
   });
   it('should throw error when adding a new article', async () => {
-    const { invalidarticle } = constants;
     const req = {
       decodedToken: {
-        payLoad: userid
+        payLoad: {
+          id: userid
+        }
       },
       body: {
-        title: 'hello',
-        ...invalidarticle
+        ...testArticle,
       }
     };
     const res = {
@@ -294,6 +298,15 @@ describe('articles controller search functions', async () => {
     sinon.stub(helpers, 'searchResult');
     sinon.stub(articleModelManager, 'getArticlesByTitle').returns(sampleFoundArticle);
     await ArticlesController.searchByTitle(req, res);
+    await helpers.searchResult(sampleFoundArticle, res);
+    expect(res.status).to.have.been.calledWith(responses.OK_CODE);
+  });
+
+  it('should search articles by category', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(helpers, 'searchResult');
+    sinon.stub(articleModelManager, 'getArticlesByCategory').returns(sampleFoundArticle);
+    await ArticlesController.searchByCategory(req, res);
     await helpers.searchResult(sampleFoundArticle, res);
     expect(res.status).to.have.been.calledWith(responses.OK_CODE);
   });

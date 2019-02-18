@@ -38,6 +38,11 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false
     },
+    category: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      defaultValue: 'general',
+    },
     authorId: {
       type: Sequelize.UUID,
       allowNull: false,
