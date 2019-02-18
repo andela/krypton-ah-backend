@@ -12,6 +12,7 @@ const { expect } = require('chai'),
     validateArticleTitle,
     validateTag,
     validateIndex,
+    validateCategory
   } = require('../../lib/utils/validate'),
   {
     requestMock,
@@ -300,7 +301,7 @@ describe('Profile validators', async () => {
       const articleMock = mockArticle(newUser.id);
       articleMock.authorId = newUser.id;
       newUserArticle = await articleModelManager.createArticle(articleMock);
-      requestMock.decodedToken = { payLoad: newUser.id };
+      requestMock.decodedToken = { payLoad: { id: newUser.id } };
       await expressValidator(requestMock, {}, () => {
         req = requestMock;
       });
@@ -361,6 +362,19 @@ describe('Profile validators', async () => {
       validateTag(req);
       const tagError = req.validationErrors();
       expect(tagError).to.equal(false);
+    });
+  });
+  describe('validate article categories', () => {
+    before(async () => {
+      requestMock.body.tag = tag.validTag;
+      await expressValidator(requestMock, {}, () => {
+        req = requestMock;
+      });
+    });
+    it('should not validate an invalid tagName', async () => {
+      validateCategory(req);
+      const tagError = req.validationErrors();
+      expect(tagError).to.be.an('array');
     });
   });
   describe('ValidateIndex', async () => {

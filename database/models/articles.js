@@ -48,13 +48,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         validate: {}
       },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       slug: {
         type: DataTypes.STRING,
-        validate: {}
+        validate: {},
       },
       readTime: {
         type: DataTypes.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
       numberOfReviews: {
         type: DataTypes.INTEGER,
@@ -91,6 +95,10 @@ module.exports = (sequelize, DataTypes) => {
     Articles.hasMany(models.Rating, {
       foreignKey: 'id',
       as: 'articleId'
+    });
+    Articles.hasOne(models.categories, {
+      foreignKey: 'category',
+      as: 'articleCategory'
     });
   };
   return Articles;

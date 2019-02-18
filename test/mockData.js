@@ -124,6 +124,7 @@ const article = authorid => ({
   averageRating: 0,
   slug: faker.helpers.slugify('title'),
   readTime: 0,
+  category: 'general',
   authorId: authorid
 });
 
@@ -135,6 +136,7 @@ const invalidarticle = authorid => ({
   averageRating: 0,
   Slug: faker.helpers.slugify('title'),
   readTime: 0,
+  category: 'general',
   authorId: authorid
 });
 

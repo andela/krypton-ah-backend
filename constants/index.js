@@ -133,6 +133,8 @@ const BAD_REQUEST_CODE = 400,
   TAG_DELETED = 'Report tag deleted successfully',
   REPORT_TAG_NAME = 'Report tag name cannot be empty',
   REPORT_TAG_IN_USE = 'Oops!!! Report tag is currently in use. Cannot be deleted',
+  CATEGORY_IN_USE = 'Oops!!! That category is currently in use. Cannot be deleted',
+  CATEGORY_CONFLICT = 'category already exists',
   RESOLVED_REPORT = 'You have successfully resolved this report',
   UPDATE_ERROR_MESSAGE = 'Ooops!!! Cannot find report. Resolved failed',
   REPORT_TAG_NOT_FOUND = "Report tag id doesn't exist",
@@ -284,5 +286,7 @@ module.exports = {
   NO_RECORD_FOUND,
   REDIRECT_CODE,
   CALLBACK_URL,
-  SUCCESS_MESSAGE
+  SUCCESS_MESSAGE,
+  CATEGORY_IN_USE,
+  CATEGORY_CONFLICT
 };
