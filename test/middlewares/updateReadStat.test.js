@@ -8,7 +8,7 @@ describe('updateReadStat middleware', async () => {
   afterEach(sinon.restore);
   it('should call readStatUpdater function', async () => {
     const readStatUpdaterStub = await sinon.stub(ReadStatsManager, 'readStatUpdater').returnsThis();
-    requestMock.decodedToken = { payLoad: 'mockreaderId' };
+    requestMock.decodedToken = { payLoad: { id: 'mockreaderId' } };
     requestMock.params = { id: 'mockArticleId' };
     requestMock.authorId = 'mockauthorId';
     await updateReadStat(requestMock);

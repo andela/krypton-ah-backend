@@ -38,7 +38,10 @@ class ArticlesController {
       ...slug.slugs,
       authorId,
       ...req.body,
-      category: req.body.category.toString().toLowerCase().trim()
+      category: req.body.category
+        .toString()
+        .toLowerCase()
+        .trim()
     };
     try {
       const createdArticles = await articleModelManager.createArticle(articleDetails);
@@ -136,6 +139,37 @@ class ArticlesController {
           '',
           constants.NOT_FOUND_CODE
         );
+      }
+    } catch (error) {
+      response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE
+      );
+    }
+  }
+
+
+  /**
+   *
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {object} next
+   * @return {*} *
+   * @memberof ArticlesController
+   */
+  static async getPopularArticles(req, res) {
+    const { limit, offset } = req.query;
+    try {
+      const returnedArticles = await articleModelManager.filterPopularArticles(limit, offset);
+      if (returnedArticles) {
+        if (returnedArticles) {
+          returnedArticles.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+          returnedArticles.sort((a, b) => (a.ReadStats.length < b.ReadStats.length ? 1 : -1));
+          return response.successResponse(res, constants.OK_CODE, returnedArticles);
+        }
       }
     } catch (error) {
       response.failureResponse(

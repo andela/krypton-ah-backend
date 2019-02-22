@@ -13,10 +13,7 @@ const {
     keywordWhere,
     articleByCategoryWhere
   } = require('../../lib/utils/helpers'),
-  {
-    tag,
-  } = require('../mockData');
-
+  { tag } = require('../mockData');
 
 let userid;
 let res;
@@ -58,8 +55,9 @@ describe('Unit test article model manager functions', () => {
     expect(updatedDetails[0].dataValues.title).to.be.equals(updatedArticle.title);
     expect(updatedDetails[0].dataValues.content).to.be.equals(updatedArticle.content);
     expect(updatedDetails[0].dataValues.description).to.be.equals(updatedArticle.description);
-    expect(updatedDetails[0].dataValues.featuredImageUrl)
-      .to.be.equals(updatedArticle.featuredImageUrl);
+    expect(updatedDetails[0].dataValues.featuredImageUrl).to.be.equals(
+      updatedArticle.featuredImageUrl
+    );
     expect(updatedDetails[0].dataValues.averageRating).to.be.equals(updatedArticle.averageRating);
     expect(updatedDetails[0].dataValues.authorId).to.be.equals(updatedArticle.authorId);
     expect(updatedDetails[0].dataValues.slug).to.be.equals(updatedArticle.Slug);
@@ -75,6 +73,11 @@ describe('Unit test article model manager functions', () => {
 
   it('should display all articles when no column name is passed', async () => {
     const res = await article.getArticlesby();
+    expect(res.length).to.be.equals(2);
+  });
+
+  it('should display popular articles', async () => {
+    const res = await article.filterPopularArticles();
     expect(res.length).to.be.equals(2);
   });
 

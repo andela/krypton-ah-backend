@@ -51,6 +51,32 @@ router.get('/search', ArticlesController.searchByKeyword);
 
 
 /**
+  * @swagger
+  * /search?query parameters:
+  * get:
+  *     summary: Search articles by keyword
+  *     description: users can search for an article by keywords
+  *     tags:
+  *       - Article routes
+  *     produces:
+  *       - "application/json"
+  *     parameters:
+  *       - in: query
+  *         name: value
+  *         description: value is the search query parameter the user pass in to search by
+  *         type: string
+  *         required: true
+  *     responses:
+  *       200:
+  *         description: Below are the matching articles
+  *       404:
+  *         description: No article with the search parameter
+  *       500:
+  *          description: Ooops! Something went wrong, kindly try again
+  */
+router.get('/popular', ArticlesController.getPopularArticles);
+
+/**
  * @swagger
  * /search/title?query parameters:
  * get:
@@ -75,7 +101,6 @@ router.get('/search', ArticlesController.searchByKeyword);
  *          description: Ooops! Something went wrong, kindly try again
  */
 router.get('/search/category/', ArticlesController.searchByCategory);
-
 
 /**
  * @swagger
