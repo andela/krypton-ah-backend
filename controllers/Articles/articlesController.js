@@ -14,6 +14,7 @@ const constants = require('../../constants');
 const generateSlug = require('../../lib/utils/slugGenerator');
 const generateTags = require('../../lib/utils/tagGenarator');
 const paginate = require('../../lib/utils/pagination/paginationHelper');
+const sort = require('../../lib/utils/sortArticlesHelper');
 
 /**
  *
@@ -99,9 +100,10 @@ class ArticlesController {
    * @memberof ArticlesController
    */
   static async getArticles(req, res) {
+    const { limit, offset } = req.query;
     const { field, value } = req.params;
     try {
-      const returnedArticle = await articleModelManager.getArticlesby(field, value);
+      const returnedArticle = await articleModelManager.getArticlesby(field, value, limit, offset);
       if (returnedArticle) {
         response.successResponse(res, constants.ARTICLES_RETRIEVAL_SUCCESS, returnedArticle);
       }
@@ -149,7 +151,6 @@ class ArticlesController {
     }
   }
 
-
   /**
    *
    *
@@ -165,11 +166,8 @@ class ArticlesController {
     try {
       const returnedArticles = await articleModelManager.filterPopularArticles(limit, offset);
       if (returnedArticles) {
-        if (returnedArticles) {
-          returnedArticles.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-          returnedArticles.sort((a, b) => (a.ReadStats.length < b.ReadStats.length ? 1 : -1));
-          return response.successResponse(res, constants.OK_CODE, returnedArticles);
-        }
+        const sorted = sort(returnedArticles);
+        return response.successResponse(res, constants.OK_CODE, sorted);
       }
     } catch (error) {
       response.failureResponse(
@@ -245,7 +243,7 @@ class ArticlesController {
         where,
         value,
         limit,
-        offset,
+        offset
       );
       searchResult(foundArticles, res);
     } catch (error) {
@@ -264,12 +262,7 @@ class ArticlesController {
       const { value } = req.query;
       const { limit, offset } = paginate(req.query);
       const where = articleByTagWhere(value);
-      const foundArticles = await articleModelManager.getArticlesByTag(
-        where,
-        value,
-        limit,
-        offset,
-      );
+      const foundArticles = await articleModelManager.getArticlesByTag(where, value, limit, offset);
       searchResult(foundArticles, res);
     } catch (error) {
       return serverFailure(res);
@@ -291,7 +284,7 @@ class ArticlesController {
         where,
         value,
         limit,
-        offset,
+        offset
       );
       searchResult(foundArticles, res);
     } catch (error) {
@@ -314,7 +307,7 @@ class ArticlesController {
         where,
         value,
         limit,
-        offset,
+        offset
       );
       searchResult(foundArticles, res);
     } catch (error) {
