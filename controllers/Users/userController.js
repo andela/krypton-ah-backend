@@ -49,6 +49,33 @@ class UsersController {
       return serverFailure(res, SERVER_ERROR_MESSAGE);
     }
   }
+
+  /**
+   * @description Get a user from the db
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} *
+   */
+  static async getUser(req, res) {
+    const { userId } = req.params;
+    try {
+      const user = await User.getUser(userId);
+      if (user) {
+        return response.successResponse(res, constants.USER_RETRIEVAL_SUCCESS_MESSAGE, user);
+      }
+    } catch (error) {
+      return response.failureResponse(
+        res,
+        constants.SERVER_RETRIEVAL_MESSAGE,
+        constants.SERVER_ERROR_CODE
+      );
+    }
+    return response.failureResponse(
+      res,
+      constants.USER_NOT_FOUND_MESSAGE,
+      constants.NOT_FOUND_CODE
+    );
+  }
 }
 
 module.exports = UsersController;

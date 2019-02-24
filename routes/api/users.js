@@ -64,6 +64,53 @@ router.get('/', Users.listUsers);
 
 /**
  * @swagger
+ * /users/:userId:
+ *   get:
+ *     summary: get a user using userId
+ *     description: Returns a user using userId
+ *     tags:
+ *       - User routes
+ *     parameters:
+ *       - in: params
+ *         name: userId
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successfully get user
+ *         schema:
+ *           type: object
+ *           properties:
+ *             user:
+ *               type: object
+ *               description: requested user
+ *               items:
+ *                 type: object
+ *       404:
+ *         description: No user returned
+ *         schema:
+ *           type: object
+ *           properties:
+ *             users:
+ *               type: array
+ *               description: no user returned
+ *               items:
+ *                 type: array
+ *       500:
+ *         description: server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             users:
+ *               type: array
+ *               description: server error
+ *               items:
+ *                 type: array
+ */
+router.get('/:userId', Users.getUser);
+
+/**
+ * @swagger
  * /:id/follow:
  *   post:
  *     summary: Follow a user

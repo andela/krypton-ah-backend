@@ -22,7 +22,6 @@ describe('Follow model manager unit test', () => {
     expect(res).to.be.an('object');
     expect(res.dataValues).to.have.property('id');
     expect(res.dataValues).to.have.property('email');
-    expect(res.dataValues).to.have.property('password');
     expect(res.dataValues).to.have.property('firstname');
     expect(res.dataValues).to.have.property('lastname');
     expect(res.dataValues.isverified).to.deep.equal(true);
