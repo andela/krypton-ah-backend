@@ -11,6 +11,7 @@ const {
     authorWhere,
     tagWhere,
     keywordWhere,
+    articleByCategoryWhere
   } = require('../../lib/utils/helpers'),
   {
     tag,
@@ -126,5 +127,10 @@ describe('article model manager search functions', () => {
   it('should confirm that the article is found by keyword', async () => {
     const foundArticles = await article.getArticlesByKeyword(keywordWhere, 'test');
     expect(foundArticles[0].articleAuthor.firstname).to.equal(constants.userdata.firstname);
+  });
+
+  it('should confirm that the article is found by category', async () => {
+    const foundArticles = await article.getArticlesByCategory(articleByCategoryWhere, 'test');
+    expect(foundArticles[0].category).to.equal('general');
   });
 });

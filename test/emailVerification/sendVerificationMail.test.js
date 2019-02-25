@@ -8,12 +8,7 @@ const sendVerificationMail = require('../../lib/utils/emailService/emailVerifica
 const { fakeEmail } = require('../mockData');
 const EmailVerificationMail = require('../../lib/utils/emailService/emailVerification');
 const {
-  FROM,
-  SUBJECT,
-  SERVER_ERROR_CODE,
-  RESOURCE_CREATED_CODE,
-  VALID_TOKEN,
-  OK_CODE,
+  FROM, SUBJECT, RESOURCE_CREATED_CODE, VALID_TOKEN, OK_CODE
 } = require('../../constants');
 
 chai.use(sinonChai);
@@ -23,9 +18,6 @@ describe('Send Verification Email', () => {
   const req = {
     jwtToken: VALID_TOKEN,
     email: fakeEmail.email2
-  };
-  const reqs = {
-    token: VALID_TOKEN
   };
   const res = {
     status() {},
@@ -65,16 +57,10 @@ describe('Send Verification Email', () => {
     expect(res.status).to.have.been.calledWith(OK_CODE);
   });
 
-  it('should not send a verification mail when email is not provided', async () => {
-    sinon.stub(res, 'status').returnsThis();
-    await sendVerificationMail(reqs, res);
-    expect(res.status).to.have.been.calledWith(SERVER_ERROR_CODE);
-  });
-
-  it('should throw a server error when sendgrid server is down', async () => {
+  it('should return resource created when sendgrid server is down', async () => {
     sinon.stub(res, 'status').returnsThis();
     sinon.stub(sgMail, 'send').throws();
     await sendVerificationMail(req, res);
-    expect(res.status).to.have.been.calledWith(SERVER_ERROR_CODE);
+    expect(res.status).to.have.been.calledWith(RESOURCE_CREATED_CODE);
   });
 });

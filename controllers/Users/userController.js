@@ -4,11 +4,7 @@ const constants = require('../../constants');
 const response = require('../../lib/utils/helper_function');
 const { getModifiedComments } = require('../../lib/modelManagers/commentsHistoryModel');
 const { successResponse, serverFailure } = require('../../lib/utils/messageHandler');
-const {
-  OK_CODE,
-  SERVER_ERROR_MESSAGE,
-  HISTORY_RETRIEVED,
-} = require('../../constants');
+const { OK_CODE, SERVER_ERROR_MESSAGE, HISTORY_RETRIEVED } = require('../../constants');
 
 /**
  *
@@ -39,11 +35,11 @@ class UsersController {
   }
 
   /**
- * @description Gets users comment history Controller
- * @param {*} req
- * @param {*} res
- * @returns {*} *
- */
+   * @description Gets users comment history Controller
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} *
+   */
   static async getModifiedComments(req, res) {
     const { userId } = req.params;
     try {

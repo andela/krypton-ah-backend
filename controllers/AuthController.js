@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt'),
     OK_CODE,
     NOT_FOUND_CODE,
     UNSUCCESSFUL,
-    SUCCESSFUL,
+    SUCCESS_LOGIN,
     TOKEN_TIMESPAN
   } = require('../constants/index');
 
@@ -49,16 +49,16 @@ class AuthController {
     const userRecord = await userModelManager.findUser('email', req.body.email);
     if (userRecord) {
       const { id, password, isverified } = userRecord.dataValues;
-
+      const userRole = await userRecord.getRoles();
+      const roles = userRole.map(role => role.dataValues.role);
       const decryptedPassword = bcrypt.compareSync(req.body.password, password);
       if (decryptedPassword) {
         verificationStatus = checkVerificationStatus(isverified);
-
         if (verificationStatus) {
-          const token = jwtUtil.generateToken(TOKEN_TIMESPAN, id);
+          const token = jwtUtil.generateToken(TOKEN_TIMESPAN, { id, role: roles });
           return res.status(OK_CODE).json({
-            success: SUCCESSFUL,
-            message: 'Login Successful',
+            success: true,
+            message: SUCCESS_LOGIN,
             loginToken: token
           });
         }

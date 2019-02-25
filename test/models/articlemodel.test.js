@@ -65,6 +65,9 @@ describe('Test Article Model', () => {
       it('should have a hasMany association with ArticleReaction model', () => {
         expect(articles.hasMany.calledWith(ArticlesReactions)).to.equal(true);
       });
+      it('should have a hasMany association with ArticleReaction model', () => {
+        expect(articles.hasMany.calledWith(ArticlesReactions)).to.equal(true);
+      });
     });
   });
 });

@@ -56,7 +56,7 @@ const userdata3 = {
   password: 'password',
   firstname: 'firstname',
   lastname: 'lastname',
-  isverified: true,
+  isverified: true
 };
 
 const userdata4 = {
@@ -124,6 +124,7 @@ const article = authorid => ({
   averageRating: 0,
   slug: faker.helpers.slugify('title'),
   readTime: 0,
+  category: 'general',
   authorId: authorid
 });
 
@@ -135,6 +136,7 @@ const invalidarticle = authorid => ({
   averageRating: 0,
   Slug: faker.helpers.slugify('title'),
   readTime: 0,
+  category: 'general',
   authorId: authorid
 });
 
@@ -259,6 +261,15 @@ const articleReaction = (articleId, userId) => ({
 
 const reportTagName = 'Social';
 
+const role = 'admin';
+
+const newRole = 'moderator';
+
+const role2 = {
+  id: faker.random.uuid(),
+  role: 'admin'
+};
+
 const tags = { tag: 'Andela, JavaScript,Sequelize' };
 
 const destroyData = () => {
@@ -327,7 +338,7 @@ const sampleFoundArticle = [
       firstname: 'sampleName',
       lastname: 'sampleName',
       userprofile: 'sampleName.jpg'
-    },
+    }
   }
 ];
 
@@ -374,6 +385,9 @@ module.exports = {
   comment2,
   comment3,
   dummyReport,
+  articleId,
+  role,
+  role2,
   fakeEmail,
   createArticlesHighlightMock,
   emptyArray,
@@ -381,6 +395,6 @@ module.exports = {
   shortComment1,
   shortComment2,
   shortComment3,
-  articleId,
   reportTagName,
+  newRole
 };

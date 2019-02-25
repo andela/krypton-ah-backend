@@ -42,7 +42,11 @@ async function createCommentController(req, res, next) {
     successResponse(res, COMMENT_CREATED, RESOURCE_CREATED_CODE, comments);
     const { articleId } = comments.dataValues;
     req.commentDetails = {
-      id, comment, mainCommentId, userId, articleId
+      id,
+      comment,
+      mainCommentId,
+      userId,
+      articleId
     };
     req.body.commentId = comments.id;
     req.body.articleId = id;

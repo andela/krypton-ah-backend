@@ -17,7 +17,6 @@ const calculateReadTime = require('../../middlewares/calculateReadTime'),
   articlesHighlightValidator = require('../../middlewares/articlesHighlightValidator'),
   createArticleHighlight = require('../../middlewares/createArticleHighlight'),
   commentHistoryController = require('../../controllers/commentHistoryController');
-
 const {
   likeOrDislike,
   cancelReaction,
@@ -49,6 +48,34 @@ const {
   *          description: Ooops! Something went wrong, kindly try again
   */
 router.get('/search', ArticlesController.searchByKeyword);
+
+
+/**
+ * @swagger
+ * /search/title?query parameters:
+ * get:
+ *     summary: Search articles by title
+ *     description: users can search for an article through the article title
+  *     tags:
+  *       - Article routes
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - in: query
+ *         name: value
+ *         description: value is the search query parameter the user pass in to search by
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Below are the matching articles
+ *       404:
+ *         description: No article with the search parameter
+ *       500:
+ *          description: Ooops! Something went wrong, kindly try again
+ */
+router.get('/search/category/', ArticlesController.searchByCategory);
+
 
 /**
  * @swagger
@@ -127,7 +154,6 @@ router.get('/search/author/', ArticlesController.searchByAuthor);
  *          description: Ooops! Something went wrong, kindly try again
  */
 router.get('/search/tag/', ArticlesController.searchByTag);
-
 
 /**
  * @swagger
@@ -461,7 +487,7 @@ router.delete('/:id', ArticlesController.deleteArticle);
  *       - "application/x-www-form-urlencoded"
  *     parameters:
  *       - in: query
- *         name: articleId
+ *         name: id
  *         description: articleId is the Id of the article that comments will be tied to
  *         type: integer
  *         required: true
@@ -478,7 +504,7 @@ router.delete('/:id', ArticlesController.deleteArticle);
  *       - in: body
  *         name: mainCommentId
  *         description: user's comment under other comment
- *         type: UUID
+ *         type: string
  *         required: false
  *     responses:
  *       -  200:
@@ -508,7 +534,7 @@ router.post(
  *       - "application/json"
  *     parameters:
  *       - in: query
- *         name: articleId
+ *         name: id
  *         description: articleId is the Id of the article that comments will be tied to
  *         type: integer
  *         required: true
@@ -531,7 +557,7 @@ router.get('/:id/comments', paramsValidator, commentController.findCommentContro
  *       - "application/json"
  *     parameters:
  *       - in: query
- *         name: articleId
+ *         name: id
  *         description: articleId is the Id of the article that comments will be tied to
  *         type: integer
  *         required: true

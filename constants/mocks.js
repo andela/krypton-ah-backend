@@ -1,3 +1,6 @@
+require('dotenv').config();
+const bcrypt = require('bcrypt');
+
 const userMock = {
   email: 'testuser@email.com',
   userId: 'testuserid',
@@ -59,6 +62,32 @@ const nextMock = {
   next: () => {}
 };
 
+const adminUser = {
+  id: 'aa94832a-19cf-11e9-ab14-d663bd873d65',
+  firstname: process.env.ADMIN_FIRSTNAME,
+  lastname: process.env.ADMIN_LASTNAME,
+  isverified: true,
+  password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, bcrypt.genSaltSync(8)),
+  email: process.env.ADMIN_EMAIL_1,
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
+
+const role = {
+  id: 'bb94832a-19cf-11e9-ab14-d663bd873d32',
+  role: 'admin',
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
+
+const admin = {
+  id: 'cc94832a-19cf-11e9-ab14-d663bd873d33',
+  roleId: 'bb94832a-19cf-11e9-ab14-d663bd873d32',
+  userId: 'aa94832a-19cf-11e9-ab14-d663bd873d65',
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
+
 module.exports = {
   userMock,
   userProfileMock,
@@ -67,5 +96,8 @@ module.exports = {
   validProfileRequestMock,
   invalidProfileRequestMock,
   responseMock,
-  nextMock
+  nextMock,
+  adminUser,
+  admin,
+  role
 };

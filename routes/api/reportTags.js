@@ -1,4 +1,6 @@
 const router = require('express').Router(),
+  jwtValidator = require('../../middlewares/jwtValidator'),
+  roleValidator = require('../../middlewares/roleValidator'),
   ReportTagController = require('../../controllers/reportTagController'),
   tagValidator = require('../../middlewares/reporterValidator'),
   uuidValidator = require('../../middlewares/uuidValidator');
@@ -25,7 +27,7 @@ const router = require('express').Router(),
  *
  *
  */
-router.get('/tags', ReportTagController.getTags);
+router.get('/tags', jwtValidator, roleValidator('admin'), ReportTagController.getTags);
 
 /**
  * @swagger
@@ -73,6 +75,12 @@ router.post('/tag', tagValidator, ReportTagController.createTag);
  *
  *
  */
-router.delete('/tag/:tagId', uuidValidator, ReportTagController.deleteReportTag);
+router.delete(
+  '/tag/:tagId',
+  jwtValidator,
+  roleValidator('admin'),
+  uuidValidator,
+  ReportTagController.deleteReportTag
+);
 
 module.exports = router;

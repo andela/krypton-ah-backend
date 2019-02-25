@@ -3,10 +3,12 @@ const {
   articleByTagWhere,
   articleByTitleWhere,
   articleBykeywordWhere,
+  articleByCategoryWhere,
   searchResult
 } = require('../../lib/utils/helpers');
 const { serverFailure } = require('../../lib/utils/messageHandler');
 const articleModelManager = require('../../lib/modelManagers/articlemodel');
+const categoryModelManager = require('../../lib/modelManagers/categoriesModel');
 const response = require('../../lib/utils/helper_function');
 const constants = require('../../constants');
 const generateSlug = require('../../lib/utils/slugGenerator');
@@ -30,11 +32,17 @@ class ArticlesController {
    * @memberof ArticlesController
    */
   static async createArticles(req, res, next) {
-    const authorId = req.decodedToken.payLoad;
+    const authorId = req.decodedToken.payLoad.id;
     const slug = generateSlug(req.body.title, authorId.toString());
-    const articleDetails = { ...slug.slugs, authorId, ...req.body };
+    const articleDetails = {
+      ...slug.slugs,
+      authorId,
+      ...req.body,
+      category: req.body.category.toString().toLowerCase().trim()
+    };
     try {
       const createdArticles = await articleModelManager.createArticle(articleDetails);
+      await categoryModelManager.createCategory(createdArticles.category);
       generateTags(req.body.tags, createdArticles.id);
       if (createdArticles) {
         req.createdArticles = { ...createdArticles, authorId };
@@ -245,6 +253,29 @@ class ArticlesController {
       const { value } = req.query;
       const { limit, offset } = paginate(req.query);
       const where = articleBykeywordWhere(value);
+      const foundArticles = await articleModelManager.getArticlesByKeyword(
+        where,
+        value,
+        limit,
+        offset,
+      );
+      searchResult(foundArticles, res);
+    } catch (error) {
+      return serverFailure(res);
+    }
+  }
+
+  /**
+   * Search articles by keyword.
+   * @param {object} req Request Object.
+   * @param {object} res Response Object.
+   * @returns {object} Response with the article details that matches the search criteria.
+   */
+  static async searchByCategory(req, res) {
+    try {
+      const { value } = req.query;
+      const { limit, offset } = paginate(req.query);
+      const where = articleByCategoryWhere(value);
       const foundArticles = await articleModelManager.getArticlesByKeyword(
         where,
         value,
