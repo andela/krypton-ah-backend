@@ -96,6 +96,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id',
       as: 'articleId'
     });
+    Articles.hasMany(models.ReadStats, {
+      foreignKey: 'articleId',
+    });
     Articles.hasOne(models.categories, {
       foreignKey: 'category',
       as: 'articleCategory'

@@ -46,7 +46,7 @@ describe('Read stat model manager', async () => {
     });
     afterEach(sinon.restore);
     it('should GET readStat for user who has read some articles', async () => {
-      requestMock.decodedToken = { payLoad: dataStore.newUser1.id };
+      requestMock.decodedToken = { payLoad: { id: dataStore.newUser1.id } };
       const statusStub = sinon.stub(responseMock, 'status').returnsThis();
       const jsonStub = sinon.stub(responseMock, 'json').returnsThis();
       const expectedData = {

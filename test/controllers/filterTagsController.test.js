@@ -13,7 +13,7 @@ chai.use(sinonChai);
 
 const { findOrCreateTag } = require('../../lib/modelManagers/tagModel');
 const TagModelManager = require('../../lib/modelManagers/tagModel');
-const filterTags = require('../../controllers/filterTagsController');
+const { filterTags, getTags } = require('../../controllers/filterTagsController');
 const { Tags } = require('../../database/models');
 const { tag, tagArray, returnedTag } = require('../mockData');
 
@@ -44,6 +44,19 @@ describe('filtering article tags', () => {
       expect(res.status).to.have.been.calledWith(OK_CODE);
     });
   });
+
+  it('should return all tags', async () => {
+    const req = {};
+    const res = {
+      status() { },
+      json() { }
+    };
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(TagModelManager, 'getTags').returns(returnedTag);
+    await getTags(req, res);
+    expect(res.status).to.have.been.calledWith(OK_CODE);
+  });
+
   describe('filtering article tags', () => {
     it('should return null if there are no tags matching the input string', async () => {
       const req = {
@@ -58,6 +71,21 @@ describe('filtering article tags', () => {
       sinon.stub(res, 'status').returnsThis();
       sinon.stub(TagModelManager, 'getTag').returns([]);
       await filterTags(req, res);
+      expect(res.status).to.have.been.calledWith(NOT_FOUND_CODE);
+    });
+  });
+
+  describe('filtering article tags', () => {
+    it('should return null if there are no tags present', async () => {
+      const req = {
+      };
+      const res = {
+        status() { },
+        json() { }
+      };
+      sinon.stub(res, 'status').returnsThis();
+      sinon.stub(TagModelManager, 'getTags').returns([]);
+      await getTags(req, res);
       expect(res.status).to.have.been.calledWith(NOT_FOUND_CODE);
     });
   });

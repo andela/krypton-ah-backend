@@ -64,12 +64,16 @@ class ArticlesReactionController {
   static async likeOrDislike(req, res) {
     const reaction = req.query.reaction.toLowerCase();
     try {
-      const userReaction = await getUserReaction(req.params.articleId, req.decodedToken.payLoad);
+      const userReaction = await getUserReaction(req.params.articleId, req.decodedToken.payLoad.id);
       if (userReaction) {
-        await updateReaction(reaction, req.params.articleId, req.decodedToken.payLoad);
+        await updateReaction(reaction, req.params.articleId, req.decodedToken.payLoad.id);
         return successResponse(res, OPERATION_SUCCESSFUL);
       }
-      newReaction = await createReaction(req.params.articleId, req.decodedToken.payLoad, reaction);
+      newReaction = await createReaction(
+        req.params.articleId,
+        req.decodedToken.payLoad.id,
+        reaction
+      );
       return successResponse(res, OPERATION_SUCCESSFUL, OK_CODE, { newReaction });
     } catch (error) {
       return serverFailure(res, SERVER_ERROR_MESSAGE);

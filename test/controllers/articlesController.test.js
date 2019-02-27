@@ -53,14 +53,14 @@ describe('Articles controller', () => {
         }
       },
       body: {
-        ...testArticle,
+        ...testArticle
       }
-
-
     };
     const res = {
-      status() { return this; },
-      json() { }
+      status() {
+        return this;
+      },
+      json() {}
     };
 
     const nextMock = {
@@ -72,7 +72,6 @@ describe('Articles controller', () => {
     sinon.stub(categoryModelManager, 'createCategory').returns(true);
     expect(nextStub.calledOnce).to.equal(true);
   });
-
 
   it('should successfully update article details', async () => {
     const result = await article.createArticle(testArticle);
@@ -124,7 +123,6 @@ describe('Articles controller', () => {
     expect(jsonStub.firstCall.args[0].success).to.equal(false);
   });
 
-
   it('should throw error when updating article details', async () => {
     const { invalidarticle } = constants;
     const req = {
@@ -147,16 +145,17 @@ describe('Articles controller', () => {
   });
 
   it('should successfully delete an article', async () => {
-    chai.request(app)
+    chai
+      .request(app)
       .delete(`/api/v1/articles/${articleid}`)
       .end((err, res) => {
         expect(res.status).to.equals(responses.OK_CODE);
       });
   });
 
-
   it('should successfully delete an article', async () => {
-    chai.request(app)
+    chai
+      .request(app)
       .delete(`/api/v1/articles/${articleid}`)
       .end((err, res) => {
         expect(res.status).to.equals(responses.NOT_FOUND_CODE);
@@ -164,7 +163,8 @@ describe('Articles controller', () => {
   });
 
   it('should throw error when deleting an article', async () => {
-    chai.request(app)
+    chai
+      .request(app)
       .delete('/api/v1/articles/a')
       .end((err, res) => {
         expect(res.status).to.equals(responses.SERVER_ERROR_CODE);
@@ -172,7 +172,8 @@ describe('Articles controller', () => {
   });
 
   it('should get an article', async () => {
-    chai.request(app)
+    chai
+      .request(app)
       .get('/api/v1/articles')
       .send(testArticle)
       .end((err, res) => {
@@ -185,9 +186,7 @@ describe('Articles controller', () => {
       decodedToken: {
         payLoad: userid
       },
-      body: {
-
-      },
+      body: {},
       params: {
         field: '',
         value: ''
@@ -208,8 +207,7 @@ describe('Articles controller', () => {
 });
 
 describe('Articles controller', () => {
-  before(async () => {
-  });
+  before(async () => {});
   after('Delete Articles', async () => {
     sinon.restore();
   });
@@ -221,7 +219,7 @@ describe('Articles controller', () => {
         }
       },
       body: {
-        ...testArticle,
+        ...testArticle
       }
     };
     const res = {
@@ -250,7 +248,7 @@ describe('getArticle controller', () => {
   it('should get article and call next', async () => {
     const { responseMock, requestMock, nextMock } = responses;
     requestMock.params = { id: dataStore.newArticle.id };
-    requestMock.decodedToken = { payLoad: dataStore.newUser2.id };
+    requestMock.decodedToken = { payLoad: { id: dataStore.newUser2.id } };
     const statusStub = sinon.stub(responseMock, 'status').returnsThis();
     const jsonStub = sinon.stub(responseMock, 'json').returnsThis();
     const nextStub = sinon.stub(nextMock, 'next');
@@ -262,7 +260,7 @@ describe('getArticle controller', () => {
   it('should return not found error', async () => {
     const { responseMock, requestMock } = responses;
     requestMock.params = { id: constants.userdata3.id };
-    requestMock.decodedToken = { payLoad: dataStore.newUser2.id };
+    requestMock.decodedToken = { payLoad: { id: dataStore.newUser2.id } };
     const statusStub = sinon.stub(responseMock, 'status').returnsThis();
     const jsonStub = sinon.stub(responseMock, 'json').returnsThis();
     await ArticlesController.getArticle(requestMock, responseMock);
@@ -274,7 +272,7 @@ describe('getArticle controller', () => {
 describe('articles controller search functions', async () => {
   const req = {
     query: {
-      value: 'this',
+      value: 'this'
     }
   };
   const res = {
@@ -320,6 +318,15 @@ describe('articles controller search functions', async () => {
     expect(res.status).to.have.been.calledWith(responses.OK_CODE);
   });
 
+  it('should get popular articles', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.spy(helpers, 'searchResult');
+    sinon.stub(articleModelManager, 'filterPopularArticles').returns(sampleFoundArticle);
+    await ArticlesController.getPopularArticles(req, res);
+    await helpers.searchResult(sampleFoundArticle, res);
+    expect(res.status).to.have.been.calledWith(responses.OK_CODE);
+  });
+
   it('should search articles by keyword', async () => {
     sinon.stub(res, 'status').returnsThis();
     sinon.spy(helpers, 'searchResult');
@@ -334,6 +341,14 @@ describe('articles controller search functions', async () => {
     await ArticlesController.searchByTitle(req, res);
     expect(res.status).to.have.been.calledWith(responses.SERVER_ERROR_CODE);
   });
+
+  it('should return a server error when there is one', async () => {
+    sinon.stub(res, 'status').returnsThis();
+    sinon.stub(articleModelManager, 'filterPopularArticles').throws();
+    await ArticlesController.getPopularArticles(req, res);
+    expect(res.status).to.have.been.calledWith(responses.SERVER_ERROR_CODE);
+  });
+
   it('should return a server error when there is one', async () => {
     sinon.stub(res, 'status').returnsThis();
     sinon.stub(articleModelManager, 'getArticlesByAuthor').throws();

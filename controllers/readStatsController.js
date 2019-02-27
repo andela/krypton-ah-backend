@@ -8,7 +8,7 @@ const ReadStatsModelManager = require('../lib/modelManagers/readStatModel'),
   } = require('../constants');
 
 const getUserReadStatController = async (req, res) => {
-  const readerId = req.decodedToken.payLoad;
+  const readerId = req.decodedToken.payLoad.id;
   try {
     const userReadStat = await ReadStatsModelManager.getReadStat({ readerId });
     const data = formatUserReadStat(userReadStat);

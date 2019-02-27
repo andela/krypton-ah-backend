@@ -15,4 +15,14 @@ const filterTags = async (req, res) => {
   const matchingTags = foundTags.map(tags => tags.tagName);
   return successResponse(res, FOUND_TAGS_MESSAGE, matchingTags);
 };
-module.exports = filterTags;
+
+const getTags = async (req, res) => {
+  const foundTags = await TagModelManager.getTags();
+  if (foundTags.length === 0) {
+    return failureResponse(res, TAGS_NOT_FOUND, NOT_FOUND_CODE, foundTags);
+  }
+  const matchingTags = foundTags.map(tags => tags.tagName);
+  return successResponse(res, FOUND_TAGS_MESSAGE, matchingTags);
+};
+
+module.exports = { filterTags, getTags };
