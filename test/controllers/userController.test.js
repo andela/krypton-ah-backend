@@ -6,12 +6,16 @@ const chai = require('chai'),
   articleComment = require('../../lib/modelManagers/articlesComment'),
   commentHistory = require('../../lib/modelManagers/commentsHistoryModel'),
   userController = require('../../controllers/Users/userController'),
+  User = require('../../lib/modelManagers/usermodel'),
   mockData = require('../mockData'),
   {
     OK_CODE,
+    NOT_FOUND_CODE,
     SERVER_ERROR_MESSAGE,
     SERVER_ERROR_CODE,
     HISTORY_RETRIEVED,
+    requestMock,
+    responseMock
   } = require('../../constants/index');
 
 const { expect } = chai;
@@ -143,5 +147,43 @@ describe('Unit test for comment history model manager', () => {
     expect(res.json.firstCall.lastArg).to.be.an('object');
     expect(res.json.firstCall.lastArg).to.haveOwnProperty('success').equal(false);
     expect(res.json.firstCall.lastArg).to.haveOwnProperty('message').equal(SERVER_ERROR_MESSAGE);
+  });
+});
+
+
+describe('getUser controller', () => {
+  afterEach(sinon.restore);
+  it('should successfully get user', async () => {
+    const userId = mockData.userdata.id;
+    requestMock.params = {
+      userId
+    };
+    const getUserStub = await sinon.stub(User, 'getUser').returnsThis();
+    const statusStub = sinon.stub(responseMock, 'status').returnsThis();
+    await userController.getUser(requestMock, responseMock);
+    expect(statusStub.calledOnceWithExactly(OK_CODE)).to.equal(true);
+    expect(getUserStub.calledOnceWithExactly(userId)).to.equal(true);
+  });
+  it('should return server error', async () => {
+    const userId = mockData.userdata.id;
+    requestMock.params = {
+      userId
+    };
+    const getUserStub = await sinon.stub(User, 'getUser').rejects();
+    const statusStub = sinon.stub(responseMock, 'status').returnsThis();
+    await userController.getUser(requestMock, responseMock);
+    expect(statusStub.calledOnceWithExactly(SERVER_ERROR_CODE)).to.equal(true);
+    expect(getUserStub.calledOnceWithExactly(userId)).to.equal(true);
+  });
+  it('should not successfully get user', async () => {
+    const userId = mockData.userdata.id;
+    requestMock.params = {
+      userId
+    };
+    const getUserStub = await sinon.stub(User, 'getUser').returns(null);
+    const statusStub = sinon.stub(responseMock, 'status').returnsThis();
+    await userController.getUser(requestMock, responseMock);
+    expect(statusStub.calledOnceWithExactly(NOT_FOUND_CODE)).to.equal(true);
+    expect(getUserStub.calledOnceWithExactly(userId)).to.equal(true);
   });
 });

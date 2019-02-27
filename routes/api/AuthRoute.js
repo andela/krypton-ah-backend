@@ -122,7 +122,7 @@ socialRouter.get(
 socialRouter.get(
   '/twitter/callback',
   passport.authenticate('twitter', { session: false }),
-  SocialMediaController.getUserToken
+  SocialMediaController.getUserTokenTwitter
 );
 
 /**

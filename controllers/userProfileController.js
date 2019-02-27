@@ -33,7 +33,7 @@ const createUserProfileController = async (req, res) => {
 };
 
 const updateUserProfileController = async (req, res) => {
-  const { userId } = req.decodedToken;
+  const userId = req.decodedToken.payLoad;
   const userProfileUpdate = getUserProfileFromRequest(req);
   try {
     const updatedProfile = await UserProfileManager.updateUserProfile(userId, userProfileUpdate);
