@@ -36,7 +36,9 @@ describe('User profile controller', () => {
     it('should successfully create user profile', async () => {
       const req = {
         decodedToken: {
-          payLoad: dataStore.newUser.id
+          payLoad: {
+            id: dataStore.newUser.id
+          }
         },
         body: {
           ...userProfileMock
@@ -76,7 +78,9 @@ describe('User profile controller', () => {
     it('should successfully update user profile', async () => {
       const req = {
         decodedToken: {
-          payLoad: dataStore.newUser.id
+          payLoad: {
+            id: dataStore.newUser.id
+          }
         },
         body: {
           ...updatedUserProfileMock
@@ -122,7 +126,7 @@ describe('User profile controller', () => {
     it('should fail to create user profile', async () => {
       const req = {
         decodedToken: {
-          userId: dataStore.newUser2.id
+          payLoad: { id: dataStore.newUser2.id }
         },
         body: {
           ...userProfileMock
@@ -162,7 +166,7 @@ describe('User profile controller', () => {
     it('should fail to update user profile', async () => {
       const req = {
         decodedToken: {
-          userId: dataStore.newUser2.id
+          payLoad: { id: dataStore.newUser2.id }
         },
         body: {
           ...userProfileMock

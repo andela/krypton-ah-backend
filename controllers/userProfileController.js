@@ -1,5 +1,5 @@
 const UserProfileManager = require('../lib/modelManagers/userProfileModel'),
-  { getUserProfileFromRequest } = require('../lib/utils/helpers'),
+  { getUserProfileFromRequest, getUserIdFromReqDecodedToken } = require('../lib/utils/helpers'),
   { successResponse, failureResponse } = require('../lib/utils/helper_function'),
   {
     SERVER_ERROR_CODE,
@@ -17,7 +17,7 @@ const UserProfileManager = require('../lib/modelManagers/userProfileModel'),
  */
 
 const createUserProfileController = async (req, res) => {
-  const userId = req.decodedToken.payLoad;
+  const userId = getUserIdFromReqDecodedToken(req);
   const userProfileUpdate = getUserProfileFromRequest(req);
   try {
     const createdProfile = await UserProfileManager.createUserProfile({
@@ -33,7 +33,7 @@ const createUserProfileController = async (req, res) => {
 };
 
 const updateUserProfileController = async (req, res) => {
-  const userId = req.decodedToken.payLoad;
+  const userId = getUserIdFromReqDecodedToken(req);
   const userProfileUpdate = getUserProfileFromRequest(req);
   try {
     const updatedProfile = await UserProfileManager.updateUserProfile(userId, userProfileUpdate);
