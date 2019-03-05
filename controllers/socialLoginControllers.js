@@ -49,7 +49,7 @@ class SocialMediaController {
       return res.status(BAD_REQUEST_CODE).send(INVALID_USER);
     }
     const { id, created } = req.user.user;
-    const token = await generateToken(TOKEN_TIMESPAN, id);
+    const token = await generateToken(TOKEN_TIMESPAN, { id });
     const userDetails = Object.assign({}, req.user, {
       msg: created ? WELCOME_NEW_USER : WELCOME_EXISTING_USER,
       token
@@ -69,7 +69,7 @@ class SocialMediaController {
       return res.status(BAD_REQUEST_CODE).send(INVALID_USER);
     }
     const { id, created } = req.user.user;
-    const token = await generateToken(TOKEN_TIMESPAN, id);
+    const token = await generateToken(TOKEN_TIMESPAN, { id });
     Object.assign({}, req.user, {
       msg: created ? WELCOME_NEW_USER : WELCOME_EXISTING_USER,
       token

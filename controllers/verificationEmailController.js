@@ -33,7 +33,7 @@ const verifyNewUser = async (req, res) => {
     const field = { isverified: true };
     const payLoad = uuid;
     const data = {};
-    data.token = await generateToken(TOKEN_TIMESPAN, payLoad);
+    data.token = await generateToken(TOKEN_TIMESPAN, { id: payLoad });
     const callbackUrlData = `${callbackUrl}?token=${data.token}`;
     try {
       const updatedUser = await User.update(uuid, field);

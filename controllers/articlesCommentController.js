@@ -31,7 +31,7 @@ const Comment = require('../lib/modelManagers/articlesComment'),
 async function createCommentController(req, res, next) {
   try {
     const { comment, mainCommentId } = req.body;
-    const userId = req.decodedToken.payLoad;
+    const userId = req.decodedToken.payLoad.id;
     const { id } = req.params;
     const comments = await Comment.createComment({
       comment,
@@ -120,7 +120,7 @@ async function findCommentThreadController(req, res) {
  */
 async function updateCommentController(req, res) {
   try {
-    const userId = req.decodedToken.payLoad;
+    const userId = req.decodedToken.payLoad.id;
     const { commentId, comment } = req.body;
     const { articleId } = req.params;
     const commentDetails = await Comment.findComment(articleId, commentId);
@@ -153,7 +153,7 @@ async function updateCommentController(req, res) {
  */
 async function deleteCommentController(req, res) {
   try {
-    const userId = req.decodedToken.payLoad;
+    const userId = req.decodedToken.payLoad.id;
     const { commentId } = req.body;
     const { articleId } = req.params;
     const commentDetails = await Comment.findComment(articleId, commentId);
